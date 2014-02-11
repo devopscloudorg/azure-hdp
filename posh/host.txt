@@ -1,0 +1,11 @@
+172.16.0.4	ncdHDP0.ncdHDP0.b5.internal.cloudapp.net
+172.16.0.5	ncdHDP1.ncdHDP1.b1.internal.cloudapp.net
+172.16.0.6	ncdHDP2.ncdHDP2.b3.internal.cloudapp.net
+172.16.0.7	ncdHDP3.ncdHDP3.b2.internal.cloudapp.net
+172.16.0.8	ncdHDP4.ncdHDP4.b2.internal.cloudapp.net
+
+172.16.0.4	ncdHDP0
+172.16.0.5	ncdHDP1
+172.16.0.6	ncdHDP2
+172.16.0.7	ncdHDP3
+172.16.0.8	ncdHDP4

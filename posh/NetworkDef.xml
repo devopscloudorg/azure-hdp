@@ -1,0 +1,10 @@
+      <VirtualNetworkSite name="placeholder-network" AffinityGroup="placeholder-affinitygroup">
+        <AddressSpace>
+          <AddressPrefix>172.16.0.0/17</AddressPrefix>
+        </AddressSpace>
+        <Subnets>
+          <Subnet name="App">
+            <AddressPrefix>172.16.0.0/17</AddressPrefix>
+          </Subnet>
+        </Subnets>
+      </VirtualNetworkSite>

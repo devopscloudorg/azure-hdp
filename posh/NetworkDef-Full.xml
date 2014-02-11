@@ -1,0 +1,17 @@
+<NetworkConfiguration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/ServiceHosting/2011/07/NetworkConfiguration">
+  <VirtualNetworkConfiguration>
+    <Dns />
+    <VirtualNetworkSites>
+      <VirtualNetworkSite name="placeholder-network" AffinityGroup="placeholder-affinitygroup">
+        <AddressSpace>
+          <AddressPrefix>172.16.0.0/17</AddressPrefix>
+        </AddressSpace>
+        <Subnets>
+          <Subnet name="App">
+            <AddressPrefix>172.16.0.0/17</AddressPrefix>
+          </Subnet>
+        </Subnets>
+      </VirtualNetworkSite>
+    </VirtualNetworkSites>
+  </VirtualNetworkConfiguration>
+</NetworkConfiguration>
