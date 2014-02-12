@@ -3,11 +3,6 @@
 
 source ./hdpsetup.sh
 
-#This script will be generated and it will be used to mount data drives in each node in the cluster
-mntscript="mountdrive.sh"
-#This file will generate hosts file that can be appended to /etc/hosts on each node.
-hostsfile="hosts.txt"
-
 if [ -e $mntscript ]; then
         rm $mntscript
 fi

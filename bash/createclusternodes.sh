@@ -4,11 +4,6 @@
 
 source ./hdpsetup.sh
 
-#This script will be generated and it will be used to mount data drives in each node in the cluster
-mntscript="mountdrive.sh"
-#This file will generate hosts file that can be appended to /etc/hosts on each node.
-hostsfile="hosts.txt"
-
 #This script requires jq json processor
 #check to see if jq is available and download it if necessary
 result=$(which jq)
@@ -120,6 +115,7 @@ while [ $loopIndex -le $nodeCount ]; do
 	fi
 
 	echo "ssh ${adminUserName}@${vmName}:/root/scripts/st.pl" >> $mntscript
+	echo "scp /etc/hosts ${adminUserName}@${vmName}:/etc" >> $mntscript
 
 
 	printf "######################################## Virtual Machine Details #######################################\n"

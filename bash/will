@@ -1,0 +1,1173 @@
+Script started on Wed 12 Feb 2014 05:51:37 AM UTC
+mntscript="mountdrive.sh"
+#This file will generate hosts file that can be appended to /etc/hosts on each node.
+hostsfile="hosts.txt"
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ mntscript="mountdrive.sh"
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ #This file will generate hosts file that can be appended to /etc/hosts on each node.
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ hostsfile="hosts.txt"
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ ci [K[K[Kvi hdpsetup.sh 
+[?1049h[?1h=[2;1H▽[6n[1;1H  [1;1H[1;52r[?12;25h[?12l[?25h[27m[m[H[2J[?25l[52;1H"hdpsetup.sh" 48L, 2371C[>c[1;1H[34m#This settings file stores all the settings related to HDP cluster you are setting up
+#Affinty group helps you keep your storage and compute in the same region[m
+[33mexport[m[36m affinityGroupName=myeasthdpag[m
+[34m#Name the region where affinity group should be created. 
+#choices are valid values are "East US", "West US", "East Asia", "Southeast Asia", "North Europe", "West Europe"[m
+[33mexport[m[36m affinityGroupLocation=[m[33m"[m[31mEast US[m[33m"[m
+
+[34m#name of the storage account here your virtual machines will be stored.[m
+[33mexport[m[36m storageAccount=myhdpstorage[m
+
+[34m#Name of the image you will use to create your virtual machines
+#export imageName=b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu_DAILY_BUILD-precise-12_04_3-LTS-amd64-server-20140204-en-us-30GB[m
+[33mexport[m[36m imageName=c290a6b031d841e09f2da759bbabe71f__Oracle-Linux-6[m
+
+[34m#Size of the Virtual machine. Valid sizes are extrasmall, small, medium, large, extralarge, a5, a6, a7[m
+[33mexport[m[36m instanceSize=small[m
+
+[34m#Size of the data disk you want to attach to the VM you are creating. You will typically attach at least 1 disk[m
+[33mexport[m[36m diskSizeInGB=5[m
+[34m#Number of disks you want to attach. Small VM can have 2 disks, medium can have 4, large can have 8 and extralarge can have 8 data disks[m
+[33mexport[m[36m numOfDisks=1[m
+
+[34m#virtual machine settings[m
+[33mexport[m[36m vmNamePrefix=ctinkuhdp[m
+[33mexport[m[36m cloudServicePrefix=ctinkuhdp[m
+[34m#user admin name and password for the virtual machine you are creating[m
+[33mexport[m[36m adminUserName=azureuser[m
+[34m#Azure CLI enforces strong passwords uppercase, lower case and special characters[m
+[33mexport[m[36m adminPassword=Password.1![m
+
+[34m#setting related to virtual network[m
+[33mexport[m[36m vnetName=myeasthdpvnet[m
+[34m#address space allows 192.168.0.0, 10.0.0.0 and 172.16.0.0 ip address ranges
+#virtual network faq is here http://msdn.microsoft.com/en-us/library/windowsazure/dn133803.aspx[m
+[33mexport[m[36m vnetAddressSpace=172.16.0.0[m
+[33mexport[m[36m vnetCidr=16[m
+[33mexport[m[36m subnetName=mysubnet[m
+[33mexport[m[36m subnetAddressSpace=172.16.1.0[m
+[33mexport[m[36m subnetCidr=24[m
+
+[34m#These settings are for nodes in the HDP cluster
+#Name of the custom image you will use to create your cluster nodes
+#After you have create your master node image replace the value of nodeImageName wiht the image you created [m
+[33mexport[m[36m nodeImageName=c290a6b031d841e09f2da759bbabe71f__Oracle-Linux-6[m
+[34m#Number of nodes in your HDP cluster[m
+[33mexport[m[36m nodeCount=3[m
+[34m#Size of the nodes in the hadoop cluster. Valid sizes are extrasmall, small, medium, large, extralarge, a5, a6, a7[m
+[33mexport[m[36m nodeSize=small[m
+[1m[34m~                                                                                                                                                                                                    [50;1H~                                                                                                                                                                                                    [51;1H~                                                                                                                                                                                                    [m[52;180H1,1[11CAll[1;1H[?12l[?25h[27m[m[H[2J[?25l[1;1H[34m#This settings file stores all the settings related to HDP cluster you are setting up
+#Affinty group helps you keep your storage and compute in the same region[m
+[33mexport[m[36m affinityGroupName=myeasthdpag[m
+[34m#Name the region where affinity group should be created. 
+#choices are valid values are "East US", "West US", "East Asia", "Southeast Asia", "North Europe", "West Europe"[m
+[33mexport[m[36m affinityGroupLocation=[m[33m"[m[31mEast US[m[33m"[m
+
+[34m#name of the storage account here your virtual machines will be stored.[m
+[33mexport[m[36m storageAccount=myhdpstorage[m
+
+[34m#Name of the image you will use to create your virtual machines
+#export imageName=b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu_DAILY_BUILD-precise-12_04_3-LTS-amd64-server-20140204-en-us-30GB[m
+[33mexport[m[36m imageName=c290a6b031d841e09f2da759bbabe71f__Oracle-Linux-6[m
+
+[34m#Size of the Virtual machine. Valid sizes are extrasmall, small, medium, large, extralarge, a5, a6, a7[m
+[33mexport[m[36m instanceSize=small[m
+
+[34m#Size of the data disk you want to attach to the VM you are creating. You will typically attach at least 1 disk[m
+[33mexport[m[36m diskSizeInGB=5[m
+[34m#Number of disks you want to attach. Small VM can have 2 disks, medium can have 4, large can have 8 and extralarge can have 8 data disks[m
+[33mexport[m[36m numOfDisks=1[m
+
+[34m#virtual machine settings[m
+[33mexport[m[36m vmNamePrefix=ctinkuhdp[m
+[33mexport[m[36m cloudServicePrefix=ctinkuhdp[m
+[34m#user admin name and password for the virtual machine you are creating[m
+[33mexport[m[36m adminUserName=azureuser[m
+[34m#Azure CLI enforces strong passwords uppercase, lower case and special characters[m
+[33mexport[m[36m adminPassword=Password.1![m
+
+[34m#setting related to virtual network[m
+[33mexport[m[36m vnetName=myeasthdpvnet[m
+[34m#address space allows 192.168.0.0, 10.0.0.0 and 172.16.0.0 ip address ranges
+#virtual network faq is here http://msdn.microsoft.com/en-us/library/windowsazure/dn133803.aspx[m
+[33mexport[m[36m vnetAddressSpace=172.16.0.0[m
+[33mexport[m[36m vnetCidr=16[m
+[33mexport[m[36m subnetName=mysubnet[m
+[33mexport[m[36m subnetAddressSpace=172.16.1.0[m
+[33mexport[m[36m subnetCidr=24[m
+
+[34m#These settings are for nodes in the HDP cluster
+#Name of the custom image you will use to create your cluster nodes
+#After you have create your master node image replace the value of nodeImageName wiht the image you created [m
+[33mexport[m[36m nodeImageName=c290a6b031d841e09f2da759bbabe71f__Oracle-Linux-6[m
+[34m#Number of nodes in your HDP cluster[m
+[33mexport[m[36m nodeCount=3[m
+[34m#Size of the nodes in the hadoop cluster. Valid sizes are extrasmall, small, medium, large, extralarge, a5, a6, a7[m
+[33mexport[m[36m nodeSize=small[m
+[1m[34m~                                                                                                                                                                                                    [50;1H~                                                                                                                                                                                                    [51;1H~                                                                                                                                                                                                    [m[52;180H1,1[11CAll"hdpsetup.sh" 48L, 2371C[1;1H[?12l[?25h[?25l[52;180H2[2;1H[?12l[?25h[?25l[52;180H3[3;1H[?12l[?25h[?25l[52;180H4[4;1H[?12l[?25h[?25l[52;180H5[5;1H[?12l[?25h[?25l[52;180H6[6;1H[?12l[?25h[?25l[52;180H7,0-1[7;1H[?12l[?25h[?25l[52;180H8,1  [8;1H[?12l[?25h[?25l[52;180H9[9;1H[?12l[?25h[?25l[52;180H10,0-1[10;1H[?12l[?25h[?25l[52;181H1,1  [11;1H[?12l[?25h[?25l[52;181H2[12;1H[?12l[?25h[?25l[52;181H3[13;1H[?12l[?25h[?25l[52;181H4,0-1[14;1H[?12l[?25h[?25l[52;181H5,1  [15;1H[?12l[?25h[?25l[52;181H6[16;1H[?12l[?25h[?25l[52;181H7,0-1[17;1H[?12l[?25h[?25l[52;181H8,1  [18;1H[?12l[?25h[?25l[52;181H9[19;1H[?12l[?25h[?25l[52;180H20[20;1H[?12l[?25h[?25l[52;181H1[21;1H[?12l[?25h[?25l[52;181H2,0-1[22;1H[?12l[?25h[?25l[52;181H3,1  [23;1H[?12l[?25h[?25l[52;181H4[24;1H[?12l[?25h[?25l[52;181H5[25;1H[?12l[?25h[?25l[52;181H6[26;1H[?12l[?25h[?25l[52;181H7[27;1H[?12l[?25h[?25l[52;181H8[28;1H[?12l[?25h[?25l[52;181H9[29;1H[?12l[?25h[?25l[52;180H30,0-1[30;1H[?12l[?25h[?25l[52;181H1,1  [31;1H[?12l[?25h[?25l[52;181H2[32;1H[?12l[?25h[?25l[52;181H3[33;1H[?12l[?25h[?25l[52;181H4[34;1H[?12l[?25h[?25l[52;181H5[35;1H[?12l[?25h[?25l[52;181H6[36;1H[?12l[?25h[?25l[52;181H7[37;1H[?12l[?25h[?25l[52;181H8[38;1H[?12l[?25h[?25l[52;181H9[39;1H[?12l[?25h[?25l[52;180H40,0-1[40;1H[?12l[?25h[?25l[52;181H1,1  [41;1H[?12l[?25h[?25l[52;181H2[42;1H[?12l[?25h[?25l[52;181H3[43;1H[?12l[?25h[?25l[52;181H4[44;1H[?12l[?25h[?25l[52;181H5[45;1H[?12l[?25h[?25l[52;181H6[46;1H[?12l[?25h[?25l[52;181H7[47;1H[?12l[?25h[?25l[52;181H8[48;1H[?12l[?25h[?25l[52;1H[1m-- INSERT --[m[52;13H[K[52;180H49,1[10CAll[49;1H[K[49;1H[?12l[?25h[?25l[50;1H[K[52;180H50[50;1H[?12l[?25h[?25l[1;51r[1;1H[3M[1;52r[47;1H[34m#This script will be generated and it will be used to mount data drives in each node in the cluster[m
+[36mmntscript[m=[33m"[m[31mmountdrive.sh[m[33m"[m[48;26H[K[49;1H[34m#This file will generate hosts file that can be appended to /etc/hosts on each node.[m
+[36mhostsfile[m=[33m"[m[31mhosts.txt[m[33m"[m[52;180H[K[52;180H54,1[10CBot[51;1H[?12l[?25h[52;1H[K[51;1H[?25l[52;180H54,0-1[8CBot[51;1H[?12l[?25h[?25l[52;181H3,1  [50;1H[?12l[?25h[?25l[52;181H2[49;1H[?12l[?25h[?25l[52;181H1[48;1H[?12l[?25h[?25l[52;181H0[47;1H[?12l[?25h[?25l[52;183H99[47;99H[?12l[?25h[?25l[52;1H[1m-- INSERT --[m[52;180H[K[52;180H51,1[10C75%[52;1H[K[1;51r[1;1H[2M[1;52r[46;1H[K[47;7H[34mscript will be generated and it will be used to mount data drives in each node in the cluster[m
+[36mmntscript[m[2C[31mmountdrive.sh[m[33m"[m
+[34m#This file will generate hosts file that can be appended to /etc/hosts on each node.[m
+[36mhostsfile[m=[33m"[m[31mhosts.txt[m[33m"[m[52;180H56,0-1[8C55%[51;1H[?12l[?25h[?25l[52;181H5,1  [50;1H[?12l[?25h[?25l[52;181H4[49;1H[?12l[?25h[?25l[52;181H3[48;1H[?12l[?25h[?25l[52;181H2[47;1H[?12l[?25h[?25l[52;183H99[47;99H[?12l[?25h[?25l[52;181H1,0-1[46;1H[?12l[?25h[?25l[52;181H0,99 [45;99H[?12l[?25h[?25l[45;51r[51;1H
+[1;52r[51;1H[36mmntscript[m=[33m"[m[31mmountdrive.sh[m[33m"[m[52;180H[K[52;180H50,0-1[8C62%[45;1H[?12l[?25h[?25l[45;51r[51;1H
+[1;52r[51;1H[34m#This file will generate hosts file that can be appended to /etc/hosts on each node.[m[52;180H[K[52;180H50,1[10C71%[45;1H[?12l[?25h[?25l[52;183H2[45;2H[?12l[?25h[?25l[52;183H3[45;3H[?12l[?25h[?25l[52;183H4[45;4H[?12l[?25h[?25l[52;183H5[45;5H[?12l[?25h[?25l[52;183H6[45;6H[?12l[?25h[?25l[52;183H7[45;7H[?12l[?25h[?25l[52;183H8[45;8H[?12l[?25h[?25l[52;183H9[45;9H[?12l[?25h[?25l[52;183H10[45;10H[?12l[?25h[?25l[52;184H1[45;11H[?12l[?25h[?25l[52;184H2[45;12H[?12l[?25h[?25l[52;184H3[45;13H[?12l[?25h[?25l[52;184H4[45;14H[?12l[?25h[?25l[52;184H5[45;15H[?12l[?25h[?25l[52;184H6[45;16H[?12l[?25h[?25l[52;184H7[45;17H[?12l[?25h[?25l[52;184H8[45;18H[?12l[?25h[?25l[52;184H9[45;19H[?12l[?25h[?25l[52;183H20[45;20H[?12l[?25h[?25l[52;184H1[45;21H[?12l[?25h[?25l[52;184H2[45;22H[?12l[?25h[?25l[52;184H3[45;23H[?12l[?25h[?25l[52;184H4[45;24H[?12l[?25h[?25l[52;184H5[45;25H[?12l[?25h[?25l[52;184H6[45;26H[?12l[?25h[?25l[52;184H7[45;27H[?12l[?25h[?25l[52;184H8[45;28H[?12l[?25h[?25l[52;184H9[45;29H[?12l[?25h[?25l[52;183H30[45;30H[?12l[?25h[?25l[52;184H1[45;31H[?12l[?25h[?25l[52;184H2[45;32H[?12l[?25h[?25l[52;184H3[45;33H[?12l[?25h[?25l[52;184H4[45;34H[?12l[?25h[?25l[52;184H5[45;35H[?12l[?25h[?25l[52;184H6[45;36H[?12l[?25h[?25l[52;184H7[45;37H[?12l[?25h[?25l[52;184H8[45;38H[?12l[?25h[?25l[52;184H9[45;39H[?12l[?25h[?25l[52;183H40[45;40H[?12l[?25h[?25l[52;184H1[45;41H[?12l[?25h[?25l[52;184H2[45;42H[?12l[?25h[?25l[52;184H3[45;43H[?12l[?25h[?25l[52;184H4[45;44H[?12l[?25h[?25l[52;184H5[45;45H[?12l[?25h[?25l[52;184H6[45;46H[?12l[?25h[?25l[52;184H7[45;47H[?12l[?25h[?25l[52;184H8[45;48H[?12l[?25h[?25l[52;184H9[45;49H[?12l[?25h[?25l[52;183H50[45;50H[?12l[?25h[?25l[52;184H1[45;51H[?12l[?25h[?25l[52;184H2[45;52H[?12l[?25h[?25l[52;184H3[45;53H[?12l[?25h[?25l[52;184H4[45;54H[?12l[?25h[?25l[52;184H5[45;55H[?12l[?25h[?25l[52;184H6[45;56H[?12l[?25h[?25l[52;184H7[45;57H[?12l[?25h[?25l[52;184H8[45;58H[?12l[?25h[?25l[52;184H9[45;59H[?12l[?25h[?25l[52;183H60[45;60H[?12l[?25h[?25l[52;184H1[45;61H[?12l[?25h[?25l[52;184H2[45;62H[?12l[?25h[?25l[52;184H3[45;63H[?12l[?25h[?25l[52;184H4[45;64H[?12l[?25h[?25l[52;184H5[45;65H[?12l[?25h[?25l[52;184H6[45;66H[?12l[?25h[?25l[52;184H7[45;67H[?12l[?25h[?25l[52;184H8[45;68H[?12l[?25h[?25l[52;184H9[45;69H[?12l[?25h[?25l[52;183H70[45;70H[?12l[?25h[?25l[52;184H1[45;71H[?12l[?25h[?25l[52;184H2[45;72H[?12l[?25h[?25l[52;184H3[45;73H[?12l[?25h[?25l[52;184H4[45;74H[?12l[?25h[?25l[52;184H5[45;75H[?12l[?25h[?25l[52;184H6[45;76H[?12l[?25h[?25l[52;184H7[45;77H[?12l[?25h[?25l[52;184H8[45;78H[?12l[?25h[?25l[52;184H9[45;79H[?12l[?25h[?25l[52;183H80[45;80H[?12l[?25h[?25l[52;184H1[45;81H[?12l[?25h[?25l[52;184H2[45;82H[?12l[?25h[?25l[52;184H3[45;83H[?12l[?25h[?25l[52;184H4[45;84H[?12l[?25h[?25l[52;184H5[45;85H[?12l[?25h[?25l[52;184H6[45;86H[?12l[?25h[?25l[52;184H7[45;87H[?12l[?25h[?25l[52;184H8[45;88H[?12l[?25h[?25l[52;184H9[45;89H[?12l[?25h[?25l[52;183H90[45;90H[?12l[?25h[?25l[52;184H1[45;91H[?12l[?25h[?25l[52;184H2[45;92H[?12l[?25h[?25l[52;184H3[45;93H[?12l[?25h[?25l[52;184H4[45;94H[?12l[?25h[?25l[52;184H5[45;95H[?12l[?25h[?25l[52;184H6[45;96H[?12l[?25h[?25l[52;184H7[45;97H[?12l[?25h[?25l[52;184H8[45;98H[?12l[?25h[?25l[52;184H9[45;99H[?12l[?25h[?25l[52;1H[1m-- INSERT --[m[52;180H[K[52;180H50,100[8C71%[45;100H[?12l[?25h[?25l[34m.[m[52;185H1[45;101H[?12l[?25h[?25l[34m [m[52;185H2[45;102H[?12l[?25h[?25l[34mI[m[52;185H3[45;103H[?12l[?25h[?25l[34mt[m[52;185H4[45;104H[?12l[?25h[?25l[34m [m[52;185H5[45;105H[?12l[?25h[?25l[34mw[m[52;185H6[45;106H[?12l[?25h[?25l[34mi[m[52;185H7[45;107H[?12l[?25h[?25l[34ml[m[52;185H8[45;108H[?12l[?25h[?25l[34ml[m[52;185H9[45;109H[?12l[?25h[?25l[34m [m[52;184H10[45;110H[?12l[?25h[?25l[34ma[m[52;185H1[45;111H[?12l[?25h[?25l[34ml[m[52;185H2[45;112H[?12l[?25h[?25l[34ms[m[52;185H3[45;113H[?12l[?25h[?25l[34mo[m[52;185H4[45;114H[?12l[?25h[?25l[34m [m[52;185H5[45;115H[?12l[?25h[?25l[34mc[m[52;185H6[45;116H[?12l[?25h[?25l[34mo[m[52;185H7[45;117H[?12l[?25h[?25l[34mp[m[52;185H8[45;118H[?12l[?25h[?25l[34my[m[52;185H9[45;119H[?12l[?25h[?25l[34m [m[52;184H20[45;120H[?12l[?25h[?25l[34mh[m[52;185H1[45;121H[?12l[?25h[?25l[34mo[m[52;185H2[45;122H[?12l[?25h[?25l[34ms[m[52;185H3[45;123H[?12l[?25h[?25l[34mt[m[52;185H4[45;124H[?12l[?25h[?25l[34m [m[52;185H5[45;125H[?12l[?25h[?25l[45;124H[K[52;185H4[45;124H[?12l[?25h[?25l[34ms[m[52;185H5[45;125H[?12l[?25h[?25l[34m [m[52;185H6[45;126H[?12l[?25h[?25l[45;125H[K[52;185H5[45;125H[?12l[?25h[?25l[45;124H[K[52;185H4[45;124H[?12l[?25h[?25l[45;123H[K[52;185H3[45;123H[?12l[?25h[?25l[45;122H[K[52;185H2[45;122H[?12l[?25h[?25l[45;121H[K[52;185H1[45;121H[?12l[?25h[?25l[45;120H[K[52;185H0[45;120H[?12l[?25h[?25l[34m/[m[52;185H1[45;121H[?12l[?25h[?25l[34me[m[52;185H2[45;122H[?12l[?25h[?25l[34mt[m[52;185H3[45;123H[?12l[?25h[?25l[34mc[m[52;185H4[45;124H[?12l[?25h[?25l[34m/[m[52;185H5[45;125H[?12l[?25h[?25l[34mh[m[52;185H6[45;126H[?12l[?25h[?25l[34mo[m[52;185H7[45;127H[?12l[?25h[?25l[34ms[m[52;185H8[45;128H[?12l[?25h[?25l[34mt[m[52;185H9[45;129H[?12l[?25h[?25l[34ms[m[52;184H30[45;130H[?12l[?25h[?25l[34m [m[52;185H1[45;131H[?12l[?25h[?25l[34mf[m[52;185H2[45;132H[?12l[?25h[?25l[34mi[m[52;185H3[45;133H[?12l[?25h[?25l[34ml[m[52;185H4[45;134H[?12l[?25h[?25l[34me[m[52;185H5[45;135H[?12l[?25h[?25l[34m [m[52;185H6[45;136H[?12l[?25h[?25l[34mt[m[52;185H7[45;137H[?12l[?25h[?25l[34mo[m[52;185H8[45;138H[?12l[?25h[?25l[34me[m[52;185H9[45;139H[?12l[?25h[?25l[34m [m[52;184H40[45;140H[?12l[?25h[?25l[34ma[m[52;185H1[45;141H[?12l[?25h[?25l[34mc[m[52;185H2[45;142H[?12l[?25h[?25l[34mh[m[52;185H3[45;143H[?12l[?25h[?25l[34m [m[52;185H4[45;144H[?12l[?25h[?25l[45;143H[K[52;185H3[45;143H[?12l[?25h[?25l[45;142H[K[52;185H2[45;142H[?12l[?25h[?25l[45;141H[K[52;185H1[45;141H[?12l[?25h[?25l[45;140H[K[52;185H0[45;140H[?12l[?25h[?25l[45;139H[K[52;184H39[45;139H[?12l[?25h[?25l[45;138H[K[52;185H8[45;138H[?12l[?25h[?25l[34m [m[52;185H9[45;139H[?12l[?25h[?25l[34me[m[52;184H40[45;140H[?12l[?25h[?25l[34ma[m[52;185H1[45;141H[?12l[?25h[?25l[34mc[m[52;185H2[45;142H[?12l[?25h[?25l[34mh[m[52;185H3[45;143H[?12l[?25h[?25l[34m [m[52;185H4[45;144H[?12l[?25h[?25l[34mn[m[52;185H5[45;145H[?12l[?25h[?25l[34mo[m[52;185H6[45;146H[?12l[?25h[?25l[34md[m[52;185H7[45;147H[?12l[?25h[?25l[34me[m[52;185H8[45;148H[?12l[?25h[52;1H[K[45;147H[?25l[52;180H50,147[8C71%[45;147H[?12l[?25h[?25l[52;181H1,25 [46;25H[?12l[?25h[?25l[52;181H2,84[47;84H[?12l[?25h[?25l[52;181H3,21[48;21H[?12l[?25h[?25l[52;181H4,0-1[49;1H[?12l[?25h[?25l[52;181H5,25 [50;25H[?12l[?25h[?25l[52;181H6,84[51;84H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[36mhostsfile[m=[33m"[m[31mhosts.txt[m[33m"[m[52;180H[K[52;180H57,21[9C85%[51;21H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[52;180H[K[52;180H58,0-1[8CBot[51;1H[?12l[?25h[?25l[52;180H[K[52;1H:[?12l[?25hx[?25l[?12l[?25h[?25l[52;1H[K[52;180H58,0-1[8CBot[51;1H[?12l[?25h[?25l[52;181H7,21 [50;21H[?12l[?25h[?25l[52;181H6[49;21H[?12l[?25h[?25l[52;181H5[48;21H[?12l[?25h[?25l[52;181H4,0-1[47;1H[?12l[?25h[?25l[52;181H3,21 [46;21H[?12l[?25h[?25l[52;181H2[45;21H[?12l[?25h[?25l[52;181H1[44;21H[?12l[?25h[?25l[52;181H0[43;21H[?12l[?25h[?25l[52;180H49,0-1[42;1H[?12l[?25h[?25l[52;180H50,21 [43;21H[?12l[?25h[?25l[52;181H1[44;21H[?12l[?25h[?25l[52;181H2[45;21H[?12l[?25h[?25l[52;181H3[46;21H[?12l[?25h[?25l[52;181H4,0-1[47;1H[?12l[?25h[?25l[52;181H5,21 [48;21H[?12l[?25h[?25l[48;51r[51;1H
+[1;52r[51;1H[1m[34m~                                                                                                                                                                                                    [m[52;180H[K[52;180H55,1[10CBot[48;1H[?12l[?25h[?25l[48;51r[51;1H
+[1;52r[51;1H[1m[34m~                                                                                                                                                                                                    [m[52;180H[K[52;180H55,1[10CBot[48;1H[?12l[?25h[?25l[48;51r[51;1H
+[1;52r[51;1H[1m[34m~                                                                                                                                                                                                    [m[52;180H[K[52;180H55,0-1[8CBot[48;1H[?12l[?25h[?25l[1m[34m~                                                                                                                                                                                                    [m[52;181H4[47;1H[?12l[?25h[?25l[1m[34m~                                                                                                                                                                                                    [m[52;181H3,1  [46;1H[?12l[?25h[?25l[52;180H[K[52;1H:[?12l[?25hx[?25l[?12l[?25h[?25l"hdpsetup.sh" 53L, 2653C written
+[?1l>[?12l[?25h[?1049l]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ vi createmgmtnode.sh 
+[?1049h[?1h=[2;1H▽[6n[1;1H  [1;1H[1;52r[?12;25h[?12l[?25h[27m[m[H[2J[?25l[52;1H"createmgmtnode.sh" 132L, 5564C[>c[1;1H[34m#!/bin/bash
+#sets up the management node and master node [m
+
+[33msource[m ./hdpsetup.sh
+
+[34m#This script will be generated and it will be used to mount data drives in each node in the cluster[m
+[36mmntscript[m=[33m"[m[31mmountdrive.sh[m[33m"[m
+[34m#This file will generate hosts file that can be appended to /etc/hosts on each node.[m
+[36mhostsfile[m=[33m"[m[31mhosts.txt[m[33m"
+
+if [[m [33m-e[m [35m$mntscript[m [33m][m; [33mthen[12;9Hrm[m [35m$mntscript[m
+[33mfi
+
+if [[m [33m-e[m [35m$hostfile[m [33m][m; [33mthen[16;9Hrm[m [35m$hostsfile[m
+[33mfi[m
+
+[34m#This script requires jq json processor
+#check to see if jq is available and download it if necessary[m
+[36mresult[m=[35m$(which jq)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[23;9Hwget http://stedolan.github.io/jq/download/linux64/jq[24;9Hsudo [33mchmod[m [35m+x[m jq[25;9Hsudo [33mmv[m jq /usr/[33mlocal[m/bin
+[33melse[27;9Hprintf[m [33m"[m[31mjq json processor was found[m[35m\n[m[33m"
+fi[m
+
+[35m(which jq)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mjq json processor is not available[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+
+[34m##############################################################
+## Create affinity group if it does not exist
+##############################################################[m
+
+[33mprintf[m [33m"[m[31maffinty group name is %s, affinity group location is %s[m[35m\n[m[33m"[m [33m"[m[35m$affinityGroupName[m[33m"[m [33m"[m[35m$affinityGroupLocation[m[33m"[m
+
+[36mresult[m=[35m$(azure account affinity-group show [m[33m"[m[35m$affinityGroupName[m[33m"[m[35m --json | jq [m[33m'[m[31m.Name[m[33m'[m[35m)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[40;9H[35m([mazure account affinity-group create [35m--location[m [33m"[m[35m$affinityGroupLocation[m[33m"[m [33m"[m[35m$affinityGroupName[m[33m"[m[35m)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mFailed to create affinity group [m[35m$affinityGroupName[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+[33melse[42;9Hecho[m[31m [m[33m"[m[31maffinity group [m[35m$affinityGroupName[m[31m exists[m[33m"
+fi[m
+
+[34m#show the affinity group details[m
+[33mprintf[m [33m"[m[31m######################################## Affinity Group Details #######################################[m[35m\n[m[33m"[m
+azure account affinity-group show [33m"[m[35m$affinityGroupName[m[33m"[m [35m--json[m
+
+[34m##############################################################
+## Create storage account if it does not exist
+##############################################################[m[52;180H1,1[11CTop[1;1H[?12l[?25h[27m[m[H[2J[?25l[1;1H[34m#!/bin/bash
+#sets up the management node and master node [m
+
+[33msource[m ./hdpsetup.sh
+
+[34m#This script will be generated and it will be used to mount data drives in each node in the cluster[m
+[36mmntscript[m=[33m"[m[31mmountdrive.sh[m[33m"[m
+[34m#This file will generate hosts file that can be appended to /etc/hosts on each node.[m
+[36mhostsfile[m=[33m"[m[31mhosts.txt[m[33m"
+
+if [[m [33m-e[m [35m$mntscript[m [33m][m; [33mthen[12;9Hrm[m [35m$mntscript[m
+[33mfi
+
+if [[m [33m-e[m [35m$hostfile[m [33m][m; [33mthen[16;9Hrm[m [35m$hostsfile[m
+[33mfi[m
+
+[34m#This script requires jq json processor
+#check to see if jq is available and download it if necessary[m
+[36mresult[m=[35m$(which jq)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[23;9Hwget http://stedolan.github.io/jq/download/linux64/jq[24;9Hsudo [33mchmod[m [35m+x[m jq[25;9Hsudo [33mmv[m jq /usr/[33mlocal[m/bin
+[33melse[27;9Hprintf[m [33m"[m[31mjq json processor was found[m[35m\n[m[33m"
+fi[m
+
+[35m(which jq)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mjq json processor is not available[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+
+[34m##############################################################
+## Create affinity group if it does not exist
+##############################################################[m
+
+[33mprintf[m [33m"[m[31maffinty group name is %s, affinity group location is %s[m[35m\n[m[33m"[m [33m"[m[35m$affinityGroupName[m[33m"[m [33m"[m[35m$affinityGroupLocation[m[33m"[m
+
+[36mresult[m=[35m$(azure account affinity-group show [m[33m"[m[35m$affinityGroupName[m[33m"[m[35m --json | jq [m[33m'[m[31m.Name[m[33m'[m[35m)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[40;9H[35m([mazure account affinity-group create [35m--location[m [33m"[m[35m$affinityGroupLocation[m[33m"[m [33m"[m[35m$affinityGroupName[m[33m"[m[35m)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mFailed to create affinity group [m[35m$affinityGroupName[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+[33melse[42;9Hecho[m[31m [m[33m"[m[31maffinity group [m[35m$affinityGroupName[m[31m exists[m[33m"
+fi[m
+
+[34m#show the affinity group details[m
+[33mprintf[m [33m"[m[31m######################################## Affinity Group Details #######################################[m[35m\n[m[33m"[m
+azure account affinity-group show [33m"[m[35m$affinityGroupName[m[33m"[m [35m--json[m
+
+[34m##############################################################
+## Create storage account if it does not exist
+##############################################################[m[52;180H1,1[11CTop"createmgmtnode.sh" 132L, 5564C[1;1H[?12l[?25h[?25l[52;180H2[2;1H[?12l[?25h[?25l[52;180H3,0-1[3;1H[?12l[?25h[?25l[52;180H4,1  [4;1H[?12l[?25h[?25l[52;180H5,0-1[5;1H[?12l[?25h[?25l[52;180H6,1  [6;1H[?12l[?25h[?25l[52;180H7[7;1H[?12l[?25h[?25l[52;180H8[8;1H[?12l[?25h[?25l[52;180H9[9;1H[?12l[?25h[?25l[52;180H8[8;1H[?12l[?25h[?25l[52;180H7[7;1H[?12l[?25h[?25l[52;180H6[6;1H[?12l[?25h[?25l[6;51r[51;1H
+[1;52r[52;1H[K[52;180H6,1[11CTop[6;1H[?12l[?25h[?25l[6;51r[51;1H
+[1;52r[51;1H[33mprintf[m [33m"[m[31mstorage account name is %s[m[35m\n[m[33m"[m [33m"[m[35m$storageAccount[m[33m"[m[52;180H[K[52;180H6,1[11CTop[6;1H[?12l[?25h[?25l[6;51r[51;1H
+[1;52r[52;180H[K[52;180H6,1[11CTop[6;1H[?12l[?25h[?25l[6;51r[51;1H
+[1;52r[51;1H[36mresult[m=[35m$(azure storage account show [m[33m"[m[35m$storageAccount[m[33m"[m[35m --json | jq [m[33m'[m[31m.ServiceName[m[33m'[m[35m)[m[52;180H[K[52;180H6,0-1[9CTop[6;1H[?12l[?25h[?25l[6;51r[51;1H
+[1;52r[51;1H[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[52;180H[K[52;180H6,1[11CTop[6;1H[?12l[?25h[?25l[52;180H[K[52;1H:[?12l[?25hx[?25l[?12l[?25h[?25l"createmgmtnode.sh" 127L, 5330C written
+[?1l>[?12l[?25h[?1049l]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ vi creatc[Keclusternodes.sh 
+[?1049h[?1h=[2;1H▽[6n[1;1H  [1;1H[1;52r[?12;25h[?12l[?25h[27m[m[H[2J[?25l[52;1H"createclusternodes.sh" 133L, 5606C[>c[1;1H[34m#!/bin/bash
+#Creates the nodes in the cluster from a custom image
+#Expectation is that affinity group, storage account, virtual network have already been setup[m
+
+[33msource[m ./hdpsetup.sh
+
+[34m#This script will be generated and it will be used to mount data drives in each node in the cluster[m
+[36mmntscript[m=[33m"[m[31mmountdrive.sh[m[33m"[m
+[34m#This file will generate hosts file that can be appended to /etc/hosts on each node.[m
+[36mhostsfile[m=[33m"[m[31mhosts.txt[m[33m"[m
+
+[34m#This script requires jq json processor
+#check to see if jq is available and download it if necessary[m
+[36mresult[m=[35m$(which jq)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[16;9Hwget http://stedolan.github.io/jq/download/linux64/jq[17;9Hsudo [33mchmod[m [35m+x[m jq[18;9Hsudo [33mmv[m jq /usr/[33mlocal[m/bin
+[33melse[20;9Hprintf[m [33m"[m[31mjq json processor was found[m[35m\n[m[33m"
+fi[m
+
+[35m(which jq)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mjq json processor is not available[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+
+[34m##############################################################
+## Create affinity group if it does not exist
+##############################################################[m
+
+[33mprintf[m [33m"[m[31maffinty group name is %s, affinity group location is %s[m[35m\n[m[33m"[m [33m"[m[35m$affinityGroupName[m[33m"[m [33m"[m[35m$affinityGroupLocation[m[33m"[m
+
+[36mresult[m=[35m$(azure account affinity-group show [m[33m"[m[35m$affinityGroupName[m[33m"[m[35m --json | jq [m[33m'[m[31m.Name[m[33m'[m[35m)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[33;9H[35m([mazure account affinity-group create [35m--location[m [33m"[m[35m$affinityGroupLocation[m[33m"[m [33m"[m[35m$affinityGroupName[m[33m"[m[35m)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mFailed to create affinity group [m[35m$affinityGroupName[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+[33melse[35;9Hecho[m[31m [m[33m"[m[31maffinity group [m[35m$affinityGroupName[m[31m exists[m[33m"
+fi[m
+
+[34m#show the affinity group details[m
+[33mprintf[m [33m"[m[31m######################################## Affinity Group Details #######################################[m[35m\n[m[33m"[m
+azure account affinity-group show [33m"[m[35m$affinityGroupName[m[33m"[m [35m--json[m
+
+[34m##############################################################
+## Create storage account if it does not exist
+##############################################################[m
+
+[33mprintf[m [33m"[m[31mstorage account name is %s[m[35m\n[m[33m"[m [33m"[m[35m$storageAccount[m[33m"[m
+
+[36mresult[m=[35m$(azure storage account show [m[33m"[m[35m$storageAccount[m[33m"[m[35m --json | jq [m[33m'[m[31m.ServiceName[m[33m'[m[35m)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[50;9H[35m([mazure storage account create [35m--affinity-group[m [33m"[m[35m$affinityGroupName[m[33m"[m [35m$storageAccount)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mFailed to create storage account [m[35m$storageAccount[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+[33melse[m[52;180H1,1[11CTop[1;1H[?12l[?25h[27m[m[H[2J[?25l[1;1H[34m#!/bin/bash
+#Creates the nodes in the cluster from a custom image
+#Expectation is that affinity group, storage account, virtual network have already been setup[m
+
+[33msource[m ./hdpsetup.sh
+
+[34m#This script will be generated and it will be used to mount data drives in each node in the cluster[m
+[36mmntscript[m=[33m"[m[31mmountdrive.sh[m[33m"[m
+[34m#This file will generate hosts file that can be appended to /etc/hosts on each node.[m
+[36mhostsfile[m=[33m"[m[31mhosts.txt[m[33m"[m
+
+[34m#This script requires jq json processor
+#check to see if jq is available and download it if necessary[m
+[36mresult[m=[35m$(which jq)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[16;9Hwget http://stedolan.github.io/jq/download/linux64/jq[17;9Hsudo [33mchmod[m [35m+x[m jq[18;9Hsudo [33mmv[m jq /usr/[33mlocal[m/bin
+[33melse[20;9Hprintf[m [33m"[m[31mjq json processor was found[m[35m\n[m[33m"
+fi[m
+
+[35m(which jq)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mjq json processor is not available[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+
+[34m##############################################################
+## Create affinity group if it does not exist
+##############################################################[m
+
+[33mprintf[m [33m"[m[31maffinty group name is %s, affinity group location is %s[m[35m\n[m[33m"[m [33m"[m[35m$affinityGroupName[m[33m"[m [33m"[m[35m$affinityGroupLocation[m[33m"[m
+
+[36mresult[m=[35m$(azure account affinity-group show [m[33m"[m[35m$affinityGroupName[m[33m"[m[35m --json | jq [m[33m'[m[31m.Name[m[33m'[m[35m)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[33;9H[35m([mazure account affinity-group create [35m--location[m [33m"[m[35m$affinityGroupLocation[m[33m"[m [33m"[m[35m$affinityGroupName[m[33m"[m[35m)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mFailed to create affinity group [m[35m$affinityGroupName[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+[33melse[35;9Hecho[m[31m [m[33m"[m[31maffinity group [m[35m$affinityGroupName[m[31m exists[m[33m"
+fi[m
+
+[34m#show the affinity group details[m
+[33mprintf[m [33m"[m[31m######################################## Affinity Group Details #######################################[m[35m\n[m[33m"[m
+azure account affinity-group show [33m"[m[35m$affinityGroupName[m[33m"[m [35m--json[m
+
+[34m##############################################################
+## Create storage account if it does not exist
+##############################################################[m
+
+[33mprintf[m [33m"[m[31mstorage account name is %s[m[35m\n[m[33m"[m [33m"[m[35m$storageAccount[m[33m"[m
+
+[36mresult[m=[35m$(azure storage account show [m[33m"[m[35m$storageAccount[m[33m"[m[35m --json | jq [m[33m'[m[31m.ServiceName[m[33m'[m[35m)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[50;9H[35m([mazure storage account create [35m--affinity-group[m [33m"[m[35m$affinityGroupName[m[33m"[m [35m$storageAccount)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mFailed to create storage account [m[35m$storageAccount[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+[33melse[m[52;180H1,1[11CTop"createclusternodes.sh" 133L, 5606C[1;1H[?12l[?25h[?25l[52;180H2[2;1H[?12l[?25h[?25l[52;180H3[3;1H[?12l[?25h[?25l[52;180H4,0-1[4;1H[?12l[?25h[?25l[52;180H5,1  [5;1H[?12l[?25h[?25l[52;180H6,0-1[6;1H[?12l[?25h[?25l[52;180H7,1  [7;1H[?12l[?25h[?25l[7;51r[51;1H
+[1;52r[51;9H[33mecho[m[31m [m[33m"[m[31mStorage account [m[35m$storageAccount[m[31m exists[m[33m"[m[52;1H[K[52;180H7,1[11CTop[7;1H[?12l[?25h[?25l[7;51r[51;1H
+[1;52r[51;1H[33mfi[m[52;180H[K[52;180H7,1[11CTop[7;1H[?12l[?25h[?25l[7;51r[51;1H
+[1;52r[52;180H[K[52;180H7,1[11CTop[7;1H[?12l[?25h[?25l[7;51r[51;1H
+[1;52r[51;1H[34m#show the storage account details[m[52;180H[K[52;180H7,0-1[9CTop[7;1H[?12l[?25h[?25l[7;51r[51;1H
+[1;52r[51;1H[33mprintf[m [33m"[m[31m######################################## Storage Account Details #######################################[m[35m\n[m[33m"[m[52;180H[K[52;180H7,1[11CTop[7;1H[?12l[?25h[?25l[52;180H8[8;1H[?12l[?25h[?25l[52;180H9[9;1H[?12l[?25h[?25l[52;180H10,1[10;1H[?12l[?25h[?25l[52;181H1,1-8[11;8H[?12l[?25h[?25l[52;181H2[12;8H[?12l[?25h[?25l[52;181H3[13;8H[?12l[?25h[?25l[52;181H4,1  [14;1H[?12l[?25h[?25l[52;181H5,1-8[15;8H[?12l[?25h[?25l[52;181H6,1  [16;1H[?12l[?25h[?25l[52;181H7,0-1[17;1H[?12l[?25h[?25l
+[35m[46m([8C)[m[52;181H8,1  [18;1H[?12l[?25h[?25l[35m([8C)[m[52;181H9,0-1[19;1H[?12l[?25h[?25l[52;180H20,1  [20;1H[?12l[?25h[?25l[52;181H1[21;1H[?12l[?25h[?25l[52;181H2[22;1H[?12l[?25h[?25l[52;181H3,0-1[23;1H[?12l[?25h[?25l[52;181H4,1  [24;1H[?12l[?25h[?25l[52;181H5,0-1[25;1H[?12l[?25h[?25l[52;181H6,1  [26;1H[?12l[?25h[?25l[52;181H7[27;1H[?12l[?25h[?25l[52;181H8,1-8[28;8H[?12l[?25h[?25l[52;181H9,1  [29;1H[?12l[?25h[?25l[52;180H30,1-8[30;8H[?12l[?25h[?25l[52;181H1,1  [31;1H[?12l[?25h[?25l[52;181H2,0-1[32;1H[?12l[?25h[?25l[52;181H3,1  [33;1H[?12l[?25h[?25l[52;181H4[34;1H[?12l[?25h[?25l[52;181H5[35;1H[?12l[?25h[?25l[52;181H6,0-1[36;1H[?12l[?25h[?25l[52;181H7,1  [37;1H[?12l[?25h[?25l[52;181H8[38;1H[?12l[?25h[?25l[52;181H9[39;1H[?12l[?25h[?25l[52;180H40,0-1[40;1H[?12l[?25h[?25l[52;181H1,1  [41;1H[?12l[?25h[?25l[52;181H2,0-1[42;1H[?12l[?25h[?25l[52;181H3,1  [43;1H[?12l[?25h[?25l[52;181H4[44;1H[?12l[?25h[?25l[52;181H5,1-8[45;8H[?12l[?25h[?25l[52;181H6,1  [46;1H[?12l[?25h[?25l[52;181H7,1-8[47;8H[?12l[?25h[?25l[52;181H8,1  [48;1H[?12l[?25h[?25l[52;181H9,0-1[49;1H[?12l[?25h[?25l[52;180H50,1  [50;1H[?12l[?25h[?25l[52;181H1[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1Hazure storage account show [33m"[m[35m$storageAccount[m[33m"[m [35m--json[m[52;180H[K[52;180H52,1[11C1%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[52;180H[K[52;180H53,0-1[9C2%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[34m##############################################################[m[52;180H[K[52;180H54,1[11C3%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[34m## Create virtual network if it does not exist[m[52;180H[K[52;180H55,1[11C5%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[34m##############################################################[m[52;180H[K[52;180H56,1[11C6%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[52;180H[K[52;180H57,0-1[9C7%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[33mprintf[m [33m"[m[31mvirtual network is %s, subnet is %s[m[35m\n[m[33m"[m [33m"[m[35m$vnetName[m[33m"[m [33m"[m[35m$subnetName[m[33m"[m[52;180H[K[52;180H58,1[11C9%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[52;180H[K[52;180H59,0-1[8C10%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[36mresult[m=[35m$(azure network vnet show $vnetName --json | jq [m[33m'[m[31m.Name[m[33m'[m[35m)[m[52;180H[K[52;180H60,1[10C11%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[52;180H[K[52;180H61,1[10C12%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[33mprintf[m [33m"[m[31mNeed to create virtual network %s[m[35m\n[m[33m"[m [33m"[m[35m$vnetName[m[33m"[m[52;180H[K[52;180H62,1-8[8C14%[51;8H[?12l[?25h[?25l[1;51r[1;1H[2M[1;52r[50;9H[35m([mazure network vnet create [35m--vnet[m [35m$vnetName[m [35m--affinity-group[m [33m"[m[35m$affinityGroupName[m[33m"[m [35m--address-space[m [35m$vnetAddressSpace[m [35m--cidr[m [35m$vnetCidr[m [35m--subnet-name[m [35m$subnetName[m [35m--subnet-start-ip[m [35m$subnetAddree[51;1HssSpace[m [35m--subnet-cidr[m [35m$subnetCidr)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mFailed to create virtual network [m[35m$vnetName[m[33m";[m [33mexit[m [31m1[m[33m;[m[35m}[m[52;180H[K[52;180H63,1-8[8C16%[50;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[33melse[m[52;180H[K[52;180H64,1[10C17%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[33mprintf[m [33m"[m[31mVirtual network [m[35m$virtualNetworkName[m[31m exists[m[35m\n[m[33m"[m[52;180H[K[52;180H65,1-8[8C19%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[33mfi[m[52;180H[K[52;180H66,1[10C20%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[52;180H[K[52;180H67,0-1[8C21%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[34m#show the virtual network details[m[52;180H[K[52;180H68,1[10C23%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[33mprintf[m [33m"[m[31m######################################## Virtual Network Details #######################################[m[35m\n[m[33m"[m[52;180H[K[52;180H69,1[10C24%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1Hazure network vnet show [33m"[m[35m$vnetName[m[33m"[m [35m--json[m[52;180H[K[52;180H70,1[10C25%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[52;180H[K[52;180H71,0-1[8C26%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[34m#Loop to create nodes in the cluster[m[52;180H[K[52;180H72,1[10C28%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[36mloopIndex[m=[31m1[m[52;180H[K[52;180H73,1[10C29%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[33mwhile [[m [35m$loopIndex[m [33m-le[m [35m$nodeCount[m [33m]; do[m[52;180H[K[52;180H74,1[10C30%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[52;180H[K[52;180H75,0-1[8C32%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[52;180H[K[52;180H76,0-1[8C33%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[34m##############################################################[m[52;180H[K[52;180H77,1-8[8C34%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[34m## Create the management node if it does not exist[m[52;180H[K[52;180H78,1-8[8C35%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[34m##############################################################[m[52;180H[K[52;180H79,1-8[8C37%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[36mvmName[m=[35m$vmNamePrefix[m[33m"[m[35m$loopIndex[m[33m"[m[52;180H[K[52;180H80,1-8[8C38%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[36mcloudServiceName[m=[35m$cloudServicePrefix[m[33m"[m[35m$loopIndex[m[33m"[m[52;180H[K[52;180H81,1-8[8C39%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[36mdnsName[m=[35m$cloudServiceName[m[33m"[m[31m.cloudapp.net[m[33m"[m[52;180H[K[52;180H82,1-8[8C41%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[52;180H[K[52;180H83,0-1[8C42%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[34m#Check to see if the cloud servide already exists[m[52;180H[K[52;180H84,1-8[8C43%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[36mresult[m=[35m$(azure service show $cloudServiceName --json | jq [m[33m'[m[31m.ServiceName[m[33m'[m[35m)[m[52;180H[K[52;180H85,1-8[8C44%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[52;180H[K[52;180H86,1-8[8C46%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;17H[33mprintf[m [33m"[m[31mService does not exist. About to create cloud service:[m[35m$cloudServiceName[m[31m in affinity group:[m[35m$affinityGroupName\n[m[33m"[m[52;180H[K[52;180H87,1[10C47%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;17H[35m([mazure service create [35m--affinitygroup[m [33m"[m[35m${affinityGroupName}[m[33m"[m [35m--serviceName[m [35m$cloudServiceName)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mFailed to create Cloud Service [m[35m$cloudServiceName[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m[52;180H[K[52;180H88,1[10C48%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[33melse[m[52;180H[K[52;180H89,1-8[8C50%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;17H[33mprintf[m [33m"[m[31mCloud Service [m[35m$cloudServiceName[m[31m exists[m[35m\n[m[33m"[m[52;180H[K[52;180H90,1-8[8C51%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[33mfi[m[52;180H[K[52;180H91,1-8[8C52%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[52;180H[K[52;180H92,0-1[8C53%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[34m#show the cloud service details[m[52;180H[K[52;180H93,1-8[8C55%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[33mprintf[m [33m"[m[31m######################################## Cloud Service Details #######################################[m[35m\n[m[33m"[m[52;180H[K[52;180H94,1-8[8C56%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9Hazure service show [33m"[m[35m$cloudServiceName[m[33m"[m [35m--json[m[52;180H[K[52;180H95,1-8[8C57%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[52;180H[K[52;180H96,0-1[8C58%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[34m#Check to see if the VM already exists[m[52;180H[K[52;180H97,1-8[8C60%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[36mresult[m=[35m$(azure vm show $vmName --json | jq [m[33m'[m[31m.VMName[m[33m'[m[35m)[m[52;180H[K[52;180H98,1-8[8C61%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[52;180H[K[52;180H99,1-8[8C62%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[52;180H[K[52;180H100,0-1[7C64%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;17H[33mprintf[m [33m"[m[31mVirtual machine [m[35m$vnName[m[31m does not exist. Creating ...[m[35m\n[m[33m"[m[52;180H[K[52;180H101,1[9C65%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;17H[34m#create the vm and attach data disks[m[52;180H[K[52;180H102,1-8[7C66%[51;8H[?12l[?25h[?25l[1;51r[1;1H[2M[1;52r[50;9H[35m([m[7Cazure vm create [35m--vm-size[m [35m$nodeSize[m [35m--vm-name[m [35m$vmName[m [35m--ssh[m [31m22[m [35m--virtual-network-name[m [35m$vnetName[m [35m--subnet-names[m [35m$subnetName[m [35m$dnsName[m [35m$nodeImageName[m [35m$adminUserName[m [35m$adminPassword)[m ||  [51;1H[35m{[m [33mecho[m[31m [m[33m"[m[31mFailed to create vm [m[35m$vmName[m[33m";[m [33mexit[m [31m1[m[33m;[m[35m}[m[52;180H[K[52;180H103,1-8[7C68%[50;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[52;180H[K[52;180H104,0-1[7C69%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;17H[34m#add all the necessary data disks[m[52;180H[K[52;180H105,1-8[7C70%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;17H[36mindex[m=[31m0[m[52;180H[K[52;180H106,1-8[7C72%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;17H[33mwhile [[m [35m$index[m [33m-lt[m [35m$numOfDisks[m [33m]; do[m[52;180H[K[52;180H107,1-8[7C73%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;25Hazure vm disk attach-new [35m--verbose[m [35m$vmName[m [35m$diskSizeInGB[m[52;180H[K[52;180H108,1-8[7C74%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;25H[33mlet[m [36mindex[m=index+[31m1[m[52;180H[K[52;180H109,1-8[7C75%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;17H[33mdone[m[52;180H[K[52;180H110,1-8[7C77%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[52;180H[K[52;180H111,1-8[7C78%[51;8H[?12l[?25h[?25l[1;51r[1;1H[2M[1;52r[51;9H[33melse[m[52;180H[K[52;180H112,0-1[7C80%[50;1H[?12l[?25h[?25l[52;182H3,1-8[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;17H[33mprintf[m [33m"[m[31mVirtual machine [m[35m$vmName[m[31m exists[m[35m\n[m[33m"[m[52;180H[K[52;180H114,1-8[7C82%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[33mfi[m[52;180H[K[52;180H115,1-8[7C83%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[52;180H[K[52;180H116,0-1[7C84%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[33mecho[m[31m [m[33m"[m[31mssh [m[35m${adminUserName}[m[31m@[m[35m${vmName}[m[31m:/root/scripts/st.pl[m[33m"[m[31m [m[33m>>[m [35m$mntscript[m[52;180H[K[52;180H117,1-8[7C85%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[52;180H[K[52;180H118,0-1[7C87%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[52;180H[K[52;180H119,0-1[7C88%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[33mprintf[m [33m"[m[31m######################################## Virtual Machine Details #######################################[m[35m\n[m[33m"[m[52;180H[K[52;180H120,1-8[7C89%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[34m#display the details about the newly created VM[m[52;180H[K[52;180H121,1-8[7C91%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[36mipaddress[m=[35m$(azure vm show $vmName --json | jq [m[33m'[m[31m.IPAddress[m[33m'[m[35m)[m[52;180H[K[52;180H122,1-8[7C92%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[34m#remove the double quotes from the IP address[m[52;180H[K[52;180H123,1-8[7C93%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[33mecho[m[31m [m[33m"[m[35m$ipaddress[m[31m [m[35m$vmName[m[33m"[m[31m [m| [33msed[m [33m-e[m [33m'[m[31ms/\"//g[m[33m'[m [33m>>[m [35m$hostsfile[m[52;180H[K[52;180H124,1-8[7C94%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[52;180H[K[52;180H125,0-1[7C96%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[33mlet[m [36mloopIndex[m=loopIndex+[31m1[m[52;180H[K[52;180H126,1-8[7C97%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[33mdone[m[52;180H[K[52;180H127,1[9C98%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[33mchmod[m a+x [35m$mntscript[m[52;180H[K[52;180H128,1[9CBot[51;1H[?12l[?25h[?25l[52;182H7[50;1H[?12l[?25h[?25l[52;182H6,1-8[49;8H[?12l[?25h[?25l[52;182H5,0-1[48;1H[?12l[?25h[?25l[52;182H4,1-8[47;8H[?12l[?25h[?25l[52;182H3[46;8H[?12l[?25h[?25l[52;182H2[45;8H[?12l[?25h[?25l[52;182H1[44;8H[?12l[?25h[?25l[52;182H0[43;8H[?12l[?25h[?25l[52;181H19,0-1[42;1H[?12l[?25h[?25l[52;182H8[41;1H[?12l[?25h[?25l[52;182H7,1-8[40;8H[?12l[?25h[?25l[41;51r[41;1H[L[1;52r[41;9H[33mecho[m[31m [m[33m"[m[31mssh [m[35m${adminUserName}[m[31m@[m[35m${vmName}[m[31m:/root/scripts/st.pl[m[33m"[m[31m [m[33m>>[m [35m$mntscript[m[52;180H[K[52;180H118,2-9[7C98%[41;9H[?12l[?25h[?25l[52;184H3-10[41;10H[?12l[?25h[?25l[52;184H4-11[41;11H[?12l[?25h[?25l[52;184H5-12[41;12H[?12l[?25h[?25l[52;184H6-13[41;13H[?12l[?25h[?25l[52;184H7-14[41;14H[?12l[?25h[?25l[52;184H8-15[41;15H[?12l[?25h[?25l[52;184H9-16[41;16H[?12l[?25h[?25l[52;184H10-17[41;17H[?12l[?25h[?25l[52;185H1-18[41;18H[?12l[?25h[?25l[52;185H2-19[41;19H[?12l[?25h[?25l[1C[35m[46m{[13C}[m[52;185H3-20[41;20H[?12l[?25h[?25l[35m{[13C}[m[52;185H4-21[41;21H[?12l[?25h[?25l[52;185H5-22[41;22H[?12l[?25h[?25l[52;185H6-23[41;23H[?12l[?25h[?25l[52;185H7-24[41;24H[?12l[?25h[?25l[52;185H8-25[41;25H[?12l[?25h[?25l[52;185H9-26[41;26H[?12l[?25h[?25l[52;184H20-27[41;27H[?12l[?25h[?25l[52;185H1-28[41;28H[?12l[?25h[?25l[52;185H2-29[41;29H[?12l[?25h[?25l[52;185H3-30[41;30H[?12l[?25h[?25l[52;185H4-31[41;31H[?12l[?25h[?25l[52;185H3-30[41;30H[?12l[?25h[?25l[52;185H2-29[41;29H[?12l[?25h[?25l[52;185H1-28[41;28H[?12l[?25h[?25l[52;185H0-27[41;27H[?12l[?25h[?25l[52;184H19-26[41;26H[?12l[?25h[?25l[52;185H8-25[41;25H[?12l[?25h[?25l[52;185H7-24[41;24H[?12l[?25h[?25l[52;185H6-23[41;23H[?12l[?25h[?25l[52;185H5-22[41;22H[?12l[?25h[?25l[52;185H4-21[41;21H[?12l[?25h[?25l[35m[46m{[13C}[m[52;185H3-20[41;20H[?12l[?25h[?25l[35m{[13C}[m[52;185H2-19[41;19H[?12l[?25h[?25l[52;185H1-18[41;18H[?12l[?25h[?25l[52;185H0-17[41;17H[?12l[?25h[?25l[52;184H9-16 [41;16H[?12l[?25h[?25l[52;184H8-15[41;15H[?12l[?25h[?25l[52;1H[1m-- INSERT --[m[52;180H[K[52;180H118,8-15      98%[41;15H[31m [m[35m${adminUserName}[m[31m@[m[35m${vmName}[m[31m:/root/scripts/st.pl[m[33m"[m[31m [m[33m>>[m [35m$mntscript[m[41;77H[K[41;15H[?12l[?25h[?25l[31ms [m[35m${adminUserName}[m[31m@[m[35m${vmName}[m[31m:/root/scripts/st.pl[m[33m"[m[31m [m[1C[33m>[m [35m$mntscript[m[52;184H9-16[41;16H[?12l[?25h[?25l[31mc [m[35m${adminUserName}[m[31m@[m[35m${vmName}[m[31m:/root/scripts/st.pl[m[33m"[m[31m [m[1C[33m>[m [35m$mntscript[m[52;184H10-17[41;17H[?12l[?25h[?25l[31mp [m[35m${adminUserName}[m[31m@[m[35m${vmName}[m[31m:/root/scripts/st.pl[m[33m"[m[31m [m[1C[33m>[m [35m$mntscript[m[52;185H1-18[41;18H[?12l[?25h[52;1H[K[41;17H[?25l[52;180H118,10-17     98%[41;17H[?12l[?25h[?25l[52;185H1-18[41;18H[?12l[?25h[?25l[52;185H2-19[41;19H[?12l[?25h[?25l[52;185H1-18[41;18H[?12l[?25h[?25l[52;185H0-17[41;17H[?12l[?25h[?25l[52;1H[1m-- INSERT --[m[52;180H[K[52;180H118,11-18     98%[41;18H[?12l[?25h[?25l[1C[31m [m[35m${adminUserName}[m[31m@[m[35m${vmName}[m[31m:/root/scripts/st.pl[m[33m"[m[31m [m[1C[33m>[m [35m$mntscript[m[52;185H2-19[41;19H[?12l[?25h[?25l[31m/ [m[35m${adminUserName}[m[31m@[m[35m${vmName}[m[31m:/root/scripts/st.pl[m[33m"[m[31m [m[1C[33m>[m [35m$mntscript[m[52;185H3-20[41;20H[?12l[?25h[?25l[31me [m[35m${adminUserName}[m[31m@[m[35m${vmName}[m[31m:/root/scripts/st.pl[m[33m"[m[31m [m[1C[33m>[m [35m$mntscript[m[52;185H4-21[41;21H[?12l[?25h[?25l[31mt [m[35m${adminUserName}[m[31m@[m[35m${vmName}[m[31m:/root/scripts/st.pl[m[33m"[m[31m [m[1C[33m>[m [35m$mntscript[m[52;185H5-22[41;22H[?12l[?25h[?25l[31mc [m[35m${adminUserName}[m[31m@[m[35m${vmName}[m[31m:/root/scripts/st.pl[m[33m"[m[31m [m[1C[33m>[m [35m$mntscript[m[52;185H6-23[41;23H[?12l[?25h[?25l[31m/ [m[35m${adminUserName}[m[31m@[m[35m${vmName}[m[31m:/root/scripts/st.pl[m[33m"[m[31m [m[1C[33m>[m [35m$mntscript[m[52;185H7-24[41;24H[?12l[?25h[?25l[31mh [m[35m${adminUserName}[m[31m@[m[35m${vmName}[m[31m:/root/scripts/st.pl[m[33m"[m[31m [m[1C[33m>[m [35m$mntscript[m[52;185H8-25[41;25H[?12l[?25h[?25l[31mo [m[35m${adminUserName}[m[31m@[m[35m${vmName}[m[31m:/root/scripts/st.pl[m[33m"[m[31m [m[1C[33m>[m [35m$mntscript[m[52;185H9-26[41;26H[?12l[?25h[?25l[31ms [m[35m${adminUserName}[m[31m@[m[35m${vmName}[m[31m:/root/scripts/st.pl[m[33m"[m[31m [m[1C[33m>[m [35m$mntscript[m[52;184H20-27[41;27H[?12l[?25h[?25l[31mt [m[35m${adminUserName}[m[31m@[m[35m${vmName}[m[31m:/root/scripts/st.pl[m[33m"[m[31m [m[1C[33m>[m [35m$mntscript[m[52;185H1-28[41;28H[?12l[?25h[?25l[31ms [m[35m${adminUserName}[m[31m@[m[35m${vmName}[m[31m:/root/scripts/st.pl[m[33m"[m[31m [m[1C[33m>[m [35m$mntscript[m[52;185H2-29[41;29H[?12l[?25h[52;1H[K[41;28H[?25l[52;180H118,21-28     98%[41;28H[?12l[?25h[?25l[52;185H2-29[41;29H[?12l[?25h[?25l[52;185H3-30[41;30H[?12l[?25h[?25l[1C[35m[46m{[13C}[m[52;185H4-31[41;31H[?12l[?25h[?25l[35m{[13C}[m[52;185H5-32[41;32H[?12l[?25h[?25l[52;185H6-33[41;33H[?12l[?25h[?25l[52;185H7-34[41;34H[?12l[?25h[?25l[52;185H8-35[41;35H[?12l[?25h[?25l[52;185H9-36[41;36H[?12l[?25h[?25l[52;184H30-37[41;37H[?12l[?25h[?25l[52;185H1-38[41;38H[?12l[?25h[?25l[52;185H2-39[41;39H[?12l[?25h[?25l[52;185H3-40[41;40H[?12l[?25h[?25l[52;185H4-41[41;41H[?12l[?25h[?25l[52;185H5-42[41;42H[?12l[?25h[?25l[52;185H6-43[41;43H[?12l[?25h[?25l[52;185H7-44[41;44H[?12l[?25h[?25l[41;31H[35m[46m{[13C}[m[52;185H8-45[41;45H[?12l[?25h[?25l[41;31H[35m{[13C}[m[52;185H9-46[41;46H[?12l[?25h[?25l[52;184H40-47[41;47H[?12l[?25h[?25l[1C[35m[46m{[6C}[m[52;185H1-48[41;48H[?12l[?25h[?25l[35m{vmName}[m[52;185H2-49[41;49H[?12l[?25h[?25l[52;185H3-50[41;50H[?12l[?25h[?25l[52;185H4-51[41;51H[?12l[?25h[?25l[52;185H5-52[41;52H[?12l[?25h[?25l[52;185H6-53[41;53H[?12l[?25h[?25l[52;185H7-54[41;54H[?12l[?25h[?25l[35m[46m{[6C}[m[52;185H8-55[41;55H[?12l[?25h[?25l[41;48H[35m{vmName}[m[52;185H9-56[41;56H[?12l[?25h[?25l[52;184H50-57[41;57H[?12l[?25h[?25l[52;185H1-58[41;58H[?12l[?25h[?25l[52;185H0-57[41;57H[?12l[?25h[?25l[52;185H1-58[41;58H[?12l[?25h[?25l[52;1H[1m-- INSERT --[m[52;180H[K[52;180H118,51-58     98%[41;58H[31m/scripts/st.pl[m[33m"[m[31m [m[33m>>[m [35m$mntscript[m[41;87H[K[41;58H[?12l[?25h[?25l[31me/scripts/st.pl[m[33m"[m[31m [m[1C[33m>[m [35m$mntscript[m[52;185H2-59[41;59H[?12l[?25h[?25l[31mt/scripts/st.pl[m[33m"[m[31m [m[1C[33m>[m [35m$mntscript[m[52;185H3-60[41;60H[?12l[?25h[?25l[31mc/scripts/st.pl[m[33m"[m[31m [m[1C[33m>[m [35m$mntscript[m[52;185H4-61[41;61H[?12l[?25h[52;1H[K[41;60H[?25l[52;180H118,53-60     98%[41;60H[?12l[?25h[?25l[52;185H4-61[41;61H[?12l[?25h[?25l[31mscripts/st.pl[m[33m"[m[31m [m[33m>[m[1C [35m$mntscript[m[41;89H[K[41;61H[?12l[?25h[?25l[31mcripts/st.pl[m[33m"[m[31m [m[33m>[m[1C [35m$mntscript[m[41;88H[K[41;61H[?12l[?25h[?25l[31mripts/st.pl[m[33m"[m[31m [m[33m>[m[1C [35m$mntscript[m[41;87H[K[41;61H[?12l[?25h[?25l[31mipts/st.pl[m[33m"[m[31m [m[33m>[m[1C [35m$mntscript[m[41;86H[K[41;61H[?12l[?25h[?25l[31mpts/st.pl[m[33m"[m[31m [m[33m>[m[1C [35m$mntscript[m[41;85H[K[41;61H[?12l[?25h[?25l[31mts/st.pl[m[33m"[m[31m [m[33m>[m[1C [35m$mntscript[m[41;84H[K[41;61H[?12l[?25h[?25l[31ms/st.pl[m[33m"[m[31m [m[33m>[m[1C [35m$mntscript[m[41;83H[K[41;61H[?12l[?25h[?25l[31m/st.pl[m[33m"[m[31m [m[33m>[m[1C [35m$mntscript[m[41;82H[K[41;61H[?12l[?25h[?25l[31mst.pl[m[33m"[m[31m [m[33m>[m[1C [35m$mntscript[m[41;81H[K[41;61H[?12l[?25h[?25l[31mt.pl[m[33m"[m[31m [m[33m>[m[1C [35m$mntscript[m[41;80H[K[41;61H[?12l[?25h[?25l[31m.pl[m[33m"[m[31m [m[33m>[m[1C [35m$mntscript[m[41;79H[K[41;61H[?12l[?25h[?25l[31mpl[m[33m"[m[31m [m[33m>[m[1C [35m$mntscript[m[41;78H[K[41;61H[?12l[?25h[?25l[31ml[m[33m"[m[31m [m[33m>[m[1C [35m$mntscript[m[41;77H[K[41;61H[?12l[?25h[?25l[33m"[m[31m [m[33m>[m[1C [35m$mntscript[m[41;76H[K[41;61H[?12l[?25h[?25l[52;182H9,0-1  [42;1H[?12l[?25h[?25l[52;181H20[43;1H[?12l[?25h[?25l[52;182H1,54-61[44;61H[?12l[?25h[?25l[52;182H2,48-55[45;55H[?12l[?25h[?25l[52;182H3,54-61[46;61H[?12l[?25h[?25l[52;180H[K[52;1H:[?12l[?25hx[?25l[?12l[?25h[?25l"createclusternodes.sh" 129L, 5441C written
+[?1l>[?12l[?25h[?1049l]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ ls -al
+total 120
+drwxrwxr-x 2 azureuser azureuser  4096 Feb 12 06:00 [0m[01;34m.[0m
+drwxrwxr-x 6 azureuser azureuser  4096 Feb 12 04:53 [01;34m..[0m
+-rw-rw-r-- 1 azureuser azureuser  5441 Feb 12 06:00 createclusternodes.sh
+-rw-rw-r-- 1 azureuser azureuser  4730 Feb 12 04:53 createmasterimage.sh
+-rw-rw-r-- 1 azureuser azureuser  5564 Feb 12 04:53 createmasternode.sh
+-rw-rw-r-- 1 azureuser azureuser  5330 Feb 12 05:53 createmgmtnode.sh
+-rw-rw-r-- 1 azureuser azureuser    98 Feb 12 04:53 deletecluster.sh
+-rw-rw-r-- 1 azureuser azureuser  2653 Feb 12 05:53 hdpsetup.sh
+-rw-rw-r-- 1 azureuser azureuser    80 Feb 12 05:47 hosts.txt
+-rw-rw-r-- 1 azureuser azureuser  4149 Feb 12 04:53 st.pl
+-rwxrwxr-x 1 azureuser azureuser   302 Feb 12 05:45 [01;32mupdatehosts.sh[0m
+-rw-rw-r-- 1 azureuser azureuser 57344 Feb 12 05:57 will
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ more will
+Script started on Wed 12 Feb 2014 05:51:37 AM UTC
+mntscript="mountdrive.sh"
+#This file will generate hosts file that can be appended to /etc/hosts on each node.
+hostsfile="hosts.txt"
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ mntscript="mountdrive.sh"
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ #This file will generate hosts file that can be appended to /etc/hosts on each node.
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ hostsfile="hosts.txt"
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ ci [K[K[Kvi hdpsetup.sh 
+[?1049h[?1h=[2;1H▽[6n[1;1H  [1;1H[1;52r[?12;25h[?12l[?25h[27m[m[H[2J[?25l[52;1H"hdpsetup.sh" 48L, 2371C[>c[1;1H[34m#This settings file stores all the settings related to HDP cluster you are setting
+ up
+#Affinty group helps you keep your storage and compute in the same region[m
+[33mexport[m[36m affinityGroupName=myeasthdpag[m
+[34m#Name the region where affinity group should be created. 
+#choices are valid values are "East US", "West US", "East Asia", "Southeast Asia", "North Europe", "West Europe"[m
+[33mexport[m[36m affinityGroupLocation=[m[33m"[m[31mEast US[m[33m"[m
+
+[34m#name of the storage account here your virtual machines will be stored.[m
+[33mexport[m[36m storageAccount=myhdpstorage[m
+
+[34m#Name of the image you will use to create your virtual machines
+#export imageName=b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu_DAILY_BUILD-precise-12_04_3-LTS-amd64-server-20140204-en-us-30GB[m
+[33mexport[m[36m imageName=c290a6b031d841e09f2da759bbabe71f__Oracle-Linux-6[m
+
+[34m#Size of the Virtual machine. Valid sizes are extrasmall, small, medium, large, extralarge, a5, a6, a7[m
+[33mexport[m[36m instanceSize=small[m
+
+[34m#Size of the data disk you want to attach to the VM you are creating. You will typically attach at least 1 disk[m
+[33mexport[m[36m diskSizeInGB=5[m
+[34m#Number of disks you want to attach. Small VM can have 2 disks, medium can have 4, large can have 8 and extralarge can have 8 data disks[m
+[33mexport[m[36m numOfDisks=1[m
+
+[34m#virtual machine settings[m
+[33mexport[m[36m vmNamePrefix=ctinkuhdp[m
+[33mexport[m[36m cloudServicePrefix=ctinkuhdp[m
+[34m#user admin name and password for the virtual machine you are creating[m
+[33mexport[m[36m adminUserName=azureuser[m
+[34m#Azure CLI enforces strong passwords uppercase, lower case and special characters[m
+[33mexport[m[36m adminPassword=Password.1![m
+
+[34m#setting related to virtual network[m
+[33mexport[m[36m vnetName=myeasthdpvnet[m
+[34m#address space allows 192.168.0.0, 10.0.0.0 and 172.16.0.0 ip address ranges
+#virtual network faq is here http://msdn.microsoft.com/en-us/library/windowsazure/dn133803.aspx[m
+[33mexport[m[36m vnetAddressSpace=172.16.0.0[m
+[33mexport[m[36m vnetCidr=16[m
+[33mexport[m[36m subnetName=mysubnet[m
+[33mexport[m[36m subnetAddressSpace=172.16.1.0[m
+[33mexport[m[36m subnetCidr=24[m
+
+[34m#These settings are for nodes in the HDP cluster
+#Name of the custom image you will use to create your cluster nodes
+[7m--More--(5%)[27m#After you have create your master node image replace the value of nodeImageName wiht the image you created [m
+[33mexport[m[36m nodeImageName=c290a6b031d841e09f2da759bbabe71f__Oracle-Linux-6[m
+[34m#Number of nodes in your HDP cluster[m
+[33mexport[m[36m nodeCount=3[m
+[34m#Size of the nodes in the hadoop cluster. Valid sizes are extrasmall, small, medium, large, extralarge, a5, a6, a7[m
+[33mexport[m[36m nodeSize=small[m
+[1m[34m~                                                                                                                                                                                             
+       [50;1H~                                                                                                                                                                                       
+             [51;1H~                                                                                                                                                                                 
+                   [m[52;180H1,1[11CAll[1;1H[?12l[?25h[27m[m[H[2J[?25l[1;1H[34m#This settings file stores all the settings related to HDP cluster you are setting up
+#Affinty group helps you keep your storage and compute in the same region[m
+[33mexport[m[36m affinityGroupName=myeasthdpag[m
+[34m#Name the region where affinity group should be created. 
+#choices are valid values are "East US", "West US", "East Asia", "Southeast Asia", "North Europe", "West Europe"[m
+[33mexport[m[36m affinityGroupLocation=[m[33m"[m[31mEast US[m[33m"[m
+
+[34m#name of the storage account here your virtual machines will be stored.[m
+[33mexport[m[36m storageAccount=myhdpstorage[m
+
+[34m#Name of the image you will use to create your virtual machines
+#export imageName=b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu_DAILY_BUILD-precise-12_04_3-LTS-amd64-server-20140204-en-us-30GB[m
+[33mexport[m[36m imageName=c290a6b031d841e09f2da759bbabe71f__Oracle-Linux-6[m
+
+[34m#Size of the Virtual machine. Valid sizes are extrasmall, small, medium, large, extralarge, a5, a6, a7[m
+[33mexport[m[36m instanceSize=small[m
+
+[34m#Size of the data disk you want to attach to the VM you are creating. You will typically attach at least 1 disk[m
+[33mexport[m[36m diskSizeInGB=5[m
+[34m#Number of disks you want to attach. Small VM can have 2 disks, medium can have 4, large can have 8 and extralarge can have 8 data disks[m
+[33mexport[m[36m numOfDisks=1[m
+
+[34m#virtual machine settings[m
+[33mexport[m[36m vmNamePrefix=ctinkuhdp[m
+[33mexport[m[36m cloudServicePrefix=ctinkuhdp[m
+[34m#user admin name and password for the virtual machine you are creating[m
+[33mexport[m[36m adminUserName=azureuser[m
+[34m#Azure CLI enforces strong passwords uppercase, lower case and special characters[m
+[33mexport[m[36m adminPassword=Password.1![m
+
+[34m#setting related to virtual network[m
+[33mexport[m[36m vnetName=myeasthdpvnet[m
+[34m#address space allows 192.168.0.0, 10.0.0.0 and 172.16.0.0 ip address ranges
+#virtual network faq is here http://msdn.microsoft.com/en-us/library/windowsazure/dn133803.aspx[m
+[33mexport[m[36m vnetAddressSpace=172.16.0.0[m
+[33mexport[m[36m vnetCidr=16[m
+[33mexport[m[36m subnetName=mysubnet[m
+[33mexport[m[36m subnetAddressSpace=172.16.1.0[m
+[33mexport[m[36m subnetCidr=24[m
+
+[34m#These settings are for nodes in the HDP cluster
+#Name of the custom image you will use to create your cluster nodes
+[7m--More--(11%)[27m#After you have create your master node image replace the value of nodeImageName wiht the image you created [m
+[33mexport[m[36m nodeImageName=c290a6b031d841e09f2da759bbabe71f__Oracle-Linux-6[m
+[34m#Number of nodes in your HDP cluster[m
+[33mexport[m[36m nodeCount=3[m
+[34m#Size of the nodes in the hadoop cluster. Valid sizes are extrasmall, small, medium, large, extralarge, a5, a6, a7[m
+[33mexport[m[36m nodeSize=small[m
+[1m[34m~                                                                                                                                                                                             
+       [50;1H~                                                                                                                                                                                       
+             [51;1H~                                                                                                                                                                                 
+                   [m[52;180H1,1[11CAll"hdpsetup.sh" 48L, 2371C[1;1H[?12l[?25h[?25l[52;180H2[2;1H[?12l[?25h[?25l[52;180H3[3;1H[?12l[?25h[?25l[52;180H4[4;1H[?12l[?25h[?25l[52;180H5[5;1H[?12l[?25h[?25l[52;180H6[6;1H[?12l[?25h[?25l[52;180H
+7,0-1[7;1H[?12l[?25h[?25l[52;180H8,1  [8;1H[?12l[?25h[?25l[52;180H9[9;1H[?12l[?25h[?25l[52;180H10,0-1[10;1H[?12l[?25h[?25l[52;181H1,1  [11;1H[?12l[?25h[?25l[52;181H2[12;1H[?12l[?25h[?25l[52;181H3[1
+3;1H[?12l[?25h[?25l[52;181H4,0-1[14;1H[?12l[?25h[?25l[52;181H5,1  [15;1H[?12l[?25h[?25l[52;181H6[16;1H[?12l[?25h[?25l[52;181H7,0-1[17;1H[?12l[?25h[?25l[52;181H8,1  [18;1H[?12l[?25h[?25l[52;181H9[19
+;1H[?12l[?25h[?25l[52;180H20[20;1H[?12l[?25h[?25l[52;181H1[21;1H[?12l[?25h[?25l[52;181H2,0-1[22;1H[?12l[?25h[?25l[52;181H3,1  [23;1H[?12l[?25h[?25l[52;181H4[24;1H[?12l[?25h[?25l[52;181H5[25;1H[?12l
+[?25h[?25l[52;181H6[26;1H[?12l[?25h[?25l[52;181H7[27;1H[?12l[?25h[?25l[52;181H8[28;1H[?12l[?25h[?25l[52;181H9[29;1H[?12l[?25h[?25l[52;180H30,0-1[30;1H[?12l[?25h[?25l[52;181H1,1  [31;1H[?12l[?25h[?2
+5l[52;181H2[32;1H[?12l[?25h[?25l[52;181H3[33;1H[?12l[?25h[?25l[52;181H4[34;1H[?12l[?25h[?25l[52;181H5[35;1H[?12l[?25h[?25l[52;181H6[36;1H[?12l[?25h[?25l[52;181H7[37;1H[?12l[?25h[?25l[52;181H8[38;1H
+[?12l[?25h[?25l[52;181H9[39;1H[?12l[?25h[?25l[52;180H40,0-1[40;1H[?12l[?25h[?25l[52;181H1,1  [41;1H[?12l[?25h[?25l[52;181H2[42;1H[?12l[?25h[?25l[52;181H3[43;1H[?12l[?25h[?25l[52;181H4[44;1H[?12l[?2
+5h[?25l[52;181H5[45;1H[?12l[?25h[?25l[52;181H6[46;1H[?12l[?25h[?25l[52;181H7[47;1H[?12l[?25h[?25l[52;181H8[48;1H[?12l[?25h[?25l[52;1H[1m-- INSERT --[m[52;13H[K[52;180H49,1[10CAll[49;1H[K[49;1H[?12l
+[?25h[?25l[50;1H[K[52;180H50[50;1H[?12l[?25h[?25l[1;51r[1;1H[3M[1;52r[47;1H[34m#This script will be generated and it will be used to mount data drives in each node in the cluster[m
+[36mmntscript[m=[33m"[m[31mmountdrive.sh[m[33m"[m[48;26H[K[49;1H[34m#This file will generate hosts file that can be appended to /etc/hosts on each node.[m
+[36mhostsfile[m=[33m"[m[31mhosts.txt[m[33m"[m[52;180H[K[52;180H54,1[10CBot[51;1H[?12l[?25h[52;1H[K[51;1H[?25l[52;180H54,0-1[8CBot[51;1H[?12l[?25h[?25l[52;181H3,1  [50;1H[?12l[?25h[?25l[52;181H2[49;
+1H[?12l[?25h[?25l[52;181H1[48;1H[?12l[?25h[?25l[52;181H0[47;1H[?12l[?25h[?25l[52;183H99[47;99H[?12l[?25h[?25l[52;1H[1m-- INSERT --[m[52;180H[K[52;180H51,1[10C75%[52;1H[K[1;51r[1;1H[2M[1;52r[46;1H[K
+[47;7H[34mscript will be generated and it will be used to mount data drives in each node in the cluster[m
+[36mmntscript[m[2C[31mmountdrive.sh[m[33m"[m
+[34m#This file will generate hosts file that can be appended to /etc/hosts on each node.[m
+[36mhostsfile[m=[33m"[m[31mhosts.txt[m[33m"[m[52;180H56,0-1[8C55%[51;1H[?12l[?25h[?25l[52;181H5,1  [50;1H[?12l[?25h[?25l[52;181H4[49;1H[?12l[?25h[?25l[52;181H3[48;1H[?12l[?25h[?25l[52;181H2[47;1H[?
+12l[?25h[?25l[52;183H99[47;99H[?12l[?25h[?25l[52;181H1,0-1[46;1H[?12l[?25h[?25l[52;181H0,99 [45;99H[?12l[?25h[?25l[45;51r[51;1H
+[1;52r[51;1H[36mmntscript[m=[33m"[m[31mmountdrive.sh[m[33m"[m[52;180H[K[52;180H50,0-1[8C62%[45;1H[?12l[?25h[?25l[45;51r[51;1H
+[1;52r[51;1H[34m#This file will generate hosts file that can be appended to /etc/hosts on each node.[m[52;180H[K[52;180H50,1[10C71%[45;1H[?12l[?25h[?25l[52;183H2[45;2H[?12l[?25h[?25l[52;183H3[45;3H
+[?12l[?25h[?25l[52;183H4[45;4H[?12l[?25h[?25l[52;183H5[45;5H[?12l[?25h[?25l[52;183H6[45;6H[?12l[?25h[?25l[52;183H7[45;7H[?12l[?25h[?25l[52;183H8[45;8H[?12l[?25h[?25l[52;183H9[45;9H[?12l[?25h[?25l[5
+2;183H10[45;10H[?12l[?25h[?25l[52;184H1[45;11H[?12l[?25h[?25l[52;184H2[45;12H[?12l[?25h[?25l[52;184H3[45;13H[?12l[?25h[?25l[52;184H4[45;14H[?12l[?25h[?25l[52;184H5[45;15H[?12l[?25h[?25l[52;184H6[45
+;16H[?12l[?25h[?25l[52;184H7[45;17H[?12l[?25h[?25l[52;184H8[45;18H[?12l[?25h[?25l[52;184H9[45;19H[?12l[?25h[?25l[52;183H20[45;20H[?12l[?25h[?25l[52;184H1[45;21H[?12l[?25h[?25l[52;184H2[45;22H[?12l[
+?25h[?25l[52;184H3[45;23H[?12l[?25h[?25l[52;184H4[45;24H[?12l[?25h[?25l[52;184H5[45;25H[?12l[?25h[?25l[52;184H6[45;26H[?12l[?25h[?25l[52;184H7[45;27H[?12l[?25h[?25l[52;184H8[45;28H[?12l[?25h[?25l[5
+2;184H9[45;29H[?12l[?25h[?25l[52;183H30[45;30H[?12l[?25h[?25l[52;184H1[45;31H[?12l[?25h[?25l[52;184H2[45;32H[?12l[?25h[?25l[52;184H3[45;33H[?12l[?25h[?25l[52;184H4[45;34H[?12l[?25h[?25l[52;184H5[45
+;35H[?12l[?25h[?25l[52;184H6[45;36H[?12l[?25h[?25l[52;184H7[45;37H[?12l[?25h[?25l[52;184H8[45;38H[?12l[?25h[?25l[52;184H9[45;39H[?12l[?25h[?25l[52;183H40[45;40H[?12l[?25h[?25l[52;184H1[45;41H[?12l[
+?25h[?25l[52;184H2[45;42H[?12l[?25h[?25l[52;184H3[45;43H[?12l[?25h[?25l[52;184H4[45;44H[?12l[?25h[?25l[52;184H5[45;45H[?12l[?25h[?25l[52;184H6[45;46H[?12l[?25h[?25l[52;184H7[45;47H[?12l[?25h[?25l[5
+2;184H8[45;48H[?12l[?25h[?25l[52;184H9[45;49H[?12l[?25h[?25l[52;183H50[45;50H[?12l[?25h[?25l[52;184H1[45;51H[?12l[?25h[?25l[52;184H2[45;52H[?12l[?25h[?25l[52;184H3[45;53H[?12l[?25h[?25l[52;184H4[45
+;54H[?12l[?25h[?25l[52;184H5[45;55H[?12l[?25h[?25l[52;184H6[45;56H[?12l[?25h[?25l[52;184H7[45;57H[?12l[?25h[?25l[52;184H8[45;58H[?12l[?25h[?25l[52;184H9[45;59H[?12l[?25h[?25l[52;183H60[45;60H[?12l[
+?25h[?25l[52;184H1[45;61H[?12l[?25h[?25l[52;184H2[45;62H[?12l[?25h[?25l[52;184H3[45;63H[?12l[?25h[?25l[52;184H4[45;64H[?12l[?25h[?25l[52;184H5[45;65H[?12l[?25h[?25l[52;184H6[45;66H[?12l[?25h[?25l[5
+2;184H7[45;67H[?12l[?25h[?25l[52;184H8[45;68H[?12l[?25h[?25l[52;184H9[45;69H[?12l[?25h[?25l[52;183H70[45;70H[?12l[?25h[?25l[52;184H1[45;71H[?12l[?25h[?25l[52;184H2[45;72H[?12l[?25h[?25l[52;184H3[45
+;73H[?12l[?25h[?25l[52;184H4[45;74H[?12l[?25h[?25l[52;184H5[45;75H[?12l[?25h[?25l[52;184H6[45;76H[?12l[?25h[?25l[52;184H7[45;77H[?12l[?25h[?25l[52;184H8[45;78H[?12l[?25h[?25l[52;184H9[45;79H[?12l[?
+25h[?25l[52;183H80[45;80H[?12l[?25h[?25l[52;184H1[45;81H[?12l[?25h[?25l[52;184H2[45;82H[?12l[?25h[?25l[52;184H3[45;83H[?12l[?25h[?25l[52;184H4[45;84H[?12l[?25h[?25l[52;184H5[45;85H[?12l[?25h[?25l[5
+2;184H6[45;86H[?12l[?25h[?25l[52;184H7[45;87H[?12l[?25h[?25l[52;184H8[45;88H[?12l[?25h[?25l[52;184H9[45;89H[?12l[?25h[?25l[52;183H90[45;90H[?12l[?25h[?25l[52;184H1[45;91H[?12l[?25h[?25l[52;184H2[45
+;92H[?12l[?25h[?25l[52;184H3[45;93H[?12l[?25h[?25l[52;184H4[45;94H[?12l[?25h[?25l[52;184H5[45;95H[?12l[?25h[?25l[52;184H6[45;96H[?12l[?25h[?25l[52;184H7[45;97H[?12l[?25h[?25l[52;184H8[45;98H[?12l[?
+25h[?25l[52;184H9[45;99H[?12l[?25h[?25l[52;1H[1m-- INSERT --[m[52;180H[K[52;180H50,100[8C71%[45;100H[?12l[?25h[?25l[34m.[m[52;185H1[45;101H[?12l[?25h[?25l[34m [m[52;185H2[45;102H[?12l[?25h[?25l[34m
+I[m[52;185H3[45;103H[?12l[?25h[?25l[34mt[m[52;185H4[45;104H[?12l[?25h[?25l[34m [m[52;185H5[45;105H[?12l[?25h[?25l[34mw[m[52;185H6[45;106H[?12l[?25h[?25l[34mi[m[52;185H7[45;107H[?12l[?25h[?25l[34ml[
+m[52;185H8[45;108H[?12l[?25h[?25l[34ml[m[52;185H9[45;109H[?12l[?25h[?25l[34m [m[52;184H10[45;110H[?12l[?25h[?25l[34ma[m[52;185H1[45;111H[?12l[?25h[?25l[34ml[m[52;185H2[45;112H[?12l[?25h[?25l[34ms[m
+[52;185H3[45;113H[?12l[?25h[?25l[34mo[m[52;185H4[45;114H[?12l[?25h[?25l[34m [m[52;185H5[45;115H[?12l[?25h[?25l[34mc[m[52;185H6[45;116H[?12l[?25h[?25l[34mo[m[52;185H7[45;117H[?12l[?25h[?25l[34mp[m[5
+2;185H8[45;118H[?12l[?25h[?25l[34my[m[52;185H9[45;119H[?12l[?25h[?25l[34m [m[52;184H20[45;120H[?12l[?25h[?25l[34mh[m[52;185H1[45;121H[?12l[?25h[?25l[34mo[m[52;185H2[45;122H[?12l[?25h[?25l[34ms[m[52
+;185H3[45;123H[?12l[?25h[?25l[34mt[m[52;185H4[45;124H[?12l[?25h[?25l[34m [m[52;185H5[45;125H[?12l[?25h[?25l[45;124H[K[52;185H4[45;124H[?12l[?25h[?25l[34ms[m[52;185H5[45;125H[?12l[?25h[?25l[34m [m[5
+2;185H6[45;126H[?12l[?25h[?25l[45;125H[K[52;185H5[45;125H[?12l[?25h[?25l[45;124H[K[52;185H4[45;124H[?12l[?25h[?25l[45;123H[K[52;185H3[45;123H[?12l[?25h[?25l[45;122H[K[52;185H2[45;122H[?12l[?25h[?25
+l[45;121H[K[52;185H1[45;121H[?12l[?25h[?25l[45;120H[K[52;185H0[45;120H[?12l[?25h[?25l[34m/[m[52;185H1[45;121H[?12l[?25h[?25l[34me[m[52;185H2[45;122H[?12l[?25h[?25l[34mt[m[52;185H3[45;123H[?12l[?25h
+[7m--More--(29%)[27m[?25l[34mc[m[52;185H4[45;124H[?12l[?25h[?25l[34m/[m[52;185H5[45;125H[?12l[?25h[?25l[34mh[m[52;185H6[45;126H[?12l[?25h[?25l[34mo[m[52;185H7[45;127H[?12l[?25h[?25l[34ms[m[52;185H8[45;128H[?12l[?25h[?
+25l[34mt[m[52;185H9[45;129H[?12l[?25h[?25l[34ms[m[52;184H30[45;130H[?12l[?25h[?25l[34m [m[52;185H1[45;131H[?12l[?25h[?25l[34mf[m[52;185H2[45;132H[?12l[?25h[?25l[34mi[m[52;185H3[45;133H[?12l[?25h[?2
+5l[34ml[m[52;185H4[45;134H[?12l[?25h[?25l[34me[m[52;185H5[45;135H[?12l[?25h[?25l[34m [m[52;185H6[45;136H[?12l[?25h[?25l[34mt[m[52;185H7[45;137H[?12l[?25h[?25l[34mo[m[52;185H8[45;138H[?12l[?25h[?25l
+[34me[m[52;185H9[45;139H[?12l[?25h[?25l[34m [m[52;184H40[45;140H[?12l[?25h[?25l[34ma[m[52;185H1[45;141H[?12l[?25h[?25l[34mc[m[52;185H2[45;142H[?12l[?25h[?25l[34mh[m[52;185H3[45;143H[?12l[?25h[?25l[
+34m [m[52;185H4[45;144H[?12l[?25h[?25l[45;143H[K[52;185H3[45;143H[?12l[?25h[?25l[45;142H[K[52;185H2[45;142H[?12l[?25h[?25l[45;141H[K[52;185H1[45;141H[?12l[?25h[?25l[45;140H[K[52;185H0[45;140H[?12l[
+?25h[?25l[45;139H[K[52;184H39[45;139H[?12l[?25h[?25l[45;138H[K[52;185H8[45;138H[?12l[?25h[?25l[34m [m[52;185H9[45;139H[?12l[?25h[?25l[34me[m[52;184H40[45;140H[?12l[?25h[?25l[34ma[m[52;185H1[45;141H
+[?12l[?25h[?25l[34mc[m[52;185H2[45;142H[?12l[?25h[?25l[34mh[m[52;185H3[45;143H[?12l[?25h[?25l[34m [m[52;185H4[45;144H[?12l[?25h[?25l[34mn[m[52;185H5[45;145H[?12l[?25h[?25l[34mo[m[52;185H6[45;146H[?
+12l[?25h[?25l[34md[m[52;185H7[45;147H[?12l[?25h[?25l[34me[m[52;185H8[45;148H[?12l[?25h[52;1H[K[45;147H[?25l[52;180H50,147[8C71%[45;147H[?12l[?25h[?25l[52;181H1,25 [46;25H[?12l[?25h[?25l[52;181H2,84
+[47;84H[?12l[?25h[?25l[52;181H3,21[48;21H[?12l[?25h[?25l[52;181H4,0-1[49;1H[?12l[?25h[?25l[52;181H5,25 [50;25H[?12l[?25h[?25l[52;181H6,84[51;84H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[36mhostsfile[m=[33m"[m[31mhosts.txt[m[33m"[m[52;180H[K[52;180H57,21[9C85%[51;21H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[52;180H[K[52;180H58,0-1[8CBot[51;1H[?12l[?25h[?25l[52;180H[K[52;1H:[?12l[?25hx[?25l[?12l[?25h[?25l[52;1H[K[52;180H58,0-1[8CBot[51;1H[?12l[?25h[?25l[52;181H7,21 [50;21H[?12l[?25h[?25l[52;181H
+6[49;21H[?12l[?25h[?25l[52;181H5[48;21H[?12l[?25h[?25l[52;181H4,0-1[47;1H[?12l[?25h[?25l[52;181H3,21 [46;21H[?12l[?25h[?25l[52;181H2[45;21H[?12l[?25h[?25l[52;181H1[44;21H[?12l[?25h[?25l[52;181H0[43
+;21H[?12l[?25h[?25l[52;180H49,0-1[42;1H[?12l[?25h[?25l[52;180H50,21 [43;21H[?12l[?25h[?25l[52;181H1[44;21H[?12l[?25h[?25l[52;181H2[45;21H[?12l[?25h[?25l[52;181H3[46;21H[?12l[?25h[?25l[52;181H4,0-1[
+47;1H[?12l[?25h[?25l[52;181H5,21 [48;21H[?12l[?25h[?25l[48;51r[51;1H
+[1;52r[51;1H[1m[34m~                                                                                                                                                                                 
+                   [m[52;180H[K[52;180H55,1[10CBot[48;1H[?12l[?25h[?25l[48;51r[51;1H
+[1;52r[51;1H[1m[34m~                                                                                                                                                                                 
+                   [m[52;180H[K[52;180H55,1[10CBot[48;1H[?12l[?25h[?25l[48;51r[51;1H
+[1;52r[51;1H[1m[34m~                                                                                                                                                                                 
+                   [m[52;180H[K[52;180H55,0-1[8CBot[48;1H[?12l[?25h[?25l[1m[34m~                                                                                                                     
+                                                                               [m[52;181H4[47;1H[?12l[?25h[?25l[1m[34m~                                                                              
+                                                                                                                      [m[52;181H3,1  [46;1H[?12l[?25h[?25l[52;180H[K[52;1H:[?12l[?25hx[?25l[?12l[?25h
+[?25l"hdpsetup.sh" 53L, 2653C written
+[?1l>[?12l[?25h[?1049l]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ vi createmgmtnode.sh 
+[?1049h[?1h=[2;1H▽[6n[1;1H  [1;1H[1;52r[?12;25h[?12l[?25h[27m[m[H[2J[?25l[52;1H"createmgmtnode.sh" 132L, 5564C[>c[1;1H[34m#!/bin/bash
+#sets up the management node and master node [m
+
+[33msource[m ./hdpsetup.sh
+
+[34m#This script will be generated and it will be used to mount data drives in each node in the cluster[m
+[36mmntscript[m=[33m"[m[31mmountdrive.sh[m[33m"[m
+[34m#This file will generate hosts file that can be appended to /etc/hosts on each node.[m
+[36mhostsfile[m=[33m"[m[31mhosts.txt[m[33m"
+
+if [[m [33m-e[m [35m$mntscript[m [33m][m; [33mthen[12;9Hrm[m [35m$mntscript[m
+[33mfi
+
+if [[m [33m-e[m [35m$hostfile[m [33m][m; [33mthen[16;9Hrm[m [35m$hostsfile[m
+[33mfi[m
+
+[34m#This script requires jq json processor
+#check to see if jq is available and download it if necessary[m
+[36mresult[m=[35m$(which jq)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[23;9Hwget http://stedolan.github.io/jq/download/linux64/jq[24;9Hsudo [33mchmod[m [35m+x[m jq[25;9Hsudo [33mmv[m jq /usr/[33mlocal[m/bin
+
+[33melse[27;9Hprintf[m [33m"[m[31mjq json processor was found[m[35m\n[m[33m"
+fi[m
+
+[35m(which jq)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mjq json processor is not available[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+
+[34m##############################################################
+[7m--More--(39%)[27m## Create affinity group if it does not exist
+##############################################################[m
+
+[33mprintf[m [33m"[m[31maffinty group name is %s, affinity group location is %s[m[35m\n[m[33m"[m [33m"[m[35m$affinityGroupName[m[33m"[m [33m"[m[35m$affinityGroupLocation[m[33m"[m
+
+[36mresult[m=[35m$(azure account affinity-group show [m[33m"[m[35m$affinityGroupName[m[33m"[m[35m --json | jq [m[33m'[m[31m.Name[m[33m'[m[35m)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[40;9H[35m([mazure account affinity-group create [35m--location[m [33m"[m[35m$affinityGroupLocation[m[33m"[m [33m"[m[35m$affinityGroupNa
+me[m[33m"[m[35m)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mFailed to create affinity group [m[35m$affinityGroupName[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+[33melse[42;9Hecho[m[31m [m[33m"[m[31maffinity group [m[35m$affinityGroupName[m[31m exists[m[33m"
+fi[m
+
+[34m#show the affinity group details[m
+[33mprintf[m [33m"[m[31m######################################## Affinity Group Details #######################################[m[35m\n[m[33m"[m
+azure account affinity-group show [33m"[m[35m$affinityGroupName[m[33m"[m [35m--json[m
+
+[34m##############################################################
+## Create storage account if it does not exist
+##############################################################[m[52;180H1,1[11CTop[1;1H[?12l[?25h[27m[m[H[2J[?25l[1;1H[34m#!/bin/bash
+#sets up the management node and master node [m
+
+[33msource[m ./hdpsetup.sh
+
+[34m#This script will be generated and it will be used to mount data drives in each node in the cluster[m
+[36mmntscript[m=[33m"[m[31mmountdrive.sh[m[33m"[m
+[34m#This file will generate hosts file that can be appended to /etc/hosts on each node.[m
+[36mhostsfile[m=[33m"[m[31mhosts.txt[m[33m"
+
+if [[m [33m-e[m [35m$mntscript[m [33m][m; [33mthen[12;9Hrm[m [35m$mntscript[m
+[33mfi
+
+if [[m [33m-e[m [35m$hostfile[m [33m][m; [33mthen[16;9Hrm[m [35m$hostsfile[m
+[33mfi[m
+
+[34m#This script requires jq json processor
+#check to see if jq is available and download it if necessary[m
+[36mresult[m=[35m$(which jq)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[23;9Hwget http://stedolan.github.io/jq/download/linux64/jq[24;9Hsudo [33mchmod[m [35m+x[m jq[25;9Hsudo [33mmv[m jq /usr/[33mlocal[m/bin
+
+[33melse[27;9Hprintf[m [33m"[m[31mjq json processor was found[m[35m\n[m[33m"
+fi[m
+
+[35m(which jq)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mjq json processor is not available[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+
+[34m##############################################################
+## Create affinity group if it does not exist
+##############################################################[m
+
+[33mprintf[m [33m"[m[31maffinty group name is %s, affinity group location is %s[m[35m\n[m[33m"[m [33m"[m[35m$affinityGroupName[m[33m"[m [33m"[m[35m$affinityGroupLocation[m[33m"[m
+
+[36mresult[m=[35m$(azure account affinity-group show [m[33m"[m[35m$affinityGroupName[m[33m"[m[35m --json | jq [m[33m'[m[31m.Name[m[33m'[m[35m)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[40;9H[35m([mazure account affinity-group create [35m--location[m [33m"[m[35m$affinityGroupLocation[m[33m"[m [33m"[m[35m$affinityGroupNa
+[7m--More--(46%)[27mme[m[33m"[m[35m)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mFailed to create affinity group [m[35m$affinityGroupName[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+[33melse[42;9Hecho[m[31m [m[33m"[m[31maffinity group [m[35m$affinityGroupName[m[31m exists[m[33m"
+fi[m
+
+[34m#show the affinity group details[m
+[33mprintf[m [33m"[m[31m######################################## Affinity Group Details #######################################[m[35m\n[m[33m"[m
+azure account affinity-group show [33m"[m[35m$affinityGroupName[m[33m"[m [35m--json[m
+
+[34m##############################################################
+## Create storage account if it does not exist
+##############################################################[m[52;180H1,1[11CTop"createmgmtnode.sh" 132L, 5564C[1;1H[?12l[?25h[?25l[52;180H2[2;1H[?12l[?25h[?25l[52;180H3,0-1[3;1H[?12l[?25h[?25l[52;180H4,1  [4;1H[?12l[?25h[?25l[52;180H5,0-1[5;1H[?12l[?25h[?25l[52;180H6,1  [6;1H
+[?12l[?25h[?25l[52;180H7[7;1H[?12l[?25h[?25l[52;180H8[8;1H[?12l[?25h[?25l[52;180H9[9;1H[?12l[?25h[?25l[52;180H8[8;1H[?12l[?25h[?25l[52;180H7[7;1H[?12l[?25h[?25l[52;180H6[6;1H[?12l[?25h[?25l[6;51r[5
+1;1H
+[1;52r[52;1H[K[52;180H6,1[11CTop[6;1H[?12l[?25h[?25l[6;51r[51;1H
+[1;52r[51;1H[33mprintf[m [33m"[m[31mstorage account name is %s[m[35m\n[m[33m"[m [33m"[m[35m$storageAccount[m[33m"[m[52;180H[K[52;180H6,1[11CTop[6;1H[?12l[?25h[?25l[6;51r[51;1H
+[1;52r[52;180H[K[52;180H6,1[11CTop[6;1H[?12l[?25h[?25l[6;51r[51;1H
+[1;52r[51;1H[36mresult[m=[35m$(azure storage account show [m[33m"[m[35m$storageAccount[m[33m"[m[35m --json | jq [m[33m'[m[31m.ServiceName[m[33m'[m[35m)[m[52;180H[K[52;180H6,0-1[9CTop[6;1H[?12l[?25h
+[?25l[6;51r[51;1H
+[1;52r[51;1H[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[52;180H[K[52;180H6,1[11CTop[6;1H[?12l[?25h[?25l[52;180H[K[52;1H:[?12l[?25hx[?25l[?12l[?25h[?25l"createmgmtnode.sh" 127L, 5330C written
+[?1l>[?12l[?25h[?1049l]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ vi creatc[Keclusternodes.sh 
+[?1049h[?1h=[2;1H▽[6n[1;1H  [1;1H[1;52r[?12;25h[?12l[?25h[27m[m[H[2J[?25l[52;1H"createclusternodes.sh" 133L, 5606C[>c[1;1H[34m#!/bin/bash
+#Creates the nodes in the cluster from a custom image
+#Expectation is that affinity group, storage account, virtual network have already been setup[m
+
+[33msource[m ./hdpsetup.sh
+
+[34m#This script will be generated and it will be used to mount data drives in each node in the cluster[m
+[36mmntscript[m=[33m"[m[31mmountdrive.sh[m[33m"[m
+[34m#This file will generate hosts file that can be appended to /etc/hosts on each node.[m
+[36mhostsfile[m=[33m"[m[31mhosts.txt[m[33m"[m
+
+[34m#This script requires jq json processor
+#check to see if jq is available and download it if necessary[m
+[36mresult[m=[35m$(which jq)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[16;9Hwget http://stedolan.github.io/jq/download/linux64/jq[17;9Hsudo [33mchmod[m [35m+x[m jq[18;9Hsudo [33mmv[m jq /usr/[33mlocal[m/bin
+
+[33melse[20;9Hprintf[m [33m"[m[31mjq json processor was found[m[35m\n[m[33m"
+fi[m
+
+[35m(which jq)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mjq json processor is not available[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+
+[34m##############################################################
+## Create affinity group if it does not exist
+##############################################################[m
+
+[33mprintf[m [33m"[m[31maffinty group name is %s, affinity group location is %s[m[35m\n[m[33m"[m [33m"[m[35m$affinityGroupName[m[33m"[m [33m"[m[35m$affinityGroupLocation[m[33m"[m
+
+[36mresult[m=[35m$(azure account affinity-group show [m[33m"[m[35m$affinityGroupName[m[33m"[m[35m --json | jq [m[33m'[m[31m.Name[m[33m'[m[35m)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[33;9H[35m([mazure account affinity-group create [35m--location[m [33m"[m[35m$affinityGroupLocation[m[33m"[m [33m"[m[35m$affinityGroupNa
+me[m[33m"[m[35m)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mFailed to create affinity group [m[35m$affinityGroupName[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+[33melse[35;9Hecho[m[31m [m[33m"[m[31maffinity group [m[35m$affinityGroupName[m[31m exists[m[33m"
+[7m--More--(54%)[27m[K]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ 
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ 
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ 
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ ls -al
+total 152
+drwxrwxr-x 2 azureuser azureuser  4096 Feb 12 06:00 [0m[01;34m.[0m
+drwxrwxr-x 6 azureuser azureuser  4096 Feb 12 04:53 [01;34m..[0m
+-rw-rw-r-- 1 azureuser azureuser  5441 Feb 12 06:00 createclusternodes.sh
+-rw-rw-r-- 1 azureuser azureuser  4730 Feb 12 04:53 createmasterimage.sh
+-rw-rw-r-- 1 azureuser azureuser  5564 Feb 12 04:53 createmasternode.sh
+-rw-rw-r-- 1 azureuser azureuser  5330 Feb 12 05:53 createmgmtnode.sh
+-rw-rw-r-- 1 azureuser azureuser    98 Feb 12 04:53 deletecluster.sh
+-rw-rw-r-- 1 azureuser azureuser  2653 Feb 12 05:53 hdpsetup.sh
+-rw-rw-r-- 1 azureuser azureuser    80 Feb 12 05:47 hosts.txt
+-rw-rw-r-- 1 azureuser azureuser  4149 Feb 12 04:53 st.pl
+-rwxrwxr-x 1 azureuser azureuser   302 Feb 12 05:45 [01;32mupdatehosts.sh[0m
+-rw-rw-r-- 1 azureuser azureuser 90112 Feb 12 06:01 will
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ more will
+Script started on Wed 12 Feb 2014 05:51:37 AM UTC
+mntscript="mountdrive.sh"
+#This file will generate hosts file that can be appended to /etc/hosts on each node.
+hostsfile="hosts.txt"
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ mntscript="mountdrive.sh"
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ #This file will generate hosts file that can be appended to /etc/hosts on each node.
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ hostsfile="hosts.txt"
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ ci [K[K[Kvi hdpsetup.sh 
+[?1049h[?1h=[2;1H▽[6n[1;1H  [1;1H[1;52r[?12;25h[?12l[?25h[27m[m[H[2J[?25l[52;1H"hdpsetup.sh" 48L, 2371C[>c[1;1H[34m#This settings file stores all the settings related to HDP cluster you are setting
+ up
+#Affinty group helps you keep your storage and compute in the same region[m
+[33mexport[m[36m affinityGroupName=myeasthdpag[m
+[34m#Name the region where affinity group should be created. 
+#choices are valid values are "East US", "West US", "East Asia", "Southeast Asia", "North Europe", "West Europe"[m
+[33mexport[m[36m affinityGroupLocation=[m[33m"[m[31mEast US[m[33m"[m
+
+[34m#name of the storage account here your virtual machines will be stored.[m
+[33mexport[m[36m storageAccount=myhdpstorage[m
+
+[34m#Name of the image you will use to create your virtual machines
+#export imageName=b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu_DAILY_BUILD-precise-12_04_3-LTS-amd64-server-20140204-en-us-30GB[m
+[33mexport[m[36m imageName=c290a6b031d841e09f2da759bbabe71f__Oracle-Linux-6[m
+
+[34m#Size of the Virtual machine. Valid sizes are extrasmall, small, medium, large, extralarge, a5, a6, a7[m
+[33mexport[m[36m instanceSize=small[m
+
+[34m#Size of the data disk you want to attach to the VM you are creating. You will typically attach at least 1 disk[m
+[33mexport[m[36m diskSizeInGB=5[m
+[34m#Number of disks you want to attach. Small VM can have 2 disks, medium can have 4, large can have 8 and extralarge can have 8 data disks[m
+[33mexport[m[36m numOfDisks=1[m
+
+[34m#virtual machine settings[m
+[33mexport[m[36m vmNamePrefix=ctinkuhdp[m
+[33mexport[m[36m cloudServicePrefix=ctinkuhdp[m
+[34m#user admin name and password for the virtual machine you are creating[m
+[33mexport[m[36m adminUserName=azureuser[m
+[34m#Azure CLI enforces strong passwords uppercase, lower case and special characters[m
+[33mexport[m[36m adminPassword=Password.1![m
+
+[34m#setting related to virtual network[m
+[33mexport[m[36m vnetName=myeasthdpvnet[m
+[34m#address space allows 192.168.0.0, 10.0.0.0 and 172.16.0.0 ip address ranges
+#virtual network faq is here http://msdn.microsoft.com/en-us/library/windowsazure/dn133803.aspx[m
+[33mexport[m[36m vnetAddressSpace=172.16.0.0[m
+[33mexport[m[36m vnetCidr=16[m
+[33mexport[m[36m subnetName=mysubnet[m
+[33mexport[m[36m subnetAddressSpace=172.16.1.0[m
+[33mexport[m[36m subnetCidr=24[m
+
+[34m#These settings are for nodes in the HDP cluster
+#Name of the custom image you will use to create your cluster nodes
+[7m--More--(3%)[27m#After you have create your master node image replace the value of nodeImageName wiht the image you created [m
+[33mexport[m[36m nodeImageName=c290a6b031d841e09f2da759bbabe71f__Oracle-Linux-6[m
+[34m#Number of nodes in your HDP cluster[m
+[33mexport[m[36m nodeCount=3[m
+[34m#Size of the nodes in the hadoop cluster. Valid sizes are extrasmall, small, medium, large, extralarge, a5, a6, a7[m
+[33mexport[m[36m nodeSize=small[m
+[1m[34m~                                                                                                                                                                                             
+       [50;1H~                                                                                                                                                                                       
+             [51;1H~                                                                                                                                                                                 
+                   [m[52;180H1,1[11CAll[1;1H[?12l[?25h[27m[m[H[2J[?25l[1;1H[34m#This settings file stores all the settings related to HDP cluster you are setting up
+#Affinty group helps you keep your storage and compute in the same region[m
+[33mexport[m[36m affinityGroupName=myeasthdpag[m
+[34m#Name the region where affinity group should be created. 
+#choices are valid values are "East US", "West US", "East Asia", "Southeast Asia", "North Europe", "West Europe"[m
+[33mexport[m[36m affinityGroupLocation=[m[33m"[m[31mEast US[m[33m"[m
+
+[34m#name of the storage account here your virtual machines will be stored.[m
+[33mexport[m[36m storageAccount=myhdpstorage[m
+
+[34m#Name of the image you will use to create your virtual machines
+#export imageName=b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu_DAILY_BUILD-precise-12_04_3-LTS-amd64-server-20140204-en-us-30GB[m
+[33mexport[m[36m imageName=c290a6b031d841e09f2da759bbabe71f__Oracle-Linux-6[m
+
+[34m#Size of the Virtual machine. Valid sizes are extrasmall, small, medium, large, extralarge, a5, a6, a7[m
+[33mexport[m[36m instanceSize=small[m
+
+[34m#Size of the data disk you want to attach to the VM you are creating. You will typically attach at least 1 disk[m
+[33mexport[m[36m diskSizeInGB=5[m
+[34m#Number of disks you want to attach. Small VM can have 2 disks, medium can have 4, large can have 8 and extralarge can have 8 data disks[m
+[33mexport[m[36m numOfDisks=1[m
+
+[34m#virtual machine settings[m
+[33mexport[m[36m vmNamePrefix=ctinkuhdp[m
+[33mexport[m[36m cloudServicePrefix=ctinkuhdp[m
+[34m#user admin name and password for the virtual machine you are creating[m
+[33mexport[m[36m adminUserName=azureuser[m
+[34m#Azure CLI enforces strong passwords uppercase, lower case and special characters[m
+[33mexport[m[36m adminPassword=Password.1![m
+
+[34m#setting related to virtual network[m
+[33mexport[m[36m vnetName=myeasthdpvnet[m
+[34m#address space allows 192.168.0.0, 10.0.0.0 and 172.16.0.0 ip address ranges
+#virtual network faq is here http://msdn.microsoft.com/en-us/library/windowsazure/dn133803.aspx[m
+[33mexport[m[36m vnetAddressSpace=172.16.0.0[m
+[33mexport[m[36m vnetCidr=16[m
+[33mexport[m[36m subnetName=mysubnet[m
+[33mexport[m[36m subnetAddressSpace=172.16.1.0[m
+[33mexport[m[36m subnetCidr=24[m
+
+[34m#These settings are for nodes in the HDP cluster
+#Name of the custom image you will use to create your cluster nodes
+[7m--More--(7%)[27m#After you have create your master node image replace the value of nodeImageName wiht the image you created [m
+[33mexport[m[36m nodeImageName=c290a6b031d841e09f2da759bbabe71f__Oracle-Linux-6[m
+[34m#Number of nodes in your HDP cluster[m
+[33mexport[m[36m nodeCount=3[m
+[34m#Size of the nodes in the hadoop cluster. Valid sizes are extrasmall, small, medium, large, extralarge, a5, a6, a7[m
+[33mexport[m[36m nodeSize=small[m
+[1m[34m~                                                                                                                                                                                             
+       [50;1H~                                                                                                                                                                                       
+             [51;1H~                                                                                                                                                                                 
+                   [m[52;180H1,1[11CAll"hdpsetup.sh" 48L, 2371C[1;1H[?12l[?25h[?25l[52;180H2[2;1H[?12l[?25h[?25l[52;180H3[3;1H[?12l[?25h[?25l[52;180H4[4;1H[?12l[?25h[?25l[52;180H5[5;1H[?12l[?25h[?25l[52;180H6[6;1H[?12l[?25h[?25l[52;180H
+7,0-1[7;1H[?12l[?25h[?25l[52;180H8,1  [8;1H[?12l[?25h[?25l[52;180H9[9;1H[?12l[?25h[?25l[52;180H10,0-1[10;1H[?12l[?25h[?25l[52;181H1,1  [11;1H[?12l[?25h[?25l[52;181H2[12;1H[?12l[?25h[?25l[52;181H3[1
+3;1H[?12l[?25h[?25l[52;181H4,0-1[14;1H[?12l[?25h[?25l[52;181H5,1  [15;1H[?12l[?25h[?25l[52;181H6[16;1H[?12l[?25h[?25l[52;181H7,0-1[17;1H[?12l[?25h[?25l[52;181H8,1  [18;1H[?12l[?25h[?25l[52;181H9[19
+;1H[?12l[?25h[?25l[52;180H20[20;1H[?12l[?25h[?25l[52;181H1[21;1H[?12l[?25h[?25l[52;181H2,0-1[22;1H[?12l[?25h[?25l[52;181H3,1  [23;1H[?12l[?25h[?25l[52;181H4[24;1H[?12l[?25h[?25l[52;181H5[25;1H[?12l
+[?25h[?25l[52;181H6[26;1H[?12l[?25h[?25l[52;181H7[27;1H[?12l[?25h[?25l[52;181H8[28;1H[?12l[?25h[?25l[52;181H9[29;1H[?12l[?25h[?25l[52;180H30,0-1[30;1H[?12l[?25h[?25l[52;181H1,1  [31;1H[?12l[?25h[?2
+5l[52;181H2[32;1H[?12l[?25h[?25l[52;181H3[33;1H[?12l[?25h[?25l[52;181H4[34;1H[?12l[?25h[?25l[52;181H5[35;1H[?12l[?25h[?25l[52;181H6[36;1H[?12l[?25h[?25l[52;181H7[37;1H[?12l[?25h[?25l[52;181H8[38;1H
+[?12l[?25h[?25l[52;181H9[39;1H[?12l[?25h[?25l[52;180H40,0-1[40;1H[?12l[?25h[?25l[52;181H1,1  [41;1H[?12l[?25h[?25l[52;181H2[42;1H[?12l[?25h[?25l[52;181H3[43;1H[?12l[?25h[?25l[52;181H4[44;1H[?12l[?2
+5h[?25l[52;181H5[45;1H[?12l[?25h[?25l[52;181H6[46;1H[?12l[?25h[?25l[52;181H7[47;1H[?12l[?25h[?25l[52;181H8[48;1H[?12l[?25h[?25l[52;1H[1m-- INSERT --[m[52;13H[K[52;180H49,1[10CAll[49;1H[K[49;1H[?12l
+[?25h[?25l[50;1H[K[52;180H50[50;1H[?12l[?25h[?25l[1;51r[1;1H[3M[1;52r[47;1H[34m#This script will be generated and it will be used to mount data drives in each node in the cluster[m
+[36mmntscript[m=[33m"[m[31mmountdrive.sh[m[33m"[m[48;26H[K[49;1H[34m#This file will generate hosts file that can be appended to /etc/hosts on each node.[m
+[36mhostsfile[m=[33m"[m[31mhosts.txt[m[33m"[m[52;180H[K[52;180H54,1[10CBot[51;1H[?12l[?25h[52;1H[K[51;1H[?25l[52;180H54,0-1[8CBot[51;1H[?12l[?25h[?25l[52;181H3,1  [50;1H[?12l[?25h[?25l[52;181H2[49;
+1H[?12l[?25h[?25l[52;181H1[48;1H[?12l[?25h[?25l[52;181H0[47;1H[?12l[?25h[?25l[52;183H99[47;99H[?12l[?25h[?25l[52;1H[1m-- INSERT --[m[52;180H[K[52;180H51,1[10C75%[52;1H[K[1;51r[1;1H[2M[1;52r[46;1H[K
+[47;7H[34mscript will be generated and it will be used to mount data drives in each node in the cluster[m
+[36mmntscript[m[2C[31mmountdrive.sh[m[33m"[m
+[34m#This file will generate hosts file that can be appended to /etc/hosts on each node.[m
+[36mhostsfile[m=[33m"[m[31mhosts.txt[m[33m"[m[52;180H56,0-1[8C55%[51;1H[?12l[?25h[?25l[52;181H5,1  [50;1H[?12l[?25h[?25l[52;181H4[49;1H[?12l[?25h[?25l[52;181H3[48;1H[?12l[?25h[?25l[52;181H2[47;1H[?
+12l[?25h[?25l[52;183H99[47;99H[?12l[?25h[?25l[52;181H1,0-1[46;1H[?12l[?25h[?25l[52;181H0,99 [45;99H[?12l[?25h[?25l[45;51r[51;1H
+[1;52r[51;1H[36mmntscript[m=[33m"[m[31mmountdrive.sh[m[33m"[m[52;180H[K[52;180H50,0-1[8C62%[45;1H[?12l[?25h[?25l[45;51r[51;1H
+[1;52r[51;1H[34m#This file will generate hosts file that can be appended to /etc/hosts on each node.[m[52;180H[K[52;180H50,1[10C71%[45;1H[?12l[?25h[?25l[52;183H2[45;2H[?12l[?25h[?25l[52;183H3[45;3H
+[?12l[?25h[?25l[52;183H4[45;4H[?12l[?25h[?25l[52;183H5[45;5H[?12l[?25h[?25l[52;183H6[45;6H[?12l[?25h[?25l[52;183H7[45;7H[?12l[?25h[?25l[52;183H8[45;8H[?12l[?25h[?25l[52;183H9[45;9H[?12l[?25h[?25l[5
+2;183H10[45;10H[?12l[?25h[?25l[52;184H1[45;11H[?12l[?25h[?25l[52;184H2[45;12H[?12l[?25h[?25l[52;184H3[45;13H[?12l[?25h[?25l[52;184H4[45;14H[?12l[?25h[?25l[52;184H5[45;15H[?12l[?25h[?25l[52;184H6[45
+;16H[?12l[?25h[?25l[52;184H7[45;17H[?12l[?25h[?25l[52;184H8[45;18H[?12l[?25h[?25l[52;184H9[45;19H[?12l[?25h[?25l[52;183H20[45;20H[?12l[?25h[?25l[52;184H1[45;21H[?12l[?25h[?25l[52;184H2[45;22H[?12l[
+?25h[?25l[52;184H3[45;23H[?12l[?25h[?25l[52;184H4[45;24H[?12l[?25h[?25l[52;184H5[45;25H[?12l[?25h[?25l[52;184H6[45;26H[?12l[?25h[?25l[52;184H7[45;27H[?12l[?25h[?25l[52;184H8[45;28H[?12l[?25h[?25l[5
+2;184H9[45;29H[?12l[?25h[?25l[52;183H30[45;30H[?12l[?25h[?25l[52;184H1[45;31H[?12l[?25h[?25l[52;184H2[45;32H[?12l[?25h[?25l[52;184H3[45;33H[?12l[?25h[?25l[52;184H4[45;34H[?12l[?25h[?25l[52;184H5[45
+;35H[?12l[?25h[?25l[52;184H6[45;36H[?12l[?25h[?25l[52;184H7[45;37H[?12l[?25h[?25l[52;184H8[45;38H[?12l[?25h[?25l[52;184H9[45;39H[?12l[?25h[?25l[52;183H40[45;40H[?12l[?25h[?25l[52;184H1[45;41H[?12l[
+?25h[?25l[52;184H2[45;42H[?12l[?25h[?25l[52;184H3[45;43H[?12l[?25h[?25l[52;184H4[45;44H[?12l[?25h[?25l[52;184H5[45;45H[?12l[?25h[?25l[52;184H6[45;46H[?12l[?25h[?25l[52;184H7[45;47H[?12l[?25h[?25l[5
+2;184H8[45;48H[?12l[?25h[?25l[52;184H9[45;49H[?12l[?25h[?25l[52;183H50[45;50H[?12l[?25h[?25l[52;184H1[45;51H[?12l[?25h[?25l[52;184H2[45;52H[?12l[?25h[?25l[52;184H3[45;53H[?12l[?25h[?25l[52;184H4[45
+;54H[?12l[?25h[?25l[52;184H5[45;55H[?12l[?25h[?25l[52;184H6[45;56H[?12l[?25h[?25l[52;184H7[45;57H[?12l[?25h[?25l[52;184H8[45;58H[?12l[?25h[?25l[52;184H9[45;59H[?12l[?25h[?25l[52;183H60[45;60H[?12l[
+?25h[?25l[52;184H1[45;61H[?12l[?25h[?25l[52;184H2[45;62H[?12l[?25h[?25l[52;184H3[45;63H[?12l[?25h[?25l[52;184H4[45;64H[?12l[?25h[?25l[52;184H5[45;65H[?12l[?25h[?25l[52;184H6[45;66H[?12l[?25h[?25l[5
+2;184H7[45;67H[?12l[?25h[?25l[52;184H8[45;68H[?12l[?25h[?25l[52;184H9[45;69H[?12l[?25h[?25l[52;183H70[45;70H[?12l[?25h[?25l[52;184H1[45;71H[?12l[?25h[?25l[52;184H2[45;72H[?12l[?25h[?25l[52;184H3[45
+;73H[?12l[?25h[?25l[52;184H4[45;74H[?12l[?25h[?25l[52;184H5[45;75H[?12l[?25h[?25l[52;184H6[45;76H[?12l[?25h[?25l[52;184H7[45;77H[?12l[?25h[?25l[52;184H8[45;78H[?12l[?25h[?25l[52;184H9[45;79H[?12l[?
+25h[?25l[52;183H80[45;80H[?12l[?25h[?25l[52;184H1[45;81H[?12l[?25h[?25l[52;184H2[45;82H[?12l[?25h[?25l[52;184H3[45;83H[?12l[?25h[?25l[52;184H4[45;84H[?12l[?25h[?25l[52;184H5[45;85H[?12l[?25h[?25l[5
+2;184H6[45;86H[?12l[?25h[?25l[52;184H7[45;87H[?12l[?25h[?25l[52;184H8[45;88H[?12l[?25h[?25l[52;184H9[45;89H[?12l[?25h[?25l[52;183H90[45;90H[?12l[?25h[?25l[52;184H1[45;91H[?12l[?25h[?25l[52;184H2[45
+;92H[?12l[?25h[?25l[52;184H3[45;93H[?12l[?25h[?25l[52;184H4[45;94H[?12l[?25h[?25l[52;184H5[45;95H[?12l[?25h[?25l[52;184H6[45;96H[?12l[?25h[?25l[52;184H7[45;97H[?12l[?25h[?25l[52;184H8[45;98H[?12l[?
+25h[?25l[52;184H9[45;99H[?12l[?25h[?25l[52;1H[1m-- INSERT --[m[52;180H[K[52;180H50,100[8C71%[45;100H[?12l[?25h[?25l[34m.[m[52;185H1[45;101H[?12l[?25h[?25l[34m [m[52;185H2[45;102H[?12l[?25h[?25l[34m
+I[m[52;185H3[45;103H[?12l[?25h[?25l[34mt[m[52;185H4[45;104H[?12l[?25h[?25l[34m [m[52;185H5[45;105H[?12l[?25h[?25l[34mw[m[52;185H6[45;106H[?12l[?25h[?25l[34mi[m[52;185H7[45;107H[?12l[?25h[?25l[34ml[
+m[52;185H8[45;108H[?12l[?25h[?25l[34ml[m[52;185H9[45;109H[?12l[?25h[?25l[34m [m[52;184H10[45;110H[?12l[?25h[?25l[34ma[m[52;185H1[45;111H[?12l[?25h[?25l[34ml[m[52;185H2[45;112H[?12l[?25h[?25l[34ms[m
+[52;185H3[45;113H[?12l[?25h[?25l[34mo[m[52;185H4[45;114H[?12l[?25h[?25l[34m [m[52;185H5[45;115H[?12l[?25h[?25l[34mc[m[52;185H6[45;116H[?12l[?25h[?25l[34mo[m[52;185H7[45;117H[?12l[?25h[?25l[34mp[m[5
+2;185H8[45;118H[?12l[?25h[?25l[34my[m[52;185H9[45;119H[?12l[?25h[?25l[34m [m[52;184H20[45;120H[?12l[?25h[?25l[34mh[m[52;185H1[45;121H[?12l[?25h[?25l[34mo[m[52;185H2[45;122H[?12l[?25h[?25l[34ms[m[52
+;185H3[45;123H[?12l[?25h[?25l[34mt[m[52;185H4[45;124H[?12l[?25h[?25l[34m [m[52;185H5[45;125H[?12l[?25h[?25l[45;124H[K[52;185H4[45;124H[?12l[?25h[?25l[34ms[m[52;185H5[45;125H[?12l[?25h[?25l[34m [m[5
+2;185H6[45;126H[?12l[?25h[?25l[45;125H[K[52;185H5[45;125H[?12l[?25h[?25l[45;124H[K[52;185H4[45;124H[?12l[?25h[?25l[45;123H[K[52;185H3[45;123H[?12l[?25h[?25l[45;122H[K[52;185H2[45;122H[?12l[?25h[?25
+l[45;121H[K[52;185H1[45;121H[?12l[?25h[?25l[45;120H[K[52;185H0[45;120H[?12l[?25h[?25l[34m/[m[52;185H1[45;121H[?12l[?25h[?25l[34me[m[52;185H2[45;122H[?12l[?25h[?25l[34mt[m[52;185H3[45;123H[?12l[?25h
+[7m--More--(18%)[27m[?25l[34mc[m[52;185H4[45;124H[?12l[?25h[?25l[34m/[m[52;185H5[45;125H[?12l[?25h[?25l[34mh[m[52;185H6[45;126H[?12l[?25h[?25l[34mo[m[52;185H7[45;127H[?12l[?25h[?25l[34ms[m[52;185H8[45;128H[?12l[?25h[?
+25l[34mt[m[52;185H9[45;129H[?12l[?25h[?25l[34ms[m[52;184H30[45;130H[?12l[?25h[?25l[34m [m[52;185H1[45;131H[?12l[?25h[?25l[34mf[m[52;185H2[45;132H[?12l[?25h[?25l[34mi[m[52;185H3[45;133H[?12l[?25h[?2
+5l[34ml[m[52;185H4[45;134H[?12l[?25h[?25l[34me[m[52;185H5[45;135H[?12l[?25h[?25l[34m [m[52;185H6[45;136H[?12l[?25h[?25l[34mt[m[52;185H7[45;137H[?12l[?25h[?25l[34mo[m[52;185H8[45;138H[?12l[?25h[?25l
+[34me[m[52;185H9[45;139H[?12l[?25h[?25l[34m [m[52;184H40[45;140H[?12l[?25h[?25l[34ma[m[52;185H1[45;141H[?12l[?25h[?25l[34mc[m[52;185H2[45;142H[?12l[?25h[?25l[34mh[m[52;185H3[45;143H[?12l[?25h[?25l[
+34m [m[52;185H4[45;144H[?12l[?25h[?25l[45;143H[K[52;185H3[45;143H[?12l[?25h[?25l[45;142H[K[52;185H2[45;142H[?12l[?25h[?25l[45;141H[K[52;185H1[45;141H[?12l[?25h[?25l[45;140H[K[52;185H0[45;140H[?12l[
+?25h[?25l[45;139H[K[52;184H39[45;139H[?12l[?25h[?25l[45;138H[K[52;185H8[45;138H[?12l[?25h[?25l[34m [m[52;185H9[45;139H[?12l[?25h[?25l[34me[m[52;184H40[45;140H[?12l[?25h[?25l[34ma[m[52;185H1[45;141H
+[?12l[?25h[?25l[34mc[m[52;185H2[45;142H[?12l[?25h[?25l[34mh[m[52;185H3[45;143H[?12l[?25h[?25l[34m [m[52;185H4[45;144H[?12l[?25h[?25l[34mn[m[52;185H5[45;145H[?12l[?25h[?25l[34mo[m[52;185H6[45;146H[?
+12l[?25h[?25l[34md[m[52;185H7[45;147H[?12l[?25h[?25l[34me[m[52;185H8[45;148H[?12l[?25h[52;1H[K[45;147H[?25l[52;180H50,147[8C71%[45;147H[?12l[?25h[?25l[52;181H1,25 [46;25H[?12l[?25h[?25l[52;181H2,84
+[47;84H[?12l[?25h[?25l[52;181H3,21[48;21H[?12l[?25h[?25l[52;181H4,0-1[49;1H[?12l[?25h[?25l[52;181H5,25 [50;25H[?12l[?25h[?25l[52;181H6,84[51;84H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[36mhostsfile[m=[33m"[m[31mhosts.txt[m[33m"[m[52;180H[K[52;180H57,21[9C85%[51;21H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[52;180H[K[52;180H58,0-1[8CBot[51;1H[?12l[?25h[?25l[52;180H[K[52;1H:[?12l[?25hx[?25l[?12l[?25h[?25l[52;1H[K[52;180H58,0-1[8CBot[51;1H[?12l[?25h[?25l[52;181H7,21 [50;21H[?12l[?25h[?25l[52;181H
+6[49;21H[?12l[?25h[?25l[52;181H5[48;21H[?12l[?25h[?25l[52;181H4,0-1[47;1H[?12l[?25h[?25l[52;181H3,21 [46;21H[?12l[?25h[?25l[52;181H2[45;21H[?12l[?25h[?25l[52;181H1[44;21H[?12l[?25h[?25l[52;181H0[43
+;21H[?12l[?25h[?25l[52;180H49,0-1[42;1H[?12l[?25h[?25l[52;180H50,21 [43;21H[?12l[?25h[?25l[52;181H1[44;21H[?12l[?25h[?25l[52;181H2[45;21H[?12l[?25h[?25l[52;181H3[46;21H[?12l[?25h[?25l[52;181H4,0-1[
+47;1H[?12l[?25h[?25l[52;181H5,21 [48;21H[?12l[?25h[?25l[48;51r[51;1H
+[1;52r[51;1H[1m[34m~                                                                                                                                                                                 
+                   [m[52;180H[K[52;180H55,1[10CBot[48;1H[?12l[?25h[?25l[48;51r[51;1H
+[1;52r[51;1H[1m[34m~                                                                                                                                                                                 
+                   [m[52;180H[K[52;180H55,1[10CBot[48;1H[?12l[?25h[?25l[48;51r[51;1H
+[1;52r[51;1H[1m[34m~                                                                                                                                                                                 
+                   [m[52;180H[K[52;180H55,0-1[8CBot[48;1H[?12l[?25h[?25l[1m[34m~                                                                                                                     
+                                                                               [m[52;181H4[47;1H[?12l[?25h[?25l[1m[34m~                                                                              
+                                                                                                                      [m[52;181H3,1  [46;1H[?12l[?25h[?25l[52;180H[K[52;1H:[?12l[?25hx[?25l[?12l[?25h
+[?25l"hdpsetup.sh" 53L, 2653C written
+[?1l>[?12l[?25h[?1049l]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ vi createmgmtnode.sh 
+[?1049h[?1h=[2;1H▽[6n[1;1H  [1;1H[1;52r[?12;25h[?12l[?25h[27m[m[H[2J[?25l[52;1H"createmgmtnode.sh" 132L, 5564C[>c[1;1H[34m#!/bin/bash
+#sets up the management node and master node [m
+
+[33msource[m ./hdpsetup.sh
+
+[34m#This script will be generated and it will be used to mount data drives in each node in the cluster[m
+[36mmntscript[m=[33m"[m[31mmountdrive.sh[m[33m"[m
+[34m#This file will generate hosts file that can be appended to /etc/hosts on each node.[m
+[36mhostsfile[m=[33m"[m[31mhosts.txt[m[33m"
+
+if [[m [33m-e[m [35m$mntscript[m [33m][m; [33mthen[12;9Hrm[m [35m$mntscript[m
+[33mfi
+
+if [[m [33m-e[m [35m$hostfile[m [33m][m; [33mthen[16;9Hrm[m [35m$hostsfile[m
+[33mfi[m
+
+[34m#This script requires jq json processor
+#check to see if jq is available and download it if necessary[m
+[36mresult[m=[35m$(which jq)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[23;9Hwget http://stedolan.github.io/jq/download/linux64/jq[24;9Hsudo [33mchmod[m [35m+x[m jq[25;9Hsudo [33mmv[m jq /usr/[33mlocal[m/bin
+
+[33melse[27;9Hprintf[m [33m"[m[31mjq json processor was found[m[35m\n[m[33m"
+fi[m
+
+[35m(which jq)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mjq json processor is not available[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+
+[34m##############################################################
+[7m--More--(25%)[27m## Create affinity group if it does not exist
+##############################################################[m
+
+[33mprintf[m [33m"[m[31maffinty group name is %s, affinity group location is %s[m[35m\n[m[33m"[m [33m"[m[35m$affinityGroupName[m[33m"[m [33m"[m[35m$affinityGroupLocation[m[33m"[m
+
+[36mresult[m=[35m$(azure account affinity-group show [m[33m"[m[35m$affinityGroupName[m[33m"[m[35m --json | jq [m[33m'[m[31m.Name[m[33m'[m[35m)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[40;9H[35m([mazure account affinity-group create [35m--location[m [33m"[m[35m$affinityGroupLocation[m[33m"[m [33m"[m[35m$affinityGroupNa
+me[m[33m"[m[35m)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mFailed to create affinity group [m[35m$affinityGroupName[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+[33melse[42;9Hecho[m[31m [m[33m"[m[31maffinity group [m[35m$affinityGroupName[m[31m exists[m[33m"
+fi[m
+
+[34m#show the affinity group details[m
+[33mprintf[m [33m"[m[31m######################################## Affinity Group Details #######################################[m[35m\n[m[33m"[m
+azure account affinity-group show [33m"[m[35m$affinityGroupName[m[33m"[m [35m--json[m
+
+[34m##############################################################
+## Create storage account if it does not exist
+##############################################################[m[52;180H1,1[11CTop[1;1H[?12l[?25h[27m[m[H[2J[?25l[1;1H[34m#!/bin/bash
+#sets up the management node and master node [m
+
+[33msource[m ./hdpsetup.sh
+
+[34m#This script will be generated and it will be used to mount data drives in each node in the cluster[m
+[36mmntscript[m=[33m"[m[31mmountdrive.sh[m[33m"[m
+[34m#This file will generate hosts file that can be appended to /etc/hosts on each node.[m
+[36mhostsfile[m=[33m"[m[31mhosts.txt[m[33m"
+
+if [[m [33m-e[m [35m$mntscript[m [33m][m; [33mthen[12;9Hrm[m [35m$mntscript[m
+[33mfi
+
+if [[m [33m-e[m [35m$hostfile[m [33m][m; [33mthen[16;9Hrm[m [35m$hostsfile[m
+[33mfi[m
+
+[34m#This script requires jq json processor
+#check to see if jq is available and download it if necessary[m
+[36mresult[m=[35m$(which jq)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[23;9Hwget http://stedolan.github.io/jq/download/linux64/jq[24;9Hsudo [33mchmod[m [35m+x[m jq[25;9Hsudo [33mmv[m jq /usr/[33mlocal[m/bin
+
+[33melse[27;9Hprintf[m [33m"[m[31mjq json processor was found[m[35m\n[m[33m"
+fi[m
+
+[35m(which jq)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mjq json processor is not available[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+
+[34m##############################################################
+## Create affinity group if it does not exist
+##############################################################[m
+
+[33mprintf[m [33m"[m[31maffinty group name is %s, affinity group location is %s[m[35m\n[m[33m"[m [33m"[m[35m$affinityGroupName[m[33m"[m [33m"[m[35m$affinityGroupLocation[m[33m"[m
+
+[36mresult[m=[35m$(azure account affinity-group show [m[33m"[m[35m$affinityGroupName[m[33m"[m[35m --json | jq [m[33m'[m[31m.Name[m[33m'[m[35m)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[40;9H[35m([mazure account affinity-group create [35m--location[m [33m"[m[35m$affinityGroupLocation[m[33m"[m [33m"[m[35m$affinityGroupNa
+[7m--More--(29%)[27mme[m[33m"[m[35m)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mFailed to create affinity group [m[35m$affinityGroupName[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+[33melse[42;9Hecho[m[31m [m[33m"[m[31maffinity group [m[35m$affinityGroupName[m[31m exists[m[33m"
+fi[m
+
+[34m#show the affinity group details[m
+[33mprintf[m [33m"[m[31m######################################## Affinity Group Details #######################################[m[35m\n[m[33m"[m
+azure account affinity-group show [33m"[m[35m$affinityGroupName[m[33m"[m [35m--json[m
+
+[34m##############################################################
+## Create storage account if it does not exist
+##############################################################[m[52;180H1,1[11CTop"createmgmtnode.sh" 132L, 5564C[1;1H[?12l[?25h[?25l[52;180H2[2;1H[?12l[?25h[?25l[52;180H3,0-1[3;1H[?12l[?25h[?25l[52;180H4,1  [4;1H[?12l[?25h[?25l[52;180H5,0-1[5;1H[?12l[?25h[?25l[52;180H6,1  [6;1H
+[?12l[?25h[?25l[52;180H7[7;1H[?12l[?25h[?25l[52;180H8[8;1H[?12l[?25h[?25l[52;180H9[9;1H[?12l[?25h[?25l[52;180H8[8;1H[?12l[?25h[?25l[52;180H7[7;1H[?12l[?25h[?25l[52;180H6[6;1H[?12l[?25h[?25l[6;51r[5
+1;1H
+[1;52r[52;1H[K[52;180H6,1[11CTop[6;1H[?12l[?25h[?25l[6;51r[51;1H
+[1;52r[51;1H[33mprintf[m [33m"[m[31mstorage account name is %s[m[35m\n[m[33m"[m [33m"[m[35m$storageAccount[m[33m"[m[52;180H[K[52;180H6,1[11CTop[6;1H[?12l[?25h[?25l[6;51r[51;1H
+[1;52r[52;180H[K[52;180H6,1[11CTop[6;1H[?12l[?25h[?25l[6;51r[51;1H
+[1;52r[51;1H[36mresult[m=[35m$(azure storage account show [m[33m"[m[35m$storageAccount[m[33m"[m[35m --json | jq [m[33m'[m[31m.ServiceName[m[33m'[m[35m)[m[52;180H[K[52;180H6,0-1[9CTop[6;1H[?12l[?25h
+[?25l[6;51r[51;1H
+[1;52r[51;1H[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[52;180H[K[52;180H6,1[11CTop[6;1H[?12l[?25h[?25l[52;180H[K[52;1H:[?12l[?25hx[?25l[?12l[?25h[?25l"createmgmtnode.sh" 127L, 5330C written
+[?1l>[?12l[?25h[?1049l]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ vi creatc[Keclusternodes.sh 
+[?1049h[?1h=[2;1H▽[6n[1;1H  [1;1H[1;52r[?12;25h[?12l[?25h[27m[m[H[2J[?25l[52;1H"createclusternodes.sh" 133L, 5606C[>c[1;1H[34m#!/bin/bash
+#Creates the nodes in the cluster from a custom image
+#Expectation is that affinity group, storage account, virtual network have already been setup[m
+
+[33msource[m ./hdpsetup.sh
+
+[34m#This script will be generated and it will be used to mount data drives in each node in the cluster[m
+[36mmntscript[m=[33m"[m[31mmountdrive.sh[m[33m"[m
+[34m#This file will generate hosts file that can be appended to /etc/hosts on each node.[m
+[36mhostsfile[m=[33m"[m[31mhosts.txt[m[33m"[m
+
+[34m#This script requires jq json processor
+#check to see if jq is available and download it if necessary[m
+[36mresult[m=[35m$(which jq)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[16;9Hwget http://stedolan.github.io/jq/download/linux64/jq[17;9Hsudo [33mchmod[m [35m+x[m jq[18;9Hsudo [33mmv[m jq /usr/[33mlocal[m/bin
+
+[33melse[20;9Hprintf[m [33m"[m[31mjq json processor was found[m[35m\n[m[33m"
+fi[m
+
+[35m(which jq)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mjq json processor is not available[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+
+[34m##############################################################
+## Create affinity group if it does not exist
+##############################################################[m
+
+[33mprintf[m [33m"[m[31maffinty group name is %s, affinity group location is %s[m[35m\n[m[33m"[m [33m"[m[35m$affinityGroupName[m[33m"[m [33m"[m[35m$affinityGroupLocation[m[33m"[m
+
+[36mresult[m=[35m$(azure account affinity-group show [m[33m"[m[35m$affinityGroupName[m[33m"[m[35m --json | jq [m[33m'[m[31m.Name[m[33m'[m[35m)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[33;9H[35m([mazure account affinity-group create [35m--location[m [33m"[m[35m$affinityGroupLocation[m[33m"[m [33m"[m[35m$affinityGroupNa
+me[m[33m"[m[35m)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mFailed to create affinity group [m[35m$affinityGroupName[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+[33melse[35;9Hecho[m[31m [m[33m"[m[31maffinity group [m[35m$affinityGroupName[m[31m exists[m[33m"
+[7m--More--(34%)[27mfi[m[K
+
+[34m#show the affinity group details[m
+[33mprintf[m [33m"[m[31m######################################## Affinity Group Details #######################################[m[35m\n[m[33m"[m
+azure account affinity-group show [33m"[m[35m$affinityGroupName[m[33m"[m [35m--json[m
+
+[34m##############################################################
+## Create storage account if it does not exist
+##############################################################[m
+
+[33mprintf[m [33m"[m[31mstorage account name is %s[m[35m\n[m[33m"[m [33m"[m[35m$storageAccount[m[33m"[m
+
+[36mresult[m=[35m$(azure storage account show [m[33m"[m[35m$storageAccount[m[33m"[m[35m --json | jq [m[33m'[m[31m.ServiceName[m[33m'[m[35m)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[50;9H[35m([mazure storage account create [35m--affinity-group[m [33m"[m[35m$affinityGroupName[m[33m"[m [35m$storageAccount)[m || [35m{[
+m [33mecho[m[31m [m[33m"[m[31mFailed to create storage account [m[35m$storageAccount[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+[33melse[m[52;180H1,1[11CTop[1;1H[?12l[?25h[27m[m[H[2J[?25l[1;1H[34m#!/bin/bash
+#Creates the nodes in the cluster from a custom image
+#Expectation is that affinity group, storage account, virtual network have already been setup[m
+
+[33msource[m ./hdpsetup.sh
+
+[34m#This script will be generated and it will be used to mount data drives in each node in the cluster[m
+[36mmntscript[m=[33m"[m[31mmountdrive.sh[m[33m"[m
+[34m#This file will generate hosts file that can be appended to /etc/hosts on each node.[m
+[36mhostsfile[m=[33m"[m[31mhosts.txt[m[33m"[m
+
+[34m#This script requires jq json processor
+#check to see if jq is available and download it if necessary[m
+[36mresult[m=[35m$(which jq)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[16;9Hwget http://stedolan.github.io/jq/download/linux64/jq[17;9Hsudo [33mchmod[m [35m+x[m jq[18;9Hsudo [33mmv[m jq /usr/[33mlocal[m/bin
+
+[33melse[20;9Hprintf[m [33m"[m[31mjq json processor was found[m[35m\n[m[33m"
+fi[m
+
+[35m(which jq)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mjq json processor is not available[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+
+[34m##############################################################
+## Create affinity group if it does not exist
+##############################################################[m
+
+[33mprintf[m [33m"[m[31maffinty group name is %s, affinity group location is %s[m[35m\n[m[33m"[m [33m"[m[35m$affinityGroupName[m[33m"[m [33m"[m[35m$affinityGroupLocation[m[33m"[m
+
+[36mresult[m=[35m$(azure account affinity-group show [m[33m"[m[35m$affinityGroupName[m[33m"[m[35m --json | jq [m[33m'[m[31m.Name[m[33m'[m[35m)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[33;9H[35m([mazure account affinity-group create [35m--location[m [33m"[m[35m$affinityGroupLocation[m[33m"[m [33m"[m[35m$affinityGroupNa
+me[m[33m"[m[35m)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mFailed to create affinity group [m[35m$affinityGroupName[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+[33melse[35;9Hecho[m[31m [m[33m"[m[31maffinity group [m[35m$affinityGroupName[m[31m exists[m[33m"
+fi[m
+
+[34m#show the affinity group details[m
+[33mprintf[m [33m"[m[31m######################################## Affinity Group Details #######################################[m[35m\n[m[33m"[m
+azure account affinity-group show [33m"[m[35m$affinityGroupName[m[33m"[m [35m--json[m
+[7m--More--(38%)[27m[K
+[34m##############################################################
+## Create storage account if it does not exist
+##############################################################[m
+
+[33mprintf[m [33m"[m[31mstorage account name is %s[m[35m\n[m[33m"[m [33m"[m[35m$storageAccount[m[33m"[m
+
+[36mresult[m=[35m$(azure storage account show [m[33m"[m[35m$storageAccount[m[33m"[m[35m --json | jq [m[33m'[m[31m.ServiceName[m[33m'[m[35m)[m
+[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[50;9H[35m([mazure storage account create [35m--affinity-group[m [33m"[m[35m$affinityGroupName[m[33m"[m [35m$storageAccount)[m || [35m{[
+m [33mecho[m[31m [m[33m"[m[31mFailed to create storage account [m[35m$storageAccount[m[33m";[m [33mexit[m [31m1[m[33m;[m [35m}[m
+[33melse[m[52;180H1,1[11CTop"createclusternodes.sh" 133L, 5606C[1;1H[?12l[?25h[?25l[52;180H2[2;1H[?12l[?25h[?25l[52;180H3[3;1H[?12l[?25h[?25l[52;180H4,0-1[4;1H[?12l[?25h[?25l[52;180H5,1  [5;1H[?12l[?25h[?25l[52;180H6,0-1[6;1H
+[?12l[?25h[?25l[52;180H7,1  [7;1H[?12l[?25h[?25l[7;51r[51;1H
+[1;52r[51;9H[33mecho[m[31m [m[33m"[m[31mStorage account [m[35m$storageAccount[m[31m exists[m[33m"[m[52;1H[K[52;180H7,1[11CTop[7;1H[?12l[?25h[?25l[7;51r[51;1H
+[1;52r[51;1H[33mfi[m[52;180H[K[52;180H7,1[11CTop[7;1H[?12l[?25h[?25l[7;51r[51;1H
+[1;52r[52;180H[K[52;180H7,1[11CTop[7;1H[?12l[?25h[?25l[7;51r[51;1H
+[1;52r[51;1H[34m#show the storage account details[m[52;180H[K[52;180H7,0-1[9CTop[7;1H[?12l[?25h[?25l[7;51r[51;1H
+[1;52r[51;1H[33mprintf[m [33m"[m[31m######################################## Storage Account Details #######################################[m[35m\n[m[33m"[m[52;180H[K[52;180H7,1[11CTop[7;1H[?12l[?
+25h[?25l[52;180H8[8;1H[?12l[?25h[?25l[52;180H9[9;1H[?12l[?25h[?25l[52;180H10,1[10;1H[?12l[?25h[?25l[52;181H1,1-8[11;8H[?12l[?25h[?25l[52;181H2[12;8H[?12l[?25h[?25l[52;181H3[13;8H[?12l[?25h[?25l[52;
+181H4,1  [14;1H[?12l[?25h[?25l[52;181H5,1-8[15;8H[?12l[?25h[?25l[52;181H6,1  [16;1H[?12l[?25h[?25l[52;181H7,0-1[17;1H[?12l[?25h[?25l
+[35m[46m([8C)[m[52;181H8,1  [18;1H[?12l[?25h[?25l[35m([8C)[m[52;181H9,0-1[19;1H[?12l[?25h[?25l[52;180H20,1  [20;1H[?12l[?25h[?25l[52;181H1[21;1H[?12l[?25h[?25l[52;181H2[22;1H[?12l[?25h[?25l[52;181H
+3,0-1[23;1H[?12l[?25h[?25l[52;181H4,1  [24;1H[?12l[?25h[?25l[52;181H5,0-1[25;1H[?12l[?25h[?25l[52;181H6,1  [26;1H[?12l[?25h[?25l[52;181H7[27;1H[?12l[?25h[?25l[52;181H8,1-8[28;8H[?12l[?25h[?25l[52;1
+81H9,1  [29;1H[?12l[?25h[?25l[52;180H30,1-8[30;8H[?12l[?25h[?25l[52;181H1,1  [31;1H[?12l[?25h[?25l[52;181H2,0-1[32;1H[?12l[?25h[?25l[52;181H3,1  [33;1H[?12l[?25h[?25l[52;181H4[34;1H[?12l[?25h[?25l[
+52;181H5[35;1H[?12l[?25h[?25l[52;181H6,0-1[36;1H[?12l[?25h[?25l[52;181H7,1  [37;1H[?12l[?25h[?25l[52;181H8[38;1H[?12l[?25h[?25l[52;181H9[39;1H[?12l[?25h[?25l[52;180H40,0-1[40;1H[?12l[?25h[?25l[52;1
+81H1,1  [41;1H[?12l[?25h[?25l[52;181H2,0-1[42;1H[?12l[?25h[?25l[52;181H3,1  [43;1H[?12l[?25h[?25l[52;181H4[44;1H[?12l[?25h[?25l[52;181H5,1-8[45;8H[?12l[?25h[?25l[52;181H6,1  [46;1H[?12l[?25h[?25l[5
+2;181H7,1-8[47;8H[?12l[?25h[?25l[52;181H8,1  [48;1H[?12l[?25h[?25l[52;181H9,0-1[49;1H[?12l[?25h[?25l[52;180H50,1  [50;1H[?12l[?25h[?25l[52;181H1[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1Hazure storage account show [33m"[m[35m$storageAccount[m[33m"[m [35m--json[m[52;180H[K[52;180H52,1[11C1%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[52;180H[K[52;180H53,0-1[9C2%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[34m##############################################################[m[52;180H[K[52;180H54,1[11C3%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[34m## Create virtual network if it does not exist[m[52;180H[K[52;180H55,1[11C5%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[34m##############################################################[m[52;180H[K[52;180H56,1[11C6%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[52;180H[K[52;180H57,0-1[9C7%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[33mprintf[m [33m"[m[31mvirtual network is %s, subnet is %s[m[35m\n[m[33m"[m [33m"[m[35m$vnetName[m[33m"[m [33m"[m[35m$subnetName[m[33m"[m[52;180H[K[52;180H58,1[11C9%[51;1H[?12l[?25h[?2
+5l[1;51r[51;1H
+[1;52r[52;180H[K[52;180H59,0-1[8C10%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[36mresult[m=[35m$(azure network vnet show $vnetName --json | jq [m[33m'[m[31m.Name[m[33m'[m[35m)[m[52;180H[K[52;180H60,1[10C11%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[33mif [m[35m[[[m [33m-z[m [35m$result[m [35m]][m; [33mthen[m[52;180H[K[52;180H61,1[10C12%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[33mprintf[m [33m"[m[31mNeed to create virtual network %s[m[35m\n[m[33m"[m [33m"[m[35m$vnetName[m[33m"[m[52;180H[K[52;180H62,1-8[8C14%[51;8H[?12l[?25h[?25l[1;51r[1;1H[2M[1;52r[50;9H[35m
+([mazure network vnet create [35m--vnet[m [35m$vnetName[m [35m--affinity-group[m [33m"[m[35m$affinityGroupName[m[33m"[m [35m--address-space[m [35m$vnetAddressSpace[m [35m--cidr[m [35m$vnetCidr[m [3
+5m--subnet-name[m [35m$subnetName[m [35m--subnet-start-ip[m [35m$subnetAddree[51;1HssSpace[m [35m--subnet-cidr[m [35m$subnetCidr)[m || [35m{[m [33mecho[m[31m [m[33m"[m[31mFailed to create virtual n
+etwork [m[35m$vnetName[m[33m";[m [33mexit[m [31m1[m[33m;[m[35m}[m[52;180H[K[52;180H63,1-8[8C16%[50;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[33melse[m[52;180H[K[52;180H64,1[10C17%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;9H[33mprintf[m [33m"[m[31mVirtual network [m[35m$virtualNetworkName[m[31m exists[m[35m\n[m[33m"[m[52;180H[K[52;180H65,1-8[8C19%[51;8H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[33mfi[m[52;180H[K[52;180H66,1[10C20%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[52;180H[K[52;180H67,0-1[8C21%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[34m#show the virtual network details[m[52;180H[K[52;180H68,1[10C23%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[33mprintf[m [33m"[m[31m######################################## Virtual Network Details #######################################[m[35m\n[m[33m"[m[52;180H[K[52;180H69,1[10C24%[51;1H[?12l
+[?25h[?25l[1;51r[51;1H
+[1;52r[51;1Hazure network vnet show [33m"[m[35m$vnetName[m[33m"[m [35m--json[m[52;180H[K[52;180H70,1[10C25%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[52;180H[K[52;180H71,0-1[8C26%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[34m#Loop to create nodes in the cluster[m[52;180H[K[52;180H72,1[10C28%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[1;52r[51;1H[36mloopIndex[m=[31m1[m[52;180H[K[52;180H73,1[10C29%[51;1H[?12l[?25h[?25l[1;51r[51;1H
+[7m--More--(46%)[27m[K]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ 
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ 
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ 
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ clear
+[H[2J]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ ls -al
+total 196
+drwxrwxr-x 2 azureuser azureuser   4096 Feb 12 06:00 [0m[01;34m.[0m
+drwxrwxr-x 6 azureuser azureuser   4096 Feb 12 04:53 [01;34m..[0m
+-rw-rw-r-- 1 azureuser azureuser   5441 Feb 12 06:00 createclusternodes.sh
+-rw-rw-r-- 1 azureuser azureuser   4730 Feb 12 04:53 createmasterimage.sh
+-rw-rw-r-- 1 azureuser azureuser   5564 Feb 12 04:53 createmasternode.sh
+-rw-rw-r-- 1 azureuser azureuser   5330 Feb 12 05:53 createmgmtnode.sh
+-rw-rw-r-- 1 azureuser azureuser     98 Feb 12 04:53 deletecluster.sh
+-rw-rw-r-- 1 azureuser azureuser   2653 Feb 12 05:53 hdpsetup.sh
+-rw-rw-r-- 1 azureuser azureuser     80 Feb 12 05:47 hosts.txt
+-rw-rw-r-- 1 azureuser azureuser   4149 Feb 12 04:53 st.pl
+-rwxrwxr-x 1 azureuser azureuser    302 Feb 12 05:45 [01;32mupdatehosts.sh[0m
+-rw-rw-r-- 1 azureuser azureuser 135168 Feb 12 06:01 will
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ git status
+# On branch master
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#	modified:   createclusternodes.sh
+#	modified:   createmgmtnode.sh
+#	modified:   hdpsetup.sh
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	hosts.txt
+#	updatehosts.sh
+#	will
+no changes added to commit (use "git add" and/or "git commit -a")
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ git add [K[K[K[K[K[K[K[Kgit add updatehoss.sh
+fatal: pathspec 'bash/updatehoss.sh' did not match any files
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ git add updatehoss.sh[C[C[Csh[K[1Psh[1Psh[1Psh[1Psh[1Psh[1Psh[1Psh[1Psh[C[C[K[Kgit add udatehosts.sh
+fatal: pathspec 'bash/udatehosts.sh' did not match any files
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ i[Kgit add ./updatehosts.sh
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ git commit -m "add script to updates hosts"
+[master 902d1cf] add script to updates hosts
+ 1 file changed, 15 insertions(+)
+ create mode 100755 bash/updatehosts.sh
+]0;azureuser@RajUbuntu: ~/azure-hdp/bashazureuser@RajUbuntu:~/azure-hdp/bash$ git m[Kpushor[K[K origin master
+Username for 'https://github.com': rajsingh@microsoft.o com
+Password for 'https://rajsingh@microsoft.com@github.com': 
+Counting objects: 6, done.
+Compressing objects:  25% (1/4)   Compressing objects:  50% (2/4)   Compressing objects:  75% (3/4)   Compressing objects: 100% (4/4)   Compressing objects: 100% (4/4), done.
+Writing objects:  25% (1/4)   Writing objects:  50% (2/4)   Writing objects:  75% (3/4)   Writing objects: 100% (4/4)   Writing objects: 100% (4/4), 609 bytes | 0 bytes/s, done.
+Total 4 (delta 1), reused 0 (del

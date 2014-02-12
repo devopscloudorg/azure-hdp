@@ -46,3 +46,8 @@ export nodeImageName=c290a6b031d841e09f2da759bbabe71f__Oracle-Linux-6
 export nodeCount=3
 #Size of the nodes in the hadoop cluster. Valid sizes are extrasmall, small, medium, large, extralarge, a5, a6, a7
 export nodeSize=small
+
+#This script will be generated and it will be used to mount data drives in each node in the cluster. It will also copy /etc/hosts file to each node
+mntscript="mountdrive.sh"
+#This file will generate hosts file that can be appended to /etc/hosts on each node.
+hostsfile="hosts.txt"
