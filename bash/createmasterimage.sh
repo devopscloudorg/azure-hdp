@@ -1,5 +1,7 @@
 #!/bin/bash
-#sets up the management node and master node 
+#createmasterimage.sh
+#This script creates a virtual machine that will be customized to create an image for nodes in the cluster
+#You will need to make manual updates to the VM before creating an image
 
 source ./hdpsetup.sh
 

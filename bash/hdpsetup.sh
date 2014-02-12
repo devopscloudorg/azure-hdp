@@ -43,7 +43,7 @@ export subnetCidr=24
 #After you have create your master node image replace the value of nodeImageName wiht the image you created 
 export nodeImageName=c290a6b031d841e09f2da759bbabe71f__Oracle-Linux-6
 #Number of nodes in your HDP cluster
-export nodeCount=3
+export nodeCount=2
 #Size of the nodes in the hadoop cluster. Valid sizes are extrasmall, small, medium, large, extralarge, a5, a6, a7
 export nodeSize=small
 

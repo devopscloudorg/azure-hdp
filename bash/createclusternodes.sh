@@ -114,9 +114,12 @@ while [ $loopIndex -le $nodeCount ]; do
 		printf "Virtual machine $vmName exists\n"
 	fi
 
-	echo "ssh ${adminUserName}@${vmName}:/root/scripts/st.pl" >> $mntscript
-	echo "scp /etc/hosts ${adminUserName}@${vmName}:/etc" >> $mntscript
-
+	#We can either add the adminUserName in the SUDOER group so it can overwrite the /etc/hosts file
+	#or we can use the root user to overwrite the /etc/hosts file
+	#echo "ssh ${adminUserName}@${vmName}:/root/scripts/st.pl" >> $mntscript
+	#echo "scp /etc/hosts ${adminUserName}@${vmName}:/etc" >> $mntscript
+	echo "ssh root@${vmName}:/root/scripts/st.pl" >> $mntscript
+	echo "scp /etc/hosts root@${vmName}:/etc" >> $mntscript
 
 	printf "######################################## Virtual Machine Details #######################################\n"
 	#display the details about the newly created VM
@@ -126,4 +129,5 @@ while [ $loopIndex -le $nodeCount ]; do
 
 	let loopIndex=loopIndex+1
 done
+#make the mntscript executable
 chmod a+x $mntscript
