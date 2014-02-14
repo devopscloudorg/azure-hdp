@@ -118,7 +118,7 @@ while [ $loopIndex -le $nodeCount ]; do
 	#or we can use the root user to overwrite the /etc/hosts file
 	#echo "scp /etc/hosts ${adminUserName}@${vmName}:/etc" >> $mntscript
 	#echo "ssh ${adminUserName}@${vmName}:/root/scripts/st.pl" >> $mntscript
-	echo "ssh root@${vmName}:/root/scripts/st.pl" >> $mntscript
+	echo "ssh root@${vmName}:/root/scripts/makefilesystem.sh" >> $mntscript
 	echo "scp /etc/hosts root@${vmName}:/etc" >> $mntscript
 
 	printf "######################################## Virtual Machine Details #######################################\n"

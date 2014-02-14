@@ -13,7 +13,7 @@ export storageAccount=myhdpstorage
 export imageName=c290a6b031d841e09f2da759bbabe71f__Oracle-Linux-6
 
 #Size of the Virtual machine. Valid sizes are extrasmall, small, medium, large, extralarge, a5, a6, a7
-export instanceSize=small
+export instanceSize=large
 
 #Size of the data disk you want to attach to the VM you are creating. You will typically attach at least 1 disk
 export diskSizeInGB=1
@@ -21,8 +21,8 @@ export diskSizeInGB=1
 export numOfDisks=1
 
 #virtual machine settings
-export vmNamePrefix=atinkuhdp
-export cloudServicePrefix=atinkuhdp
+export vmNamePrefix=yourhdpnode
+export cloudServicePrefix=yourhdpsvc
 #user admin name and password for the virtual machine you are creating
 export adminUserName=azureuser
 #Azure CLI enforces strong passwords uppercase, lower case and special characters
@@ -41,7 +41,7 @@ export subnetCidr=24
 #These settings are for nodes in the HDP cluster
 #Name of the custom image you will use to create your cluster nodes
 #After you have create your master node image replace the value of nodeImageName wiht the image you created 
-export nodeImageName=oraclehdp
+export nodeImageName=oraclehdp2
 #Number of nodes in your HDP cluster
 export nodeCount=2
 #Size of the nodes in the hadoop cluster. Valid sizes are extrasmall, small, medium, large, extralarge, a5, a6, a7
