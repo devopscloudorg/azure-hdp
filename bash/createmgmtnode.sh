@@ -125,3 +125,4 @@ fi
 ipaddress=$(azure vm show $vmName --json | jq '.IPAddress')
 #remove the double quotes from the IP address
 echo "$ipaddress $vmName" | sed -e 's/\"//g' >> $hostsfile
+echo "ssh root@${vmName}:/root/scripts/makefilesystem.sh" >> $mntscript
