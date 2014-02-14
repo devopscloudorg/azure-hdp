@@ -116,8 +116,8 @@ while [ $loopIndex -le $nodeCount ]; do
 
 	#We can either add the adminUserName in the SUDOER group so it can overwrite the /etc/hosts file
 	#or we can use the root user to overwrite the /etc/hosts file
-	#echo "ssh ${adminUserName}@${vmName}:/root/scripts/st.pl" >> $mntscript
 	#echo "scp /etc/hosts ${adminUserName}@${vmName}:/etc" >> $mntscript
+	#echo "ssh ${adminUserName}@${vmName}:/root/scripts/st.pl" >> $mntscript
 	echo "ssh root@${vmName}:/root/scripts/st.pl" >> $mntscript
 	echo "scp /etc/hosts root@${vmName}:/etc" >> $mntscript
 

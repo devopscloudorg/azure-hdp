@@ -16,13 +16,13 @@ export imageName=c290a6b031d841e09f2da759bbabe71f__Oracle-Linux-6
 export instanceSize=small
 
 #Size of the data disk you want to attach to the VM you are creating. You will typically attach at least 1 disk
-export diskSizeInGB=5
+export diskSizeInGB=1
 #Number of disks you want to attach. Small VM can have 2 disks, medium can have 4, large can have 8 and extralarge can have 8 data disks
 export numOfDisks=1
 
 #virtual machine settings
-export vmNamePrefix=ctinkuhdp
-export cloudServicePrefix=ctinkuhdp
+export vmNamePrefix=atinkuhdp
+export cloudServicePrefix=atinkuhdp
 #user admin name and password for the virtual machine you are creating
 export adminUserName=azureuser
 #Azure CLI enforces strong passwords uppercase, lower case and special characters
@@ -41,7 +41,7 @@ export subnetCidr=24
 #These settings are for nodes in the HDP cluster
 #Name of the custom image you will use to create your cluster nodes
 #After you have create your master node image replace the value of nodeImageName wiht the image you created 
-export nodeImageName=c290a6b031d841e09f2da759bbabe71f__Oracle-Linux-6
+export nodeImageName=oraclehdp
 #Number of nodes in your HDP cluster
 export nodeCount=2
 #Size of the nodes in the hadoop cluster. Valid sizes are extrasmall, small, medium, large, extralarge, a5, a6, a7
