@@ -64,11 +64,7 @@ param(
 
     # Number of data disks to add to each virtual machine 
     [Parameter(Mandatory = $true)] 
-    [Int32]$numOfDisks,
-
-    # Indicate if the VM is the management node.
-    [Parameter(Mandatory = $true)] 
-    [string]$isManagementNode
+    [Int32]$numOfDisks
     ) 
  
 
@@ -100,10 +96,6 @@ $vmDetails = Add-AzureProvisioningConfig -Linux -LinuxUser $adminUserName -Passw
             Remove-AzureEndpoint "SSH" -VM $vmConfig
             Add-AzureEndpoint -Protocol tcp -PublicPort 22 -LocalPort 22 -Name "SSH" -VM $vmConfig                               
             Set-AzureSubnet $virtualSubnetname -VM $vmConfig
-            If ($isManagementNode -eq "True")
-            {
-            Add-AzureEndpoint -Protocol tcp -PublicPort 8080 -LocalPort 8080 -Name "Ambari" -VM $vmConfig  
-            }
 
 $result = New-AzureVM -ServiceName $cloudServiceName -VMs @($vmDetails) -AffinityGroup $affinityGroupName -VNetName $virtualNetworkName -ErrorVariable errs
 if($? -eq $true)

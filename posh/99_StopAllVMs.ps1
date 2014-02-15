@@ -1,11 +1,7 @@
-﻿$imageNamePrefix = "ncdHDP"
+﻿$imageNamePrefix = "ncdHDPa0"
 
-#Remove the Cloud Services, VMs, and Disks
-Get-AzureVM | where {$_.Name -like "*$imageNamePrefix*"} | Stop-AzureVM -Force
+###########################################################################################################
+#Stop the virtual machine.
+########################################################################################################### 
+Get-AzureVM | where {$_.Name -eq "*$vmName"} | Stop-AzureVM -Force
 
-<#
-$imageNamePrefix = "ncdHDP"
-
-#Remove the Cloud Services, VMs, and Disks
-Get-AzureVM | where {$_.Name -like "*$imageNamePrefix*"} | Restart-AzureVM 
-#>
