@@ -11,7 +11,7 @@ Hadoop on Azure Virtual Machines
   Create a single storage accountr.  
   
 .EXAMPLE 
-  .\0_Create_Storage_Account.ps1 -affinityGroupName "ncdAGHDP" -clusterStorageAccount "hdpstorage" 
+  .\0_Create_Storage_Account.ps1 -affinityGroupName "hdpazureAG" -clusterStorageAccount "hdpstorage" 
 
 
 ############################################################################################################>
@@ -22,8 +22,8 @@ param (
     [String]$affinityGroupName, 
      
     # Blob storage account for storing vhds and scripts 
-    [Parameter(Mandatory = $false)] 
-    [String]$storageAccountName = ""
+    [Parameter(Mandatory = $true)] 
+    [String]$storageAccountName 
     )      
 
 # Check if account already exists then use it 

@@ -18,8 +18,9 @@ Hadoop on Azure Virtual Machines
   
 .EXAMPLE 
   .\1_Management_Master_Nodes.ps1 -imageName "OpenLogic" -adminUserName "clusteradmin" -adminPassword "Password.1" -instanceSize "ExtraLarge" -diskSizeInGB 100 -numofDisks 2 `
-    -vmNamePrefix "ncdHDP" -cloudServicePrefix "ncdHDP" -affinityGroupLocation "East US" -affinityGroupName "ncdAGHDP" `
-    -affinityGroupDescription "Affinity Group used for HDP on Azure VM" -affinityGroupLabel "Hadoop on Azure VM AG HDP" -virtualNetworkName "Hadoop-NetworkHDP" -virtualSubnetname "App" 
+    -vmNamePrefix "hdpazure" -cloudServicePrefix "hdpazure" -affinityGroupLocation "East US" -affinityGroupName "hdpazureAG" `
+    -affinityGroupDescription "Affinity Group used for HDP on Azure VM" -affinityGroupLabel "Hadoop on Azure VM AG HDP" -virtualNetworkName "Hadoop-NetworkHDP" `
+    -virtualSubnetname "App" -storageAccountName "hdpstorage"
 
 ############################################################################################################>
 
