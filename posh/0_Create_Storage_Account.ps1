@@ -11,7 +11,7 @@ Hadoop on Azure Virtual Machines
   Create a single storage accountr.  
   
 .EXAMPLE 
-  .\0_Create_Storage_Account.ps1 -affinityGroupName "hdpazureAG" -clusterStorageAccount "hdpstorage" 
+  .\0_Create_Storage_Account.ps1 -affinityGroupName "hdpazureAG" -storageAccountName "hdpstorage" 
 
 
 ############################################################################################################>

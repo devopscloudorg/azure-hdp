@@ -104,7 +104,7 @@ else
 ## when the virtual machines are created.
 ########################################################################################################### 
 if ((Get-AzureStorageAccount | where {$_.StorageAccountName -eq $storageAccountName}) -eq $NULL) 
-{.\0_Create_Storage_Account.ps1 -affinityGroupName $affinityGroupName  -clusterStorageAccount $storageAccountName 
+{.\0_Create_Storage_Account.ps1 -affinityGroupName $affinityGroupName  -storageAccountName $storageAccountName 
 }
 
 $subscriptionInfo = Get-AzureSubscription -Current
