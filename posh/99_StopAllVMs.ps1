@@ -1,11 +1,12 @@
-﻿$imageNamePrefix = "ncdHDP"
+﻿<#############################################################################################################
+Hadoop on Azure Virtual Machines
 
-#Remove the Cloud Services, VMs, and Disks
-Get-AzureVM | where {$_.Name -like "*$imageNamePrefix*"} | Stop-AzureVM -Force
+.SYNOPSIS 
+  Management script to stop all virtual machines follow a naming convention.   
 
-<#
-$imageNamePrefix = "ncdHDP"
+############################################################################################################>
+$vmNamePrefix = "ncdHDPa0"
 
-#Remove the Cloud Services, VMs, and Disks
-Get-AzureVM | where {$_.Name -like "*$imageNamePrefix*"} | Restart-AzureVM 
-#>
+
+Get-AzureVM | where {$_.Name -like "*$vmNamePrefix"} | Stop-AzureVM -Force
+

@@ -13,8 +13,9 @@ Hadoop on Azure Virtual Machines
     Set-AzureSubscription -SubscriptionName "MySubscription" -CurrentStorageAccount "MyStorageAccount" 
   
 .EXAMPLE 
-  .\2_Cluster_Nodes.ps1 -imageName "ncdHDPM" -adminUserName "clusteradmin" -adminPassword "Password.1" -instanceSize "ExtraLarge" -diskSizeInGB 100 -numofDisks 2 `
-    -vmNamePrefix "ncdHDP" -cloudServicePrefix "ncdHDP" -numNodes 1 -affinityGroupName "ncdAGHDP" -virtualNetworkName "Hadoop-NetworkHDP" -virtualSubnetname "App" -isManagementNode "False"
+  .\2_Cluster_Nodes.ps1 -imageName "azurehdpm" -adminUserName "clusteradmin" -adminPassword "Password.1" -instanceSize "ExtraLarge" -diskSizeInGB 100 -numofDisks 2 `
+    -vmNamePrefix "azurehdp" -cloudServicePrefix "azurehdp" -numNodes 1 -affinityGroupName "azurehdpAG" -virtualNetworkName "Hadoop-NetworkHDP" -virtualSubnetname "App" `
+    -storageAccountName "hdpstorage"
 
 ############################################################################################################>
 
@@ -68,11 +69,19 @@ param(
     [Parameter(Mandatory = $true)]  
     [string]$virtualSubnetname,
     
-    # Indicate if the VM is the management node.  Will be false for cluster nodes.
-    [Parameter(Mandatory = $true)] 
-    [string]$isManagementNode 
+    # The name of the storage account. 
+    [Parameter(Mandatory = $true)]  
+    [string]$storageAccountName
     ) 
 
+
+###########################################################################################################
+## Set the storage account as the current storage account.
+########################################################################################################### 
+$subscriptionInfo = Get-AzureSubscription -Current
+$subName = $subscriptionInfo | %{ $_.SubscriptionName }
+
+Set-AzureSubscription -SubscriptionName $subName –CurrentStorageAccount $storageAccountName
 
 ###########################################################################################################
 ## Select the image to provision
@@ -88,7 +97,7 @@ For ($count = 1; $count -le $numNodes; $count++)
     $vmName = $vmNamePrefix + $count
     $cloudServiceName = $cloudServicePrefix + $count
     
-    .\0_Create-VM.ps1 -imageName $imageName -adminUserName $adminUserName -adminPassword $adminPassword -instanceSize $instanceSize -diskSizeInGB $diskSizeInGB -vmName $vmName -cloudServiceName $cloudServiceName -affinityGroupName $affinityGroupName -virtualNetworkName $virtualNetworkName -virtualSubnetname $virtualSubnetname -numofDisks $numOfDisks -isManagementNode "False"
+    .\0_Create-VM.ps1 -imageName $imageName -adminUserName $adminUserName -adminPassword $adminPassword -instanceSize $instanceSize -diskSizeInGB $diskSizeInGB -vmName $vmName -cloudServiceName $cloudServiceName -affinityGroupName $affinityGroupName -virtualNetworkName $virtualNetworkName -virtualSubnetname $virtualSubnetname -numofDisks $numOfDisks 
 
 }
 

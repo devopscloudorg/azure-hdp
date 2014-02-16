@@ -18,8 +18,9 @@ Hadoop on Azure Virtual Machines
   
 .EXAMPLE 
   .\1_Management_Master_Nodes.ps1 -imageName "OpenLogic" -adminUserName "clusteradmin" -adminPassword "Password.1" -instanceSize "ExtraLarge" -diskSizeInGB 100 -numofDisks 2 `
-    -vmNamePrefix "ncdHDP" -cloudServicePrefix "ncdHDP" -affinityGroupLocation "East US" -affinityGroupName "ncdAGHDP" `
-    -affinityGroupDescription "Affinity Group used for HDP on Azure VM" -affinityGroupLabel "Hadoop on Azure VM AG HDP" -virtualNetworkName "Hadoop-NetworkHDP" -virtualSubnetname "App" 
+    -vmNamePrefix "hdpazure" -cloudServicePrefix "hdpazure" -affinityGroupLocation "East US" -affinityGroupName "hdpazureAG" `
+    -affinityGroupDescription "Affinity Group used for HDP on Azure VM" -affinityGroupLabel "Hadoop on Azure VM AG HDP" -virtualNetworkName "Hadoop-NetworkHDP" `
+    -virtualSubnetname "App" -storageAccountName "hdpstorage"
 
 ############################################################################################################>
 
@@ -78,7 +79,11 @@ param(
 
     # The name of the virtual subnet. 
     [Parameter(Mandatory = $true)]  
-    [string]$virtualSubnetname
+    [string]$virtualSubnetname,
+
+    # The name of the storage account. 
+    [Parameter(Mandatory = $true)]  
+    [string]$storageAccountName
     ) 
 
 ###########################################################################################################
@@ -92,6 +97,20 @@ else
 {
     Write-Host "Affinity Group" $affinityGroupName "Exists"
 }
+
+###########################################################################################################
+## Create the Storage Account and Scripts Container
+## Set the new storage account as the current storage account. A new VHD container will be auto-generated
+## when the virtual machines are created.
+########################################################################################################### 
+if ((Get-AzureStorageAccount | where {$_.StorageAccountName -eq $storageAccountName}) -eq $NULL) 
+{.\0_Create_Storage_Account.ps1 -affinityGroupName $affinityGroupName  -storageAccountName $storageAccountName 
+}
+
+$subscriptionInfo = Get-AzureSubscription -Current
+$subName = $subscriptionInfo | %{ $_.SubscriptionName }
+
+Set-AzureSubscription -SubscriptionName $subName –CurrentStorageAccount $storageAccountName
 
 ###########################################################################################################
 ## Create the Virtual Network
@@ -159,13 +178,14 @@ $imageName = $image.ImageName
 $vmName = $vmNamePrefix + "0"
 $cloudServiceName = $cloudServicePrefix + "0"
     
-.\0_Create-VM.ps1 -imageName $imageName -adminUserName $adminUserName -adminPassword $adminPassword -instanceSize $instanceSize -diskSizeInGB $diskSizeInGB -vmName $vmName -cloudServiceName $cloudServiceName -affinityGroupName $affinityGroupName -virtualNetworkName $virtualNetworkName -virtualSubnetname $virtualSubnetname -numofDisks $numOfDisks -isManagementNode "True"
+.\0_Create-VM.ps1 -imageName $imageName -adminUserName $adminUserName -adminPassword $adminPassword -instanceSize $instanceSize -diskSizeInGB $diskSizeInGB -vmName $vmName -cloudServiceName $cloudServiceName -affinityGroupName $affinityGroupName -virtualNetworkName $virtualNetworkName -virtualSubnetname $virtualSubnetname -numofDisks $numOfDisks 
+$vm = Get-AzureVM $vmName
+Add-AzureEndpoint -Protocol tcp -PublicPort 8080 -LocalPort 8080 -Name "Ambari" -VM $vm
 
 ###########################################################################################################
 ## Create the virtual machine for the master image to clone the cluster nodes 
 ###########################################################################################################
-
 $vmName = $vmNamePrefix + "M"
 $cloudServiceName = $cloudServicePrefix + "M"
     
-.\0_Create-VM.ps1 -imageName $imageName -adminUserName $adminUserName -adminPassword $adminPassword -instanceSize $instanceSize -diskSizeInGB $diskSizeInGB -vmName $vmName -cloudServiceName $cloudServiceName -affinityGroupName $affinityGroupName -virtualNetworkName $virtualNetworkName -virtualSubnetname $virtualSubnetname -numofDisks $numOfDisks -isManagementNode "False"
+.\0_Create-VM.ps1 -imageName $imageName -adminUserName $adminUserName -adminPassword $adminPassword -instanceSize $instanceSize -diskSizeInGB $diskSizeInGB -vmName $vmName -cloudServiceName $cloudServiceName -affinityGroupName $affinityGroupName -virtualNetworkName $virtualNetworkName -virtualSubnetname $virtualSubnetname -numofDisks 0
