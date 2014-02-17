@@ -1,5 +1,7 @@
 #!/bin/bash
-#sets up the management node and master node 
+#This script creats the management node which is the first node in the cluster.
+#This is the node that is used to install HDP. This node has an ability to do password less setup
+#to all other nodes in the cluster.
 
 source ./hdpsetup.sh
 
