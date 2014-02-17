@@ -14,7 +14,7 @@ bash Directory contians the bash scripts you can use to provision HDP Cluster on
 If you prefer PowerShell you can follow the instructions located in docs\Hadoop on Azure Virtual Machines Process.pdf
 
 
-If  you development PC is MAC/Linux or if you prefer bash scripting over PowerShell you can follow the detailed instructions at docs\Hadoop on Azure Virtual Machines Process CLI.pdf
+If  your development PC is MAC/Linux or if you prefer Azure CLI over PowerShell you can follow the detailed instructions at docs\Hadoop on Azure Virtual Machines Process CLI.pdf
 
 High level instructions are using bash scripts to configure HDP are shown below.
 
