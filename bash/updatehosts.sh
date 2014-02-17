@@ -19,7 +19,15 @@ then
     			# code if not found
 		fi
 	done < $hostsfile
+	echo "Here is how your updates hosts files looks like"
+	cat /etc/hosts
+
 else
 	printf "File $hostsfile does not exist\n"
 	exit 1
 fi
+
+echo "#############################################################################################"
+echo "Script finished successfully"
+echo "#############################################################################################"
+exit 0
