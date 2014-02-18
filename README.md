@@ -36,10 +36,10 @@ High level steps for creating the cluster using the PowerShell method are as fol
 9.	Install HDP using Ambari
 
 ###1_Management_Node.ps1
-Creates a linux virtual machine based on an image in the gallery of your choosing.  The Management Node will be used to manage the deployment process and host Ambari for cluster management.  This script will call 0_Create_AG_Storage_VNet.ps1 and 0_Create-VM.. 
+Creates a linux virtual machine based on an image in the gallery of your choosing.  The Management Node will be used to manage the deployment process and host Ambari for cluster management.  This script will call 0_Create_AG_Storage_VNet.ps1 and 0_Create-VM. 
 
 ###2_Master_Node.ps1
-Creates a linux virtual machine based on an image in the gallery of your choosing.  The Master Node will later become the master image which is used to generate the cluster virtual machines.  This script will call 0_Create_AG_Storage_VNet.ps1 and 0_Create-VM.. 
+Creates a linux virtual machine based on an image in the gallery of your choosing.  The Master Node will later become the master image which is used to generate the cluster virtual machines.  This script will call 0_Create_AG_Storage_VNet.ps1 and 0_Create-VM. 
 
 ###3_Cluster_Nodes.ps1
 Creates a linux virtual machine based on the image that is created from the Master Node.  This script will call 0_Create-VM.  This script will also generate a hosts.txt file and mountdrive.sh file, which are used in the process to set up the machines.
