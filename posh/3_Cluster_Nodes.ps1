@@ -108,17 +108,13 @@ For ($count = 1; $count -le $numNodes; $count++)
     
     .\0_Create-VM.ps1 -imageName $imageName -adminUserName $adminUserName -adminPassword $adminPassword -instanceSize $instanceSize -diskSizeInGB $diskSizeInGB -vmName $vmName -cloudServiceName $cloudServiceName -affinityGroupName $affinityGroupName -virtualNetworkName $virtualNetworkName -virtualSubnetname $virtualSubnetname -numofDisks $numOfDisks 
     
-    #echo "ssh root@$vmName /root/scripts/makefilesystem.sh" >> $mntscript
-	#echo "scp /etc/hosts root@${vmName}:/etc" >> $mntscript
+#write to the mountdrive.sh file
     "ssh root@$vmName /root/scripts/makefilesystem.sh" | Out-File $mntscript -encoding ASCII -append 
 	"scp /etc/hosts root@${vmName}:/etc" | Out-File $mntscript -encoding ASCII -append 
 
+#write to the hosts.txt file
     $IpAddress = (Get-AzureVM $vmName).IpAddress
     #echo "$vmName`t$IpAddress" >> $hostsfile 
     "$IpAddress`t$vmName" | Out-File $hostsfile -encoding ASCII -append 
 }
 
-###########################################################################################################
-## Write the hosts file
-###########################################################################################################
-#echo (Get-AzureVM | Where {$_.ServiceName -like "*$vmNamePrefix*"} | SELECT ServiceName, Name | foreach-object { Get-AzureVM -ServiceName $_.ServiceName -Name $_.Name | Select IPAddress, Name}) >> $hostsfile
