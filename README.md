@@ -5,37 +5,34 @@ Scripts to Automate HDP deployment on Windows Azure Virtual Machines(Linux)
 
 The focus on the current version is to automate creation of the infrastructure. Future versions will include best practices for disk alignment to optimize for most applications.
 
-docs Directory contains documentation you can use to execute the scripts.
+We have tested these scripts to validate settings - but please use caution and review all scripts before you deploy.
 
-posh Diretory contains the PowerShell scripts you can use to provision HDP Cluster on Linux VM's
+Since this is a framework, you have the luxury to select all or parts of the framework to ease the development of your infrastructure setup.  
 
-bash Directory contians the bash scripts you can use to provision HDP Cluster on Linux VM's
+Finally, give feedback, add suggestions and updates!  We welcome input that will improve this for all!
+
+A few notes about the structure:
+
+docs Directory contains documentation you can use to execute the scripts.  You will find both PDF and Word versions of the documentation.  
+
+posh Diretory contains the PowerShell scripts you can use to provision HDP Cluster on Linux VM's.  
+
+bash Directory contians the bash scripts you can use to provision HDP Cluster on Linux VM's.
 
 
 ##PowerShell to deploy the infrastructure
 If you prefer PowerShell you can follow the instructions located in docs\Hadoop on Azure Virtual Machines Process.pdf
-High level steps will be added here...
-1.	Create the Management Node: Execute 1_Management_Node.ps1
-	a.	Create the Affinity Group (if it doesn’t exist)
-	b.	Create the Virtual Network (if it doesn’t exist)
-	c.	Create the Storage Account (if it doesn’t exist)
-	d.	Create the Management virtual machine
-2.	Create the Master Node: Execute 2_Master_Node.ps1
-3.	Manually configure the Management and Master nodes
-	a.	Set root passwords
-	b.	Set up passwordless SSH between the Management Node and the Master Node
-	c.	Set various server configurations to meet HDP requirements 
-	d.	Add disk mount script
-4.	Prepare the Master Node for provisioning
-	a.	Update waagent.conf 
-	b.	Run waagent –deprovision 
+High level steps for creating the cluster using the PowerShell method are as follows:
+
+
+1.	Create the Management Node: Execute 1_Management_Node.ps1.  This step will create the Affinity Group, Virtual Network, Storage Account, and the Management virtual machine
+2.	Create the Master Node with the PowerShell script.
+3.	Manually configure the Management and Master nodes.  Set root passwords, set up passwordless SSH between the Management Node and the Master Node, and set various server configurations to meet HDP requirements.
+4.	Prepare the Master Node for provisioning by running waagent.
 5.	Create the Windows Azure Master Image
-	a.	Stop the Master Node
-	b.	Capture an image
-6.	Execute 3_Cluster_Nodes
-	a.	Creates multiple Windows Azure Virtual Machines using the Master Node image
-7.	Update /etc/hosts and mount drives
-8.	Install Ambari on Management Node
+6.	Execute 3_Cluster_Nodes  to create multiple Windows Azure Virtual Machines using the Master Node image.
+7.	Run scripts to update /etc/hosts and mount drives on the cluster machines.
+8.	Install Ambari on Management Node.
 9.	Install HDP using Ambari
 
 
