@@ -1,7 +1,9 @@
-azure-hdp
+﻿azure-hdp
 =========
 
 Scripts to Automate HDP deployment on Windows Azure Virtual Machines(Linux)
+
+The focus on the current version is to automate creation of the infrastructure. Future versions will include best practices for disk alignment to optimize for most applications.
 
 docs Directory contains documentation you can use to execute the scripts.
 
@@ -13,6 +15,28 @@ bash Directory contians the bash scripts you can use to provision HDP Cluster on
 ##PowerShell to deploy the infrastructure
 If you prefer PowerShell you can follow the instructions located in docs\Hadoop on Azure Virtual Machines Process.pdf
 High level steps will be added here...
+1.	Create the Management Node: Execute 1_Management_Node.ps1
+	a.	Create the Affinity Group (if it doesn’t exist)
+	b.	Create the Virtual Network (if it doesn’t exist)
+	c.	Create the Storage Account (if it doesn’t exist)
+	d.	Create the Management virtual machine
+2.	Create the Master Node: Execute 2_Master_Node.ps1
+3.	Manually configure the Management and Master nodes
+	a.	Set root passwords
+	b.	Set up passwordless SSH between the Management Node and the Master Node
+	c.	Set various server configurations to meet HDP requirements 
+	d.	Add disk mount script
+4.	Prepare the Master Node for provisioning
+	a.	Update waagent.conf 
+	b.	Run waagent –deprovision 
+5.	Create the Windows Azure Master Image
+	a.	Stop the Master Node
+	b.	Capture an image
+6.	Execute 3_Cluster_Nodes
+	a.	Creates multiple Windows Azure Virtual Machines using the Master Node image
+7.	Update /etc/hosts and mount drives
+8.	Install Ambari on Management Node
+9.	Install HDP using Ambari
 
 
 ##Azure CLI and Bash Scripts
