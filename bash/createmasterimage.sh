@@ -104,3 +104,7 @@ fi
 printf "######################################## Virtual Machine  Master Image Details #######################################\n"
 #display the details about the newly created VM
 azure vm show $vmName --json
+echo "#############################################################################################"
+echo "Script finished successfully"
+echo "#############################################################################################"
+exit 0

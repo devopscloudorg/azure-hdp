@@ -131,3 +131,7 @@ while [ $loopIndex -le $nodeCount ]; do
 done
 #make the mntscript executable
 chmod a+x $mntscript
+echo "#############################################################################################"
+echo "Script finished successfully"
+echo "#############################################################################################"
+exit 0
