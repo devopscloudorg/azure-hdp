@@ -1,27 +1,33 @@
 #!/bin/bash
-#This script reads the hosts file and mergest its content with /etc/hosts
+#This script reads the hosts file and merges its content with /etc/hosts
 
 source ./hdpsetup.sh
 
 #check to make sure hosts file exists
 echo "hosts file name is:$hostsfile"
 
+if [ -e /etc/hosts.bak ]
+then
+	rm /etc/hosts.bak
+fi
+
+#backup the hosts files
+cp /etc/hosts /etc/hosts.bak
+echo "########################################################before updating"
+cat /etc/hosts
+
 if [ -e $hostsfile ]
 then
-	while read line;do
-        	echo "$line"
+	#read the hosts file for ip addresses. Look for that ip address in /etc/hosts file and remove it.
+	for line in `awk '{print $1}' < $hostsfile`; do
+		echo $line
+		sed -i "/$line/d" /etc/hosts
+	done
 
-		if grep -Fxq "$line" /etc/hosts
-		then
-    			printf "$line already exists in hosts file\n"
-		else
-			echo $line >> /etc/hosts
-    			# code if not found
-		fi
-	done < $hostsfile
-	echo "Here is how your updates hosts files looks like"
+	cat $hostsfile >> /etc/hosts
+
+	echo "######################################################################After updating"
 	cat /etc/hosts
-
 else
 	printf "File $hostsfile does not exist\n"
 	exit 1
