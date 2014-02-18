@@ -2,10 +2,14 @@
 Hadoop on Azure Virtual Machines
 
 .SYNOPSIS 
-  Used to automate the creation of Windows Azure nodes for the Hadoop on Windows Azure cluster.  
+  Create the Management node for Hadoop on Azure deployments on Azure virtual machines.  
+
+.DESCRIPTION 
+  Used to automate the creation of Windows Azure infrastructure to support the deploying Hadoop  
+  on Windows Azure Virtual Machines.  
 
   The virtual machines will be named based on a prefix.  Each cloud service contains a single virtual machine.
-
+  
   The script will accept a parameter specifying the number of disks to attach to each virtual machine.
   
   Note: This script requires an Azure Storage Account to run.  A storage account can be  
@@ -13,15 +17,15 @@ Hadoop on Azure Virtual Machines
     Set-AzureSubscription -SubscriptionName "MySubscription" -CurrentStorageAccount "MyStorageAccount" 
   
 .EXAMPLE 
-  .\2_Cluster_Nodes.ps1 -imageName "azurehdpm" -adminUserName "clusteradmin" -adminPassword "Password.1" -instanceSize "ExtraLarge" -diskSizeInGB 100 -numofDisks 2 `
-    -vmNamePrefix "azurehdp" -cloudServicePrefix "azurehdp" -numNodes 1 -affinityGroupName "azurehdpAG" -virtualNetworkName "Hadoop-NetworkHDP" -virtualSubnetname "App" `
-    -storageAccountName "hdpstorage"
+  .\1_Management_Nodes.ps1 -imageName "OpenLogic" -adminUserName "clusteradmin" -adminPassword "Password.1" -instanceSize "ExtraLarge" -diskSizeInGB 100 -numofDisks 2 `
+    -vmNamePrefix "hdpazure" -cloudServicePrefix "hdpazure" -affinityGroupLocation "East US" -affinityGroupName "hdpazureAG" `
+    -affinityGroupDescription "Affinity Group used for HDP on Azure VM" -affinityGroupLabel "Hadoop on Azure VM AG HDP" -virtualNetworkName "Hadoop-NetworkHDP" `
+    -virtualSubnetname "App" -storageAccountName "hdpstorage"
 
 ############################################################################################################>
 
-param(
+param( 
     # The name of the image.  Can be wildcard pattern. 
-
     [Parameter(Mandatory = $true)]  
     [string]$imageName, 
   
@@ -39,8 +43,8 @@ param(
      
     # The size of the disk(s). 
     [Parameter(Mandatory = $true)]  
-    [int]$diskSizeInGB, 
-
+    [int]$diskSizeInGB,
+     
     # Number of data disks to add to each virtual machine 
     [Parameter(Mandatory = $true)] 
     [Int32]$numOfDisks,
@@ -53,13 +57,21 @@ param(
     [Parameter(Mandatory = $true)]  
     [string]$cloudServicePrefix,
 
-    # The name of the cloud service. 
+    # The name of the affinity group. 
     [Parameter(Mandatory = $true)]  
-    [string]$numNodes,
-
+    [string]$affinityGroupLocation, 
+ 
     # The name of the affinity group. 
     [Parameter(Mandatory = $true)]  
     [string]$affinityGroupName, 
+
+    # The description of the affinity group. 
+    [Parameter(Mandatory = $true)]  
+    [string]$affinityGroupDescription, 
+
+    # The affinity group label. 
+    [Parameter(Mandatory = $true)]  
+    [string]$affinityGroupLabel, 
 
     # The name of the virtual network. 
     [Parameter(Mandatory = $true)]  
@@ -68,36 +80,32 @@ param(
     # The name of the virtual subnet. 
     [Parameter(Mandatory = $true)]  
     [string]$virtualSubnetname,
-    
+
     # The name of the storage account. 
     [Parameter(Mandatory = $true)]  
     [string]$storageAccountName
     ) 
 
-
 ###########################################################################################################
-## Set the storage account as the current storage account.
-########################################################################################################### 
-$subscriptionInfo = Get-AzureSubscription -Current
-$subName = $subscriptionInfo | %{ $_.SubscriptionName }
-
-Set-AzureSubscription -SubscriptionName $subName –CurrentStorageAccount $storageAccountName
+## Create the Affinity Group, the Virtual Network and the Storage Account
+###########################################################################################################
+.\0_Create_AG_Storage_VNet.ps1 -affinityGroupLocation $affinityGroupLocation -affinityGroupName $affinityGroupName -affinityGroupDescription $affinityGroupDescription -affinityGroupLabel $affinityGroupLabel -virtualNetworkName $virtualNetworkName -virtualSubnetname $virtualSubnetname -storageAccountName $storageAccountName
 
 ###########################################################################################################
 ## Select the image to provision
 ###########################################################################################################
-$image = Get-AzureVMImage -ImageName $imageName
+$image = Get-AzureVMImage | 
+            ? label -Like "*$imageName*" | Sort-Object PublishedDate -Descending |
+            select -First 1
+$imageName = $image.ImageName
 
 ###########################################################################################################
-## Create the virtual machines for the cluster nodes 
-#### Create a single cloud service for each VM
+## Create the management node virtual machine
 ###########################################################################################################
-For ($count = 1; $count -le $numNodes; $count++)
-{
-    $vmName = $vmNamePrefix + $count
-    $cloudServiceName = $cloudServicePrefix + $count
+$vmName = $vmNamePrefix + "0"
+$cloudServiceName = $cloudServicePrefix + "0"
     
-    .\0_Create-VM.ps1 -imageName $imageName -adminUserName $adminUserName -adminPassword $adminPassword -instanceSize $instanceSize -diskSizeInGB $diskSizeInGB -vmName $vmName -cloudServiceName $cloudServiceName -affinityGroupName $affinityGroupName -virtualNetworkName $virtualNetworkName -virtualSubnetname $virtualSubnetname -numofDisks $numOfDisks 
-
-}
+.\0_Create-VM.ps1 -imageName $imageName -adminUserName $adminUserName -adminPassword $adminPassword -instanceSize $instanceSize -diskSizeInGB $diskSizeInGB -vmName $vmName -cloudServiceName $cloudServiceName -affinityGroupName $affinityGroupName -virtualNetworkName $virtualNetworkName -virtualSubnetname $virtualSubnetname -numofDisks $numOfDisks 
+$vm = Get-AzureVM $vmName
+Add-AzureEndpoint -Protocol tcp -PublicPort 8080 -LocalPort 8080 -Name "Ambari" -VM $vm | Update-AzureVM
 
