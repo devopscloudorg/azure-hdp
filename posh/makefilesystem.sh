@@ -13,7 +13,7 @@ FISYS="ext4"
 ##--------------------------B----A----S----H----Y---------------------------##
 ####----------------------------------------------------------------------####
 
-dmesg | grep -e "\[sd[a-z]" | awk '{print $3;}' | sort -u > /tmp/diskdeviceoutput
+dmesg | grep -e "\[sd[a-z]" | awk '{print $5;}' | sort -u > /tmp/diskdeviceoutput
 
 sdb=$(cat /tmp/diskdeviceoutput | grep -o sdb)
 sdc=$(cat /tmp/diskdeviceoutput | grep -o sdc)
