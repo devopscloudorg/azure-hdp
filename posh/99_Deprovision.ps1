@@ -11,14 +11,21 @@ Hadoop on Azure Virtual Machines
 #Set the variables.
 #These should match the variables used to create the cluster.
 ############################################################################################################>
-$affinityGroupName = "ncdAGHDP"
-$virtualNetworkName = "Hadoop-NetworkHDP"
-$vmNamePrefix = "hdpazure"
+$affinityGroupName = ""
+$virtualNetworkName = ""
+$vmNamePrefix = ""
+$storageAccountName = ""
 
 <#############################################################################################################
 #Remove the Cloud Services, VMs, and Disks
 ############################################################################################################>
 get-azureservice | where {$_.Label -like "*$vmNamePrefix*"} | Remove-AzureService -DeleteAll -Force
+Get-AzureVMImage| where {$_.ImageName -like "*$vmNamePrefix*"} | Remove-AzureVMImage
+
+<#############################################################################################################
+#Remove the storage account
+############################################################################################################>
+Get-AzureStorageAccount -StorageAccountName $storageAccountName |Remove-AzureStorageAccount
 
 <#############################################################################################################
 #Remove Virtual Network

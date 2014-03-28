@@ -5,8 +5,9 @@ Hadoop on Azure Virtual Machines
   Management script to stop all virtual machines follow a naming convention.   
 
 ############################################################################################################>
-$vmNamePrefix = "ncdHDPa0"
 
+$vmNamePrefix = ""
 
-Get-AzureVM | where {$_.Name -like "*$vmNamePrefix"} | Stop-AzureVM -Force
+start-job -scriptblock{Get-AzureVM | where {$_.ServiceName -like "*$vmNamePrefix*"} | restart-AzureVM} 
+
 

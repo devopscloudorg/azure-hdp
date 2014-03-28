@@ -13,7 +13,7 @@ FISYS="ext4"
 ##--------------------------B----A----S----H----Y---------------------------##
 ####----------------------------------------------------------------------####
 
-dmesg | grep -e "\[sd[a-z]" | awk '{print $5;}' | sort -u > /tmp/diskdeviceoutput
+dmesg | grep -e "\[sd[a-z]" | awk '{print $3;}' | sort -u > /tmp/diskdeviceoutput
 
 sdb=$(cat /tmp/diskdeviceoutput | grep -o sdb)
 sdc=$(cat /tmp/diskdeviceoutput | grep -o sdc)
@@ -155,226 +155,226 @@ cp /etc/fstab /etc/old.fstab`date +%d-%m-%y---%H-%M-%S`
 
 if 	[[ $sdb ]]
 then	echo "y
-	" | mkfs.$FISYS /dev/$sdb > /var/log/mkfs.$sdb
-	mkdir -p /grid/0
-	mount /dev/$sdb /grid/0
-	echo "/dev/$sdb /grid/0 $FISYS defaults 0 0" >> /etc/fstab
+	" | mkfs.$FISYS -m 1 -O dir_index,extent,sparse_super -E lazy_itable_init /dev/$sdb > /var/log/mkfs.$sdb
+	mkdir -p /drive/0
+	mount /dev/$sdb /drive/0
+	echo "/dev/$sdb /drive/0 $FISYS defaults 0 0" >> /etc/fstab
 else	echo ""
 fi
 
 if	[[ $sdc ]]
 then	echo "y
-	" | mkfs.$FISYS /dev/$sdc > /var/log/mkfs.$sdc
-	mkdir -p /grid/1
-	mount /dev/$sdc /grid/1
-	echo "/dev/$sdc /grid/1 $FISYS defaults 0 0" >> /etc/fstab
+	" | mkfs.$FISYS -m 1 -O dir_index,extent,sparse_super -E lazy_itable_init /dev/$sdc > /var/log/mkfs.$sdc
+	mkdir -p /drive/1
+	mount /dev/$sdc /drive/1
+	echo "/dev/$sdc /drive/1 $FISYS defaults 0 0" >> /etc/fstab
 else	echo ""
 fi
 
 if	[[ $sdd ]]
 then	echo "y
-	" | mkfs.$FISYS /dev/$sdd > /var/log/mkfs.$sdd
-	mkdir -p /grid/2
-	mount /dev/$sdd /grid/2
-	echo "/dev/$sdd /grid/2 $FISYS defaults 0 0" >> /etc/fstab
+	" | mkfs.$FISYS -m 1 -O dir_index,extent,sparse_super -E lazy_itable_init /dev/$sdd > /var/log/mkfs.$sdd
+	mkdir -p /drive/2
+	mount /dev/$sdd /drive/2
+	echo "/dev/$sdd /drive/2 $FISYS defaults 0 0" >> /etc/fstab
 else	echo ""
 fi
 
 if	[[ $sde ]]
 then	echo "y
-	" | mkfs.$FISYS /dev/$sde > /var/log/mkfs.$sde
-	mkdir -p /grid/3
-	mount /dev/$sde /grid/3
-	echo "/dev/$sde /grid/3 $FISYS defaults 0 0" >> /etc/fstab
+	" | mkfs.$FISYS -m 1 -O dir_index,extent,sparse_super -E lazy_itable_init /dev/$sde > /var/log/mkfs.$sde
+	mkdir -p /drive/3
+	mount /dev/$sde /drive/3
+	echo "/dev/$sde /drive/3 $FISYS defaults 0 0" >> /etc/fstab
 else	echo ""
 fi
 
 if	[[ $sdf ]]
 then	echo "y
-	" | mkfs.$FISYS /dev/$sdf > /var/log/mkfs.$sdf
-	mkdir -p /grid/4
-	mount /dev/$sdf /grid/4
-	echo "/dev/$sdf /grid/4 $FISYS defaults 0 0" >> /etc/fstab
+	" | mkfs.$FISYS -m 1 -O dir_index,extent,sparse_super -E lazy_itable_init /dev/$sdf > /var/log/mkfs.$sdf
+	mkdir -p /drive/4
+	mount /dev/$sdf /drive/4
+	echo "/dev/$sdf /drive/4 $FISYS defaults 0 0" >> /etc/fstab
 else	echo ""
 fi
 
 if	[[ $sdg ]]
 then	echo "y
-	" | mkfs.$FISYS /dev/$sdg > /var/log/mkfs.$sdg
-	mkdir -p /grid/5
-	mount /dev/$sdg /grid/5
-	echo "/dev/$sdg /grid/5 $FISYS defaults 0 0" >> /etc/fstab
+	" | mkfs.$FISYS -m 1 -O dir_index,extent,sparse_super -E lazy_itable_init /dev/$sdg > /var/log/mkfs.$sdg
+	mkdir -p /drive/5
+	mount /dev/$sdg /drive/5
+	echo "/dev/$sdg /drive/5 $FISYS defaults 0 0" >> /etc/fstab
 else	echo ""
 fi
 
 if	[[ $sdh ]]
 then	echo "y
-	" | mkfs.$FISYS /dev/$sdh > /var/log/mkfs.$sdh
-	mkdir -p /grid/6
-	mount /dev/$sdh /grid/6
-	echo "/dev/$sdh /grid/6 $FISYS defaults 0 0" >> /etc/fstab
+	" | mkfs.$FISYS -m 1 -O dir_index,extent,sparse_super -E lazy_itable_init /dev/$sdh > /var/log/mkfs.$sdh
+	mkdir -p /drive/6
+	mount /dev/$sdh /drive/6
+	echo "/dev/$sdh /drive/6 $FISYS defaults 0 0" >> /etc/fstab
 else	echo ""
 fi
 
 if	[[ $sdi ]]
 then	echo "y
-	" | mkfs.$FISYS /dev/$sdi > /var/log/mkfs.$sdi
-	mkdir -p /grid/7
-	mount /dev/$sdi /grid/7
-	echo "/dev/$sdi /grid/7 $FISYS defaults 0 0" >> /etc/fstab
+	" | mkfs.$FISYS -m 1 -O dir_index,extent,sparse_super -E lazy_itable_init /dev/$sdi > /var/log/mkfs.$sdi
+	mkdir -p /drive/7
+	mount /dev/$sdi /drive/7
+	echo "/dev/$sdi /drive/7 $FISYS defaults 0 0" >> /etc/fstab
 else	echo ""
 fi
 
 if	[[ $sdj ]]
 then	echo "y
-	" | mkfs.$FISYS /dev/$sdj > /var/log/mkfs.$sdj
-	mkdir -p /grid/8
-	mount /dev/$sdj /grid/8
-	echo "/dev/$sdj /grid/8 $FISYS defaults 0 0" >> /etc/fstab
+	" | mkfs.$FISYS -m 1 -O dir_index,extent,sparse_super -E lazy_itable_init /dev/$sdj > /var/log/mkfs.$sdj
+	mkdir -p /drive/8
+	mount /dev/$sdj /drive/8
+	echo "/dev/$sdj /drive/8 $FISYS defaults 0 0" >> /etc/fstab
 else	echo ""
 fi
 
 if	[[ $sdk ]]
 then	echo "y
-	" | mkfs.$FISYS /dev/$sdk > /var/log/mkfs.$sdk
-	mkdir -p /grid/9
-	mount /dev/$sdk /grid/9
-	echo "/dev/$sdk /grid/9 $FISYS defaults 0 0" >> /etc/fstab
+	" | mkfs.$FISYS -m 1 -O dir_index,extent,sparse_super -E lazy_itable_init /dev/$sdk > /var/log/mkfs.$sdk
+	mkdir -p /drive/9
+	mount /dev/$sdk /drive/9
+	echo "/dev/$sdk /drive/9 $FISYS defaults 0 0" >> /etc/fstab
 else	echo ""
 fi
 
 if	[[ $sdl ]]
 then	echo "y
-	" | mkfs.$FISYS /dev/$sdl > /var/log/mkfs.$sdl
-	mkdir -p /grid/10
-	mount /dev/$sdl /grid/10
-	echo "/dev/$sdl /grid/10 $FISYS defaults 0 0" >> /etc/fstab
+	" | mkfs.$FISYS -m 1 -O dir_index,extent,sparse_super -E lazy_itable_init /dev/$sdl > /var/log/mkfs.$sdl
+	mkdir -p /drive/10
+	mount /dev/$sdl /drive/10
+	echo "/dev/$sdl /drive/10 $FISYS defaults 0 0" >> /etc/fstab
 else	echo ""
 fi
 
 if	[[ $sdm ]]
 then	echo "y
-	" | mkfs.$FISYS /dev/$sdm > /var/log/mkfs.$sdm
-	mkdir -p /grid/11
-	mount /dev/$sdm /grid/11
-	echo "/dev/$sdm /grid/11 $FISYS defaults 0 0" >> /etc/fstab
+	" | mkfs.$FISYS -m 1 -O dir_index,extent,sparse_super -E lazy_itable_init /dev/$sdm > /var/log/mkfs.$sdm
+	mkdir -p /drive/11
+	mount /dev/$sdm /drive/11
+	echo "/dev/$sdm /drive/11 $FISYS defaults 0 0" >> /etc/fstab
 else	echo ""
 fi
 
 if	[[ $sdn ]]
 then	echo "y
-	" | mkfs.$FISYS /dev/$sdn > /var/log/mkfs.$sdn
-	mkdir -p /grid/12
-	mount /dev/$sdn /grid/12
-	echo "/dev/$sdn /grid/12 $FISYS defaults 0 0" >> /etc/fstab
+	" | mkfs.$FISYS -m 1 -O dir_index,extent,sparse_super -E lazy_itable_init /dev/$sdn > /var/log/mkfs.$sdn
+	mkdir -p /drive/12
+	mount /dev/$sdn /drive/12
+	echo "/dev/$sdn /drive/12 $FISYS defaults 0 0" >> /etc/fstab
 else	echo ""
 fi
 
 if	[[ $sdo ]]
 then	echo "y
-	" | mkfs.$FISYS /dev/$sdo > /var/log/mkfs.$sdo
-	mkdir -p /grid/13
-	mount /dev/$sdo /grid/13
-	echo "/dev/$sdo /grid/13 $FISYS defaults 0 0" >> /etc/fstab
+	" | mkfs.$FISYS -m 1 -O dir_index,extent,sparse_super -E lazy_itable_init /dev/$sdo > /var/log/mkfs.$sdo
+	mkdir -p /drive/13
+	mount /dev/$sdo /drive/13
+	echo "/dev/$sdo /drive/13 $FISYS defaults 0 0" >> /etc/fstab
 else	echo ""
 fi
 
 if	[[ $sdp ]]
 then	echo "y
-	" | mkfs.$FISYS /dev/$sdp > /var/log/mkfs.$sdp
-	mkdir -p /grid/14
-	mount /dev/$sdp /grid/14
-	echo "/dev/$sdp /grid/14 $FISYS defaults 0 0" >> /etc/fstab
+	" | mkfs.$FISYS -m 1 -O dir_index,extent,sparse_super -E lazy_itable_init /dev/$sdp > /var/log/mkfs.$sdp
+	mkdir -p /drive/14
+	mount /dev/$sdp /drive/14
+	echo "/dev/$sdp /drive/14 $FISYS defaults 0 0" >> /etc/fstab
 else	echo ""
 fi
 
 if	[[ $sdq ]]
 then	echo "y
-	" | mkfs.$FISYS /dev/$sdq > /var/log/mkfs.$sdq
-	mkdir -p /grid/15
-	mount /dev/$sdq /grid/15
-	echo "/dev/$sdq /grid/15 $FISYS defaults 0 0" >> /etc/fstab
+	" | mkfs.$FISYS -m 1 -O dir_index,extent,sparse_super -E lazy_itable_init /dev/$sdq > /var/log/mkfs.$sdq
+	mkdir -p /drive/15
+	mount /dev/$sdq /drive/15
+	echo "/dev/$sdq /drive/15 $FISYS defaults 0 0" >> /etc/fstab
 else	echo ""
 fi
 
 if	[[ $sdr ]]
 then	echo "y
-	" | mkfs.$FISYS /dev/$sdr > /var/log/mkfs.$sdr
-	mkdir -p /grid/16
-	mount /dev/$sdr /grid/16
-	echo "/dev/$sdr /grid/16 $FISYS defaults 0 0" >> /etc/fstab
+	" | mkfs.$FISYS -m 1 -O dir_index,extent,sparse_super -E lazy_itable_init /dev/$sdr > /var/log/mkfs.$sdr
+	mkdir -p /drive/16
+	mount /dev/$sdr /drive/16
+	echo "/dev/$sdr /drive/16 $FISYS defaults 0 0" >> /etc/fstab
 else	echo ""
 fi
 
 if	[[ $sds ]]
 then	echo "y
-	" | mkfs.$FISYS /dev/$sds > /var/log/mkfs.$sds
-	mkdir -p /grid/17
-	mount /dev/$sds /grid/17
-	echo "/dev/$sds /grid/17 $FISYS defaults 0 0" >> /etc/fstab
+	" | mkfs.$FISYS -m 1 -O dir_index,extent,sparse_super -E lazy_itable_init /dev/$sds > /var/log/mkfs.$sds
+	mkdir -p /drive/17
+	mount /dev/$sds /drive/17
+	echo "/dev/$sds /drive/17 $FISYS defaults 0 0" >> /etc/fstab
 else	echo ""
 fi
 
 if	[[ $sdt ]]
 then	echo "y
-	" | mkfs.$FISYS /dev/$sdt > /var/log.mkfs.$sdt
-	mkdir -p /grid/18
-	mount /dev/$sdt /grid/18
-	echo "/dev/$sdt /grid/18 $FISYS defaults 0 0" >> /etc/fstab
+	" | mkfs.$FISYS -m 1 -O dir_index,extent,sparse_super -E lazy_itable_init /dev/$sdt > /var/log/mkfs.$sdt
+	mkdir -p /drive/18
+	mount /dev/$sdt /drive/18
+	echo "/dev/$sdt /drive/18 $FISYS defaults 0 0" >> /etc/fstab
 else	echo ""
 fi
 
 if	[[ $sdu ]]
 then	echo "y
-	" | mkfs.$FISYS /dev/$sdu > /var/log/mkfs.$sdu
-	mkdir -p /grid/19
-	mount /dev/$sdu /grid/19
-	echo "/dev/$sdu /grid/19 $FISYS defaults 0 0" >> /etc/fstab
+	" | mkfs.$FISYS -m 1 -O dir_index,extent,sparse_super -E lazy_itable_init /dev/$sdu > /var/log/mkfs.$sdu
+	mkdir -p /drive/19
+	mount /dev/$sdu /drive/19
+	echo "/dev/$sdu /drive/19 $FISYS defaults 0 0" >> /etc/fstab
 else	echo ""
 fi
 
 if	[[ $sdv ]]
 then	echo "y
-	" | mkfs.$FISYS /dev/$sdv > /var/log/mkfs.$sdv
-	mkdir -p /grid/20
-	mount /dev/$sdv /grid/20
-	echo "/dev/$sdv /grid/20 $FISYS defaults 0 0" >> /etc/fstab
+	" | mkfs.$FISYS -m 1 -O dir_index,extent,sparse_super -E lazy_itable_init /dev/$sdv > /var/log/mkfs.$sdv
+	mkdir -p /drive/20
+	mount /dev/$sdv /drive/20
+	echo "/dev/$sdv /drive/20 $FISYS defaults 0 0" >> /etc/fstab
 else	echo ""
 fi
 
 if	[[ $sdw ]]
 then	echo "y
-	" | mkfs.$FISYS /dev/$sdw > /var/log/mkfs.$sdw
-	mkdir -p /grid/21
-	mount /dev/$sdw /grid/21
-	echo "/dev/$sdw /grid/21 $FISYS defaults 0 0" >> /etc/fstab
+	" | mkfs.$FISYS -m 1 -O dir_index,extent,sparse_super -E lazy_itable_init /dev/$sdw > /var/log/mkfs.$sdw
+	mkdir -p /drive/21
+	mount /dev/$sdw /drive/21
+	echo "/dev/$sdw /drive/21 $FISYS defaults 0 0" >> /etc/fstab
 else	echo ""
 fi
 
 if	[[ $sdx ]]
 then	echo "y
-	" | mkfs.$FISYS /dev/$sdx > /var/log/mkfs.$sdx
-	mkdir -p /grid/22
-	mount /dev/$sdx /grid/22
-	echo "/dev/$sdx /grid/22 $FISYS defaults 0 0" >> /etc/fstab
+	" | mkfs.$FISYS -m 1 -O dir_index,extent,sparse_super -E lazy_itable_init /dev/$sdx > /var/log/mkfs.$sdx
+	mkdir -p /drive/22
+	mount /dev/$sdx /drive/22
+	echo "/dev/$sdx /drive/22 $FISYS defaults 0 0" >> /etc/fstab
 else	echo ""
 fi
 
 if	[[ $sdy ]]
 then	echo "y
-	" | mkfs.$FISYS /dev/$sdy > /var/log/mkfs.$sdy
-	mkdir -p /grid/23
-	mount /dev/$sdy /grid/23
-	echo "/dev/$sdy /grid/23 $FISYS defaults 0 0" >> /etc/fstab
+	" | mkfs.$FISYS -m 1 -O dir_index,extent,sparse_super -E lazy_itable_init /dev/$sdy > /var/log/mkfs.$sdy
+	mkdir -p /drive/23
+	mount /dev/$sdy /drive/23
+	echo "/dev/$sdy /drive/23 $FISYS defaults 0 0" >> /etc/fstab
 else	echo ""
 fi
 
 if	[[ $sdz ]]
 then	echo "y
-	" | mkfs.$FISYS /dev/$sdz > /var/log/mkfs.$sdz
-	mkdir -p /grid/24
-	mount /dev/$sdz /grid/24
-	echo "/dev/$sdz /grid/24 $FISYS defaults 0 0" >> /etc/fstab
+	" | mkfs.$FISYS -m 1 -O dir_index,extent,sparse_super -E lazy_itable_init /dev/$sdz > /var/log/mkfs.$sdz
+	mkdir -p /drive/24
+	mount /dev/$sdz /drive/24
+	echo "/dev/$sdz /drive/24 $FISYS defaults 0 0" >> /etc/fstab
 else	echo ""
 fi
 
@@ -385,11 +385,11 @@ fi
 	sleep 2 ; if ls /var/log/ | grep auto > /dev/null ; then echo "Done." ; fi
 
 	echo "We're checking our mounts:"
-	mount -l | grep /grid >> /var/log/automountandformat.log
+	mount -l | grep /drive >> /var/log/automountandformat.log
 	sleep 2 ; if ls /var/log/ | grep auto > /dev/null ; then echo "Done." ; fi
 
 	echo "And we're checking /etc/fstab for our mounts:"
-	cat /etc/fstab | grep /grid >> /var/log/automountandformat.log	
+	cat /etc/fstab | grep /drive >> /var/log/automountandformat.log	
 	sleep 2 ; if ls /var/log/ | grep auto > /dev/null ; then echo "Done." ; fi
 
 	echo "
