@@ -51,7 +51,7 @@ printf "storage account name is %s\n" "$storageAccount"
 
 result=$(azure storage account show "$storageAccount" --json | jq '.ServiceName')   
 if [[ -z $result ]]; then
-	(azure storage account create --affinity-group "$affinityGroupName" $storageAccount) || { echo "Failed to create storage account $storageAccount"; exit 1; }
+	(azure storage account create --affinity-group "$affinityGroupName" --disable-geoReplication $storageAccount) || { echo "Failed to create storage account $storageAccount"; exit 1; }
 else
 	echo "Storage account $storageAccount exists"
 fi
