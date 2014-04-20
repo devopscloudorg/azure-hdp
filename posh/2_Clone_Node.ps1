@@ -17,10 +17,10 @@ Hadoop on Azure Virtual Machines
     Set-AzureSubscription -SubscriptionName "MySubscription" -CurrentStorageAccount "MyStorageAccount" 
   
 .EXAMPLE 
-  .\2_Clone_Node.ps1 -imageName "OpenLogic" -adminUserName "clusteradmin" -adminPassword "Password.1" -instanceSize "ExtraLarge" -diskSizeInGB 0 -numofDisks 0 `
-    -vmNamePrefix "hdpazure" -cloudServicePrefix "hdpazure" -affinityGroupLocation "East US" -affinityGroupName "hdpazureAG" `
-    -affinityGroupDescription "Affinity Group used for HDP on Azure VM" -affinityGroupLabel "Hadoop on Azure VM AG HDP" -virtualNetworkName "Hadoop-NetworkHDP" `
-    -virtualSubnetname "App" -storageAccountName "hdpstorage"
+  .\2_Clone_Node.ps1 -imageName "OpenLogic" -adminUserName "clusteradmin" -adminPassword "Password.1" -instanceSize "ExtraLarge" -diskSizeInGB 1000 -numofDisks 8 `
+    -vmNamePrefix "hadoopazure" -cloudServicePrefix "hadoopazure" -affinityGroupLocation "East US" -affinityGroupName "hadoopazureAG" `
+    -affinityGroupDescription "Affinity Group used for hadoop on Azure VM" -affinityGroupLabel "Hadoop on Azure VM AG hadoop" -virtualNetworkName "Hadoop-Networkhadoop" `
+    -virtualSubnetname "App" -storageAccountName "hadoopstorage"
 
 ############################################################################################################>
 
@@ -100,9 +100,9 @@ $image = Get-AzureVMImage |
 $imageName = $image.ImageName
 
 ###########################################################################################################
-## Create the virtual machine for the master image to clone the cluster nodes 
+## Create the virtual machine to serve as the master clone image used to generate the cluster nodes 
 ###########################################################################################################
-$vmName = $vmNamePrefix + "M"
+$vmName = $vmNamePrefix + "c"
 $cloudServiceName = $cloudServicePrefix + "c"
     
-.\0_Create-VM.ps1 -imageName $imageName -adminUserName $adminUserName -adminPassword $adminPassword -instanceSize $instanceSize -diskSizeInGB $diskSizeInGB -vmName $vmName -cloudServiceName $cloudServiceName -affinityGroupName $affinityGroupName -virtualNetworkName $virtualNetworkName -virtualSubnetname $virtualSubnetname -numofDisks 0
+.\0_Create_VM.ps1 -imageName $imageName -adminUserName $adminUserName -adminPassword $adminPassword -instanceSize $instanceSize -diskSizeInGB $diskSizeInGB -vmName $vmName -cloudServiceName $cloudServiceName -affinityGroupName $affinityGroupName -virtualNetworkName $virtualNetworkName -virtualSubnetname $virtualSubnetname -numofDisks $numOfDisks

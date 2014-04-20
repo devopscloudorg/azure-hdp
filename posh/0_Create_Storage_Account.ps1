@@ -11,7 +11,7 @@ Hadoop on Azure Virtual Machines
   Create a single storage accountr.  
   
 .EXAMPLE 
-  .\0_Create_Storage_Account.ps1 -affinityGroupName "hdpazureAG" -storageAccountName "hdpstorage" 
+  .\0_Create_Storage_Account.ps1 -affinityGroupName "hadoopazureAG" -storageAccountName "hadoopstorage" 
 
 
 ############################################################################################################>
@@ -31,8 +31,8 @@ param (
 $storageAccount = Get-AzureStorageAccount | Where {$_.StorageAccountName -eq $storageAccountName}
 if ($storageAccount -eq $null) { 
     Write-Verbose "Creating new storage account $storageAccountName." 
-    $storageAccount = New-AzureStorageAccount –StorageAccountName $storageAccountName -AffinityGroup $affinityGroupName
-    Set-AzureStorageAccount -StorageAccountName $storageAccountName –GeoReplicationEnabled $false  
+    $storageAccount = New-AzureStorageAccount –StorageAccountName $storageAccountName -AffinityGroup $affinityGroupName 
+    Set-AzureStorageAccount -StorageAccountName $storageAccountName –GeoReplicationEnabled $false 
 } else { 
     Write-Verbose "Using existing storage account $storageAccountName." 
 } 

@@ -6,16 +6,16 @@ Hadoop on Azure Virtual Machines
 
   The virtual machines will be named based on a prefix.  Each cloud service contains a single virtual machine.
 
-  The script will accept a parameter specifying the number of disks to attach to each virtual machine.
-  
   Note: This script requires an Azure Storage Account to run.  A storage account can be  
   specified by setting the subscription configuration.  For example: 
     Set-AzureSubscription -SubscriptionName "MySubscription" -CurrentStorageAccount "MyStorageAccount" 
+
+  4/19/2014: Added static IP.  Updated write to hostscript.sh and removed mountscript.sh. Added default parameter values for $numDisks and $diskSizeInGB.
   
 .EXAMPLE 
-  .\3_Cluster_Nodes.ps1 -imageName "azurehdpm" -adminUserName "clusteradmin" -adminPassword "Password.1" -instanceSize "ExtraLarge" -diskSizeInGB 100 -numofDisks 2 `
-    -vmNamePrefix "azurehdp" -cloudServicePrefix "azurehdp" -numNodes 1 -affinityGroupName "azurehdpAG" -virtualNetworkName "Hadoop-NetworkHDP" -virtualSubnetname "App" `
-    -storageAccountName "hdpstorage" -hostsfile ".\hosts.txt" -mntscript ".\mountdrive.sh" 
+  .\3_Cluster_Nodes.ps1 -imageName "azurehadoopm" -adminUserName "clusteradmin" -adminPassword "Password.1" -instanceSize "ExtraLarge" -diskSizeInGB 0 -numofDisks 0 `
+    -vmNamePrefix "azurehadoop" -cloudServicePrefix "azurehadoop" -numNodes 1 -affinityGroupName "azurehadoopAG" -virtualNetworkName "Hadoop-Networkhadoop" -virtualSubnetname "App" `
+    -storageAccountName "hadoopstorage" -hostsfile ".\hosts.txt" -hostscript ".\hostscript.sh" 
 
 ############################################################################################################>
 
@@ -39,11 +39,11 @@ param(
      
     # The size of the disk(s). 
     [Parameter(Mandatory = $true)]  
-    [int]$diskSizeInGB, 
+    [int]$diskSizeInGB = 0, 
 
     # Number of data disks to add to each virtual machine 
     [Parameter(Mandatory = $true)] 
-    [Int32]$numOfDisks,
+    [Int32]$numOfDisks = 0,
  
     # The name of the vm. 
     [Parameter(Mandatory = $true)]  
@@ -79,9 +79,8 @@ param(
 
     # The location of the mntscript. 
     [Parameter(Mandatory = $false)]  
-    [string]$mntscript = ".\mountdrive.sh"
+    [string]$hostscript = ".\hostscript.sh"
     ) 
-
 
 ###########################################################################################################
 ## Set the storage account as the current storage account.
@@ -99,22 +98,35 @@ $image = Get-AzureVMImage -ImageName $imageName
 ###########################################################################################################
 ## Create the virtual machines for the cluster nodes 
 #### Create a single cloud service for each VM
-### Write the mountscript and hosts file
+### Write the hostscript and hosts file
+### Set static IP on the VM
 ###########################################################################################################
 For ($count = 1; $count -le $numNodes; $count++)
 {
     $vmName = $vmNamePrefix + $count
     $cloudServiceName = $cloudServicePrefix + $count
     
-    .\0_Create-VM.ps1 -imageName $imageName -adminUserName $adminUserName -adminPassword $adminPassword -instanceSize $instanceSize -diskSizeInGB $diskSizeInGB -vmName $vmName -cloudServiceName $cloudServiceName -affinityGroupName $affinityGroupName -virtualNetworkName $virtualNetworkName -virtualSubnetname $virtualSubnetname -numofDisks $numOfDisks 
-    
-#write to the mountdrive.sh file
-    "ssh root@$vmName /root/scripts/makefilesystem.sh" | Out-File $mntscript -encoding ASCII -append 
-	"scp /etc/hosts root@${vmName}:/etc" | Out-File $mntscript -encoding ASCII -append 
+    .\0_Create_VM.ps1 -imageName $imageName -adminUserName $adminUserName -adminPassword $adminPassword -instanceSize $instanceSize -diskSizeInGB $diskSizeInGB -vmName $vmName -cloudServiceName $cloudServiceName -affinityGroupName $affinityGroupName -virtualNetworkName $virtualNetworkName -virtualSubnetname $virtualSubnetname -numofDisks $numOfDisks 
+<<<<<<< HEAD
 
-#write to the hosts.txt file
+    #capture vm variable
+    $vm = Get-AzureVM -ServiceName $cloudServiceName -Name $vmName
+        
+=======
+    
+>>>>>>> 04f31e2013bee8c6c7b6e9bf366e4ef4d45a65e2
+    #write to the hostscript.sh file
+    "scp /etc/hosts root@${vmName}:/etc" | Out-File $hostscript -encoding ASCII -append 
+
+    #write to the hosts.txt file
+<<<<<<< HEAD
+    $IpAddress = $vm.IpAddress
+=======
     $IpAddress = (Get-AzureVM $vmName).IpAddress
-    #echo "$vmName`t$IpAddress" >> $hostsfile 
+>>>>>>> 04f31e2013bee8c6c7b6e9bf366e4ef4d45a65e2
     "$IpAddress`t$vmName" | Out-File $hostsfile -encoding ASCII -append 
+
+    # Set Static IP on the VM
+    Set-AzureStaticVNetIP -IPAddress $IpAddress -VM $vm | Update-AzureVM
 }
 

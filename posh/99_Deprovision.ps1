@@ -15,12 +15,13 @@ $affinityGroupName = ""
 $virtualNetworkName = ""
 $vmNamePrefix = ""
 $storageAccountName = ""
+$imageName = ""
 
 <#############################################################################################################
 #Remove the Cloud Services, VMs, and Disks
 ############################################################################################################>
-get-azureservice | where {$_.Label -like "*$vmNamePrefix*"} | Remove-AzureService -DeleteAll -Force
-Get-AzureVMImage| where {$_.ImageName -like "*$vmNamePrefix*"} | Remove-AzureVMImage
+Get-AzureService | where {$_.Label -like "*$vmNamePrefix*"} | Remove-AzureService -DeleteAll -Force
+Remove-AzureVMImage -ImageName $imageName -DeleteVHD
 
 <#############################################################################################################
 #Remove the storage account
