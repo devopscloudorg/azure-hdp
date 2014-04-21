@@ -21,7 +21,7 @@ Hadoop on Azure Virtual Machines
 .EXAMPLE 
   .\1_Management_Nodes.ps1 -imageName "OpenLogic" -adminUserName "clusteradmin" -adminPassword "Password.1" -instanceSize "ExtraLarge" -diskSizeInGB 100 -numofDisks 2 `
     -vmNamePrefix "hadoopazure" -cloudServicePrefix "hadoopazure" -affinityGroupLocation "East US" -affinityGroupName "hadoopazureAG" `
-    -affinityGroupDescription "Affinity Group used for hadoop on Azure VM" -affinityGroupLabel "Hadoop on Azure VM AG hadoop" -virtualNetworkName "Hadoop-Networkhadoop" `
+    -affinityGroupDescription "Affinity Group used for hadoop on Azure VM" -affinityGroupLabel "Hadoop on Azure VM AG" -virtualNetworkName "Hadoop-Network" `
     -virtualSubnetname "App" -storageAccountName "hadoopstorage" -installerPort 7180 -hostsfile ".\hosts.txt" -hostscript ".\hostscript.sh" 
 
 ############################################################################################################>
@@ -133,27 +133,18 @@ $vmName = $vmNamePrefix + "0"
 $cloudServiceName = $cloudServicePrefix + "0"
     
 .\0_Create_VM.ps1 -imageName $imageName -adminUserName $adminUserName -adminPassword $adminPassword -instanceSize $instanceSize -diskSizeInGB $diskSizeInGB -vmName $vmName -cloudServiceName $cloudServiceName -affinityGroupName $affinityGroupName -virtualNetworkName $virtualNetworkName -virtualSubnetname $virtualSubnetname -numofDisks $numOfDisks 
-<<<<<<< HEAD
 
 #capture vm variable
     $vm = Get-AzureVM -ServiceName $cloudServiceName -Name $vmName
+    $IpAddress = $vm.IpAddress
 
 #Add endpoint for the distribution installation software
     Add-AzureEndpoint -Protocol tcp -PublicPort $installerPort -LocalPort $installerPort -Name "Installer" -VM $vm | Update-AzureVM
-=======
-$vm = Get-AzureVM $vmName
-Add-AzureEndpoint -Protocol tcp -PublicPort $installerPort -LocalPort $installerPort -Name "Installer" -VM $vm | Update-AzureVM
->>>>>>> 04f31e2013bee8c6c7b6e9bf366e4ef4d45a65e2
 
 # Write to the hostscript.sh file
 	"scp /etc/hosts root@${vmName}:/etc" | Out-File $hostscript -encoding ASCII -append 
 
 # Write to the hosts.txt file
-<<<<<<< HEAD
-    $IpAddress = $vm.IpAddress
-=======
-    $IpAddress = (Get-AzureVM $vmName).IpAddress
->>>>>>> 04f31e2013bee8c6c7b6e9bf366e4ef4d45a65e2
     "$IpAddress`t$vmName" | Out-File $hostsfile -encoding ASCII -append 
 
 # Set Static IP on the VM
